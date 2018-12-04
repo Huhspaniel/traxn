@@ -1,5 +1,10 @@
 const { User, Track } = require('../models');
 
+// Middleware for authenticating json web token
+function authenticateJWT(req, res, next) {
+    next();
+}
+
 module.exports = function (app) {
     app.post('/api/users', (req, res) => {
         User.create(req.body)
@@ -7,7 +12,7 @@ module.exports = function (app) {
             .catch(err => res.json(err));
     })
     app.route('/api/tracks')
-        .post((req, res) => {
+        .post(authenticateJWT, (req, res) => {
             Track.create(req.body)
                 .then(data => res.json(data))
                 .catch(err => res.json(err));

@@ -34,7 +34,10 @@ module.exports = function (app) {
                     .then(data => res.json(data))
                     .catch(err => res.json(err));
             } else {
-                res.status(404).send('404 Not Found');
+                Track.find({}) // Will change/limit before deployment
+                    .populate('user')
+                    .then(data => res.json(data))
+                    .catch(err => res.json(err));
             }
         })
 

@@ -1,10 +1,13 @@
 import React from "react";
 
-import "./HomePage.scss";
-
 const HomePage = props => (
   <div className="homepage-content">
-    HomePage
+    <div className="homepage-profile">
+    
+    </div>
+    <div className="homepage-newsfeed">
+    
+    </div>
   </div>
 );
 

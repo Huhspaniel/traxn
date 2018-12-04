@@ -1,12 +1,14 @@
 import React from "react";
-
-import "./HomePage.scss";
-import TrackList from "../Tracklist/TrackList";
+import TrackList from "../Tracklist/TrackList"
 
 const HomePage = props => (
   <div className="homepage-content">
-    HomePage
-    <TrackList/>
+    <div className="homepage-profile">
+    
+    </div>
+    <div className="homepage-newsfeed">
+      <TrackList/>
+    </div>
   </div>
 );
 

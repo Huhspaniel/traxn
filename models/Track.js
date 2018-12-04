@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const postSchema = new Schema({
+const trackSchema = new Schema({
     content: {
         type: String,
         trim: true,
@@ -14,4 +14,4 @@ const postSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Track', trackSchema);

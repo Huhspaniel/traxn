@@ -26,7 +26,8 @@ module.exports = function (app) {
             if (!data) {
                 throw "No such user or bad request format"
             } else {
-                bcrypt.compare(req.body.password, data.password).then(function(res) {
+                bcrypt.compare(req.body.password, data.password)
+                .then(function(res) {
                     if (res) {
                         console.log(req.body.password);
                         console.log(": " + data.password);
@@ -38,11 +39,38 @@ module.exports = function (app) {
                         throw "Wrong password";
                     }
                 })
+                .catch(function(err) {
+                    res.json({status: "error", message: err});
+                });
             }              
         })
         .catch(function(err) {
             res.json({status: "error", message: err});
         });
+    });
+
+
+    // Authentification route
+    // All routes starting with below route will be authentificated
+    // Decoded id passed to next function call
+    app.use("/api/auth", function(req, res, next) {
+        const token = req.headers["x-access-token"];
+        try {
+            if (token) {
+                jwt.verify(token, app.get('secretKey'), function(err, decoded) { 
+                    if (err) {
+                        throw err.message;
+                    } else {
+                        req.body.userId = decoded.id;
+                        next();
+                    }
+                });
+            } else {
+                throw "No token provided";
+            }
+        } catch(err) {
+            res.json({status: "error", message: err});
+        }
     });
 	
 }

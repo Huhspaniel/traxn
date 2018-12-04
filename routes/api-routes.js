@@ -1,5 +1,6 @@
 const { User, Track } = require('../models');
 const bcrypt = require('bcryptjs');
+const jwt = require(`jsonwebtoken`);
 
 // Middleware for authenticating json web token
 function authenticateJWT(req, res, next) {
@@ -50,14 +51,10 @@ module.exports = function (app) {
                 throw "No such user or bad request format"
             } else {
                 bcrypt.compare(req.body.password, data.password)
-                .then(function(res) {
-                    if (res) {
-                        console.log(req.body.password);
-                        console.log(": " + data.password);
-                        /*
-                        const token = jwt.sign({id: data.id}, appRef.get("secretKey"), { expiresIn: "1h" });
+                .then(function(bcryptRes) {
+                    if (bcryptRes) {
+                        const token = jwt.sign({username: data.username}, app.get("JWTKey"), { expiresIn: "1h" });
                         res.json({status: "success", message: "Logged in", data: {username: data.username, token: token}});   
-                        */  
                     } else {
                         throw "Wrong password";
                     }
@@ -79,11 +76,11 @@ module.exports = function (app) {
         const token = req.headers["x-access-token"];
         try {
             if (token) {
-                jwt.verify(token, app.get('secretKey'), function(err, decoded) { 
+                jwt.verify(token, app.get('JWTKey'), function(err, decoded) { 
                     if (err) {
                         throw err.message;
                     } else {
-                        req.body.userId = decoded.id;
+                        req.body.username = decoded.username;
                         next();
                     }
                 });
@@ -94,6 +91,5 @@ module.exports = function (app) {
             res.json({status: "error", message: err});
         }
     });
-	
 
 }

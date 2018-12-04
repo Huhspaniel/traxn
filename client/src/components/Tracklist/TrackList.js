@@ -4,6 +4,7 @@ import Axios from 'axios';
 const Track = props => (
    <div>
        <img src={props.userPic}/>
+       <h1>{props.userName}</h1>
        <p>{props.TrackContent}</p>
        <button onClick={props.dislike}>Dislike</button>
        <button onClick={props.repost}>Repost</button>

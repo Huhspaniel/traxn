@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const uniqueValidator = require('mongoose-unique-validator');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema({
     username: {
@@ -53,8 +53,18 @@ const userSchema = new Schema({
     }
 })
 userSchema.plugin(uniqueValidator);
-userSchema.post('validate', function(doc) {
-    doc.password = bcrypt.hashSync(doc.password, 10);
-})
+userSchema.pre(`save`, function(next) {
+    var user = this;
+    console.log(JSON.stringify(user));
+    //if (!user.isModified('password')) return next();
+    bcrypt.hash(user.password, 10)
+    .then(function(hashed) {
+        user.password = hashed;
+        next();        
+    })
+    .catch(function(err) {
+        res.json({status: "error", message: err});
+    });
+});
 
 module.exports = mongoose.model('User', userSchema);

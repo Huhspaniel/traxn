@@ -55,7 +55,6 @@ const userSchema = new Schema({
 userSchema.plugin(uniqueValidator);
 userSchema.pre(`save`, function(next) {
     var user = this;
-    console.log(JSON.stringify(user));
     //if (!user.isModified('password')) return next();
     bcrypt.hash(user.password, 10)
     .then(function(hashed) {

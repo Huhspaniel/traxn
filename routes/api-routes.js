@@ -1,20 +1,43 @@
-const { User } = require('../models');
+const { User, Track } = require('../models');
 const bcrypt = require('bcryptjs');
+
+// Middleware for authenticating json web token
+function authenticateJWT(req, res, next) {
+    next();
+}
 
 module.exports = function (app) {
     app.get(`/api/users`, (req, res) => {
         User.find({})
-        .then(data => res.json(data))
-        .catch(err => res.json(err));
+            .populate('following')
+            .then(data => res.json(data))
+            .catch(err => res.json(err));
     });
-
-
     //---------need to limit response later for production
     app.post('/api/users', (req, res) => {
         User.create(req.body)
             .then(data => res.json(data))
             .catch(err => res.json(err));
-    });
+    })
+    app.route('/api/tracks')
+        .post(authenticateJWT, (req, res) => {
+            Track.create(req.body)
+                .then(data => res.json(data))
+                .catch(err => res.json(err));
+        })
+        .get((req, res) => {
+            if (req.query.u) {
+                Track.find({ user: req.query.u })
+                    .populate('user')
+                    .then(data => res.json(data))
+                    .catch(err => res.json(err));
+            } else {
+                Track.find({}) // Will change/limit before deployment
+                    .populate('user')
+                    .then(data => res.json(data))
+                    .catch(err => res.json(err));
+            }
+        })
 
     // Login the user
     // Request will contest username and password
@@ -49,7 +72,6 @@ module.exports = function (app) {
         });
     });
 
-
     // Authentification route
     // All routes starting with below route will be authentificated
     // Decoded id passed to next function call
@@ -73,4 +95,5 @@ module.exports = function (app) {
         }
     });
 	
+
 }

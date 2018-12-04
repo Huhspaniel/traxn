@@ -9,12 +9,13 @@ function authenticateJWT(req, res, next) {
 module.exports = function (app) {
     app.get(`/api/users`, (req, res) => {
         User.find({})
+            .populate('following')
             .then(data => res.json(data))
             .catch(err => res.json(err));
     });
     //---------need to limit response later for production
 
-    
+
     app.post('/api/users', (req, res) => {
         User.create(req.body)
             .then(data => res.json(data))

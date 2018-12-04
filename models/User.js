@@ -50,7 +50,11 @@ const userSchema = new Schema({
                 'Name can only include letters, \', and -'
             ]
         }
-    }
+    },
+    following: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 })
 userSchema.plugin(uniqueValidator);
 userSchema.pre(`save`, function(next) {

@@ -1,4 +1,5 @@
 import React from "react";
+import TrackList from "../Tracklist/TrackList"
 
 const HomePage = props => (
   <div className="homepage-content">
@@ -6,7 +7,7 @@ const HomePage = props => (
     
     </div>
     <div className="homepage-newsfeed">
-    
+      <TrackList/>
     </div>
   </div>
 );

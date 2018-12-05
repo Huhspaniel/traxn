@@ -1,10 +1,12 @@
 import React from "react";
 
-import "./Profile.scss";
-
 const Profile = props => (
-  <div className="profile-content">
-    Profile Page
+  <div className="profile-page">
+    <div className="profile-header" />
+    <div className="profile-content">
+      <div className="profile-profile" />
+      <div className="profile-newsfeed" />
+    </div>
   </div>
 );
 

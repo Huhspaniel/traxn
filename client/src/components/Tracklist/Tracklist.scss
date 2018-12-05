@@ -1,0 +1,123 @@
+.tracklist {
+    background-color: white;
+    height: min-content;
+    width: 100%;
+    border-radius: 1px;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.track-main {
+    background-color: white;
+    box-sizing: border-box;
+    width: 100%;
+    height: min-content;
+    padding: 20px;
+    grid-gap: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(238, 238, 238);
+    }
+
+    display: grid;
+    grid-template-rows: 50px auto min-content;
+    grid-template-columns: 50px auto;
+    grid-template-areas:
+        "img header"
+        "content content"
+        "buttons buttons";
+
+    .track-img {
+        width: 50px;
+        height: 50px;
+        border: thick;
+        border-radius: 50%;
+        border-color: white;
+        grid-area: img;
+    }
+
+    .track-content {
+        display: flex;
+        flex-direction: column;
+        grid-area: content;
+        color: black;
+        padding: 20px;
+    }
+
+    .track-header {
+        grid-area: header;
+        display: flex;
+
+        #track-screen-name {
+            color: black;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        #track-handle {
+            color: gray;
+            font-size: 15px;
+            font-weight: thin;
+            margin-left: 5px;
+        }
+        #track-timestamp {
+            color: gray;
+            font-size: 15px;
+            margin-left: 5px;
+        }
+    }
+
+    #track-message {
+        color: black;
+        font-weight: thin;
+        left: 13%;
+        top: 10%;
+        margin-right: 10px;
+        position: absolute;
+    }
+
+    .track-buttons {
+        grid-area: buttons;
+        display: flex;
+        padding-left: 20px;
+        p {
+            margin: 0;
+        }
+        .repost {
+            .fa-retweet {
+                color: gray;
+                cursor: pointer;
+                font-weight: thin;
+                margin-right: 50px;
+
+                &:hover {
+                    color: rgb(0, 128, 115);
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .dislike {
+            .fa-thumbs-down {
+                color: gray;
+                
+                &:hover {
+                    color: rgb(172, 0, 0);
+                }
+            }
+        }
+
+        .direct-message {
+            .fa-envelope {
+                color: gray;
+                margin-left: 50px;
+
+                &:hover {
+                    color: rgb(0, 136, 255);
+                }
+            }
+        }
+    }
+}

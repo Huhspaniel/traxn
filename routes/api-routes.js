@@ -12,7 +12,6 @@ module.exports = function (app) {
                     if (err) {
                         throw err.message; 
                     } else {
-                        req.body.username = decoded.username; // not really necessary unless next function use it
                         next();
                     }
                 });
@@ -58,7 +57,7 @@ module.exports = function (app) {
         })
 
     app.route('/api/tracks/:id')
-        .put((req, res) => {
+        .put(authJWT, (req, res) => {
             Track.findById(req.params.id)
                 .then(doc => {
                     for (let prop in req.body) {
@@ -76,7 +75,7 @@ module.exports = function (app) {
                 .then(data => res.json(data))
                 .catch(err => res.json(err));
         })
-        .delete((req, res) => {
+        .delete(authJWT, (req, res) => {
             Track.findByIdAndDelete(req.params.id)
                 .then(data => res.json(data))
                 .catch(err => res.json(err));
@@ -87,7 +86,7 @@ module.exports = function (app) {
     // After comparing with database using bcrypt decryption, response with jwt token
     // If error, response with error object
     app.post(`/api/login`, function (req, res) {
-        User.findOne({username: req.body.username})
+        User.findOne({username: req.body.username}) //since the user only knows username and password
         .then(function(data) {
             if (!data) {
                 throw `No such user or bad request format`
@@ -95,8 +94,9 @@ module.exports = function (app) {
                 bcrypt.compare(req.body.password, data.password)
                 .then(function(bcryptRes) {
                     if (bcryptRes) {
-                        const token = jwt.sign({username: data.username}, app.get(`JWTKey`), { expiresIn: `1h` });
-                        res.json({status: `success`, message: `Logged in`, data: {username: data.username, token: token}});   
+                        const token = jwt.sign({id: data.id}, app.get(`JWTKey`), { expiresIn: `1h` });
+                        // sending id to client will enable frontend to send id back to server to edit tracks
+                        res.json({status: `success`, message: `Logged in`, data: {id: data.id, username: data.username, token: token}});   
                     } else {
                         throw `Wrong password`;
                     }

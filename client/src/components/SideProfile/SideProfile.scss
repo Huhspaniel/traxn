@@ -1,0 +1,56 @@
+.side-profile {
+  background-color: white;
+  position: relative;
+  height: 200px;
+
+  .profile-top {
+    background-color: $color-primary;
+    top: 0%;
+    padding-top: 50px;
+    color: $color-primary;
+  }
+
+  #screen-name {
+    color: black;
+    position: absolute;
+    top: 38%;
+    left: 35%;
+    font-size: 16px;
+  }
+  #handle {
+    color: rgb(106, 105, 105);
+    position: absolute;
+    top: 50%;
+    left: 35%;
+    font-size: 12px;
+  }
+
+  img {
+    vertical-align: middle;
+    width: 70px;
+    height: 70px;
+    border: thick;
+    border-radius: 50%;
+    border-color: white;
+    position: absolute;
+    top: 25%;
+    left: 4%;
+  }
+
+  .record {
+    color: $color-primary;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 60px;
+    font-weight: bold;
+  }
+
+  .profile-list {
+      font-size: 12px;
+      color: rgb(106, 105, 105);
+  }
+  .profile-stats {
+      position: absolute;
+      top: 80%;
+  }
+}

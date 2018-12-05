@@ -1,0 +1,51 @@
+body {
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.profile-page {
+    display: grid;
+    grid-template-rows: 200px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "header"
+        "profile-content";
+}
+
+.profile-header {
+    box-sizing: border-box;
+    border: solid;
+    grid-area: header;
+}
+
+.profile-content {
+    grid-area: profile-content;
+    justify-self: center;
+    width: 100%;
+    margin: 50px 0;
+    max-width: 1000px;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: min-content 1fr;
+    grid-template-areas: "profile newsfeed";
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+    color: white;
+}
+
+.profile-profile {
+    box-sizing: border-box;
+    height: 250px;
+    width: 250px;
+    border: solid;
+    grid-area: profile;
+}
+
+.profile-newsfeed {
+    box-sizing: border-box;
+    height: 500px;
+    width: 100%;
+   
+    grid-area: newsfeed;
+}

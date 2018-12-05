@@ -1,8 +1,9 @@
 import React from "react";
+import Inbox from "../DirectMessage/Inbox";
 
 const Messages = props => (
   <div className="homepage-content">
-   Messages Page
+    <Inbox/>
   </div>
 );
 

@@ -57,6 +57,31 @@ module.exports = function (app) {
             }
         })
 
+    app.route('/api/tracks/:id')
+        .put((req, res) => {
+            Track.findById(req.params.id)
+                .then(doc => {
+                    for (let prop in req.body) {
+                        // if (!['_updatedAt', '_postedAt'].includes(prop))
+                            doc.set(prop, req.body[prop]);
+                    }
+                    return doc.save();
+                })
+                .then(data => res.json(data))
+                .catch(err => res.json(err));
+        })
+        .get((req, res) => {
+            Track.find({ _id: req.params.id })
+                .populate('user')
+                .then(data => res.json(data))
+                .catch(err => res.json(err));
+        })
+        .delete((req, res) => {
+            Track.findByIdAndDelete(req.params.id)
+                .then(data => res.json(data))
+                .catch(err => res.json(err));
+        })
+
     // Login the user
     // Request will contest username and password
     // After comparing with database using bcrypt decryption, response with jwt token

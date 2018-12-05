@@ -3,7 +3,7 @@ const path = require('path');
 const PORT = process.env.PORT || 8080;
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/tiny-improvements', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/traxn', {
     useNewUrlParser: true
 });
 const db = mongoose.connection;

@@ -8,6 +8,7 @@ $color-primary: palevioletred;
     background-color: rgb(24, 24, 24);
     height: 45px;
     border-radius: 0px 0px 11px 11px;
+    z-index: 1;
   }
   
   .navbar__navigation {
@@ -34,13 +35,13 @@ $color-primary: palevioletred;
   .navbar_navigation-items {
     width: 100%;
     position: relative;
-    margin-left: 50px;
-    ul li {
-        float: left;
-    }
-    ul li:last-child {
-        float: right;
-        margin-left: 45%;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: auto 1fr;
+    padding: 0 30px;
+
+    ul.nav-right {
+      justify-self: right;
     }
 
     ul {
@@ -69,7 +70,7 @@ $color-primary: palevioletred;
     margin-right: 7px;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 700px) {
     .navbar_navigation-items {
       display: none;
     }
@@ -78,7 +79,7 @@ $color-primary: palevioletred;
 
 
   
-  @media (min-width: 769px) {
+  @media (min-width: 700px) {
     .navbar__toggle-button {
       display: none;
     }

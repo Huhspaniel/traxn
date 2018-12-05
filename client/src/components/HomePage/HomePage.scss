@@ -6,25 +6,37 @@ body {
 
 .homepage-content {
     margin: 100px auto;
-    max-width: 1000px;
+    max-width: 900px;
     display: grid;
     grid-template-columns: min-content 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "profile newsfeed";
     grid-column-gap: 1em;
     grid-row-gap: 1em;
-    grid-template-rows: 1fr;
     color: white;
 }
 
 .homepage-profile {
     height: 250px;
     width: 250px;
+    grid-area: profile;
 }
 
 .homepage-newsfeed {
-    height: 500px;
+    grid-area: newsfeed;
     width: 100%;
-    border: solid;
-    grid-row: 1 / -1;
-    grid-column-start: 2;
-    grid-column-end: -1;
+}
+
+@media only screen and (max-width: 700px) {
+    .homepage-profile {
+        height: auto;
+        width: 100%;
+    }
+    .homepage-content {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+            "profile"
+            "newsfeed";
+    }
 }

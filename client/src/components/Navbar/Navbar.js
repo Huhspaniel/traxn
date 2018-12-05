@@ -9,25 +9,37 @@ const Navbar = props => (
         <DrawerToggleButton click={props.drawerClickHandler} />
       </div>
       <div className="navbar__logo">
-        <a href="/"></a>
+        <a href="/" />
       </div>
       <div className="spacer" />
       <div className="navbar_navigation-items">
-        <ul>
+        <ul className="nav-left">
           <li>
-            <a href="/"><i className="fa fa-home"></i>Home</a>
+            <a href="/">
+              <i className="fa fa-home" />Home
+            </a>
           </li>
           <li>
-            <a href="/scoreboard"><i className="fa fa-star"></i>Scoreboard</a>
+            <a href="/scoreboard">
+              <i className="fa fa-star" />Scoreboard
+            </a>
           </li>
           <li>
-            <a href="/alerts"><i className="fa fa-bell"></i>Alerts</a>
+            <a href="/alerts">
+              <i className="fa fa-bell" />Alerts
+            </a>
           </li>
           <li>
-            <a href="/messages"><i className="fa fa-envelope"></i>Messages</a>
+            <a href="/messages">
+              <i className="fa fa-envelope" />Messages
+            </a>
           </li>
+        </ul>
+        <ul className="nav-right">
           <li>
-            <a href="/post"><i className="fa fa-edit"></i>Post</a>
+            <a href="/post">
+              <i className="fa fa-edit" />Post
+            </a>
           </li>
         </ul>
       </div>

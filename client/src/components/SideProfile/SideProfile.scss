@@ -3,6 +3,10 @@
   position: relative;
   height: 200px;
 
+  h1 {
+    margin: 0;
+  }
+  
   .profile-top {
     background-color: $color-primary;
     top: 0%;

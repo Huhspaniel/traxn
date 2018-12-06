@@ -36,7 +36,7 @@ module.exports = function (models) {
                 if (users) {
                     conditions.user = { $in: users }
                 }
-                Track.find(conditions).populate('user')
+                Track.find(conditions).populate('user').populate('taggedUsers')
                     .then(resolve).catch(reject)
             } catch (err) {
                 reject(err);

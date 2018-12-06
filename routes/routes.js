@@ -50,7 +50,7 @@ module.exports = function (app) {
         })
         .get((req, res) => {
             Track.find({ _id: req.params.id })
-                .populate('user')
+                .populate('user').populate('taggedUsers')
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
         })

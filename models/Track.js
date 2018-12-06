@@ -34,22 +34,9 @@ const trackSchema = new Schema({
             allowOnInit: true
         }
     }
-})
-trackSchema.plugin(function immutableValidator(schema, options) {
-    schema.pre('validate', function () {
-        const isImmutable = ({ path, options: { immutable } }) => (
-            immutable && this.isModified(path) && !(this.isNew && immutable.allowOnInit)
-        );
-        schema.eachPath((path, schemaType) => {
-            if (isImmutable(schemaType)) {
-                this.invalidate(path, new Error('Field is immutable'), this[path]);
-            }
-        });
-    });
-})
+});
 trackSchema.pre('save', function () {
     if (this.isNew) {
-        this._postedAt = new Date();
         this._updatedAt = undefined;
     } else if (this.isModified()) {
         this._updatedAt = new Date();

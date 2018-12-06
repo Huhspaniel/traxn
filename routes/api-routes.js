@@ -4,6 +4,9 @@ const jwt = require(`jsonwebtoken`);
 
 module.exports = function (app) {
 
+    // Middleware function to verify the user
+    // Frontend must include valid JWT token on the header
+    // Control is passed to the next function(whichever route that included this)
     const authJWT = function (req, res, next) {
         try {
             const token = req.headers[`x-access-token`];
@@ -12,6 +15,7 @@ module.exports = function (app) {
                     if (err) {
                         throw err.message; 
                     } else {
+                        req.body.id = decoded.id;
                         next();
                     }
                 });
@@ -29,6 +33,7 @@ module.exports = function (app) {
             .then(data => res.json(data))
             .catch(err => res.json(err));
     });
+
     //---------need to limit response later for production
     app.post('/api/users', (req, res) => {
         User.create(req.body)
@@ -140,7 +145,8 @@ module.exports = function (app) {
 */
     // testing auth example
     app.get(`/api/userss`, authJWT, function (req, res) {
-        User.find({})
+        console.log(JSON.stringify(req));
+        User.find({id: req.body.id})
         .then(function(data) {
             res.json(data);
         })

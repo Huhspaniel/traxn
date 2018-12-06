@@ -50,31 +50,31 @@ function getFeed(period, users) {
     })
 }
 
-module.exports = function (app) {
-
-    // Middleware function to verify the user using JWT authentification
-    // Frontend must include valid JWT token on the header
-    // Control is passed to the next function(whichever route that included this)
-    // The decoded id is also passed to next in the request body
-    const authJWT = function (req, res, next) {
-        try {
-            const token = req.headers[`x-access-token`];
-            if (token) {
-                jwt.verify(token, app.get(`JWTKey`), function (err, decoded) {
-                    if (err) {
-                        throw err.message;
-                    } else {
-                        req.body.user_id = decoded.id;
-                        next();
-                    }
-                });
-            } else {
-                throw new Error(`No token provided`);
-            }
-        } catch (err) {
-            res.json(errObj(err));
+// Middleware function to verify the user using JWT authentification
+// Frontend must include valid JWT token on the header
+// Control is passed to the next function(whichever route that included this)
+// The decoded user_id is also passed to next in the request body
+const authJWT = function (req, res, next) {
+    try {
+        const token = req.headers[`x-access-token`];
+        if (token) {
+            jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
+                if (err) {
+                    throw err.message;
+                } else {
+                    req.body.user = decoded.user_id;
+                    next();
+                }
+            });
+        } else {
+            throw new Error(`No token provided`);
         }
+    } catch (err) {
+        res.json(errObj(err));
     }
+}
+
+module.exports = function (app) {
 
     app.route(`/api/users`)
         .get((req, res) => { //---------need to limit response later for production
@@ -102,7 +102,7 @@ module.exports = function (app) {
                 .catch(err => res.json(errObj(err)));
         })
     app.get('/api/tracks/following', authJWT, (req, res) => {
-        User.findById(req.body.user_id)
+        User.findById(req.body.user)
             .then(user => {
                 return getFeed(req.query.period, user.following);
             })
@@ -126,7 +126,7 @@ module.exports = function (app) {
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
         })
-        .delete(authJWT, (req, res) => {
+        .delete(authJWT, (req, res) => { // must refactor so user can only delete his own posts
             Track.findByIdAndDelete(req.params.id)
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
@@ -145,7 +145,7 @@ module.exports = function (app) {
                     return bcrypt.compare(req.body.password, data.password)
                         .then(function (bcryptRes) {
                             if (bcryptRes) {
-                                const token = jwt.sign({ id: data.id }, app.get(`JWTKey`), { expiresIn: `1h` });
+                                const token = jwt.sign({ user_id: data._id, username: data.username }, process.env.JWT_KEY, { expiresIn: `1h` });
                                 // sending id to client will enable frontend to send id back to server to edit tracks
                                 res.json({ status: `success`, message: `Logged in`, data: { id: data.id, username: data.username, token: token } });
                             } else {
@@ -184,15 +184,4 @@ module.exports = function (app) {
             }
         });
     */
-    // testing auth example
-    app.get(`/api/userss`, authJWT, function (req, res) {
-        console.log(req.body.id);
-        User.find({_id: req.body.user_id})
-        .then(function(data) {
-            res.json(data);
-        })
-        .catch(function(err) {
-            res.json(errObj(err));
-        });
-    });
 }

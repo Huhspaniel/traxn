@@ -1,0 +1,46 @@
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0px;  /* remove scrollbar space */
+  background: transparent; } /* optional: just make scrollbar invisible */
+
+
+.inbox-container {
+  overflow: hidden;
+}
+
+.message-form {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.message-form-enter {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.message-form-enter.message-form-enter-active {
+  opacity: 1;
+  transform: translateY(0%);
+  transition: all 900ms ease-in;
+}
+
+.message-form-leave {
+  opacity: 1;
+}
+
+.message-form-leave.message-form-leave-active {
+  opacity: 0.25;
+  transition: all 900ms ease-in;
+}
+
+.message-form-enter + .messages-container {
+  transform: translateY(-196.31px);
+}
+
+.message-form-enter.message-form-enter-active + .messages-container {
+  transform: translateY(0px);
+  transition: all 900ms ease-in;
+}

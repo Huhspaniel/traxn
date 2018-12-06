@@ -15,7 +15,7 @@ module.exports = function (app) {
                     if (err) {
                         throw err.message; 
                     } else {
-                        req.body.id = decoded.id;
+                        req.body.user_id = decoded.id;
                         next();
                     }
                 });
@@ -145,8 +145,8 @@ module.exports = function (app) {
 */
     // testing auth example
     app.get(`/api/userss`, authJWT, function (req, res) {
-        console.log(JSON.stringify(req));
-        User.find({id: req.body.id})
+        console.log(req.body.id);
+        User.find({_id: req.body.user_id})
         .then(function(data) {
             res.json(data);
         })

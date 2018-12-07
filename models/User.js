@@ -33,23 +33,13 @@ const userSchema = new Schema({
             'Password must contain at least one letter and one number'
         ]
     },
-    name: {
-        first: {
-            type: String,
-            trim: true,
-            match: [
-                /^[a-z'-]+$/i,
-                'Name can only include letters, \', and -'
-            ]
-        },
-        last: {
-            type: String,
-            trim: true,
-            match: [
-                /^[a-z'-]+$/i,
-                'Name can only include letters, \', and -'
-            ]
-        }
+    displayName: {
+        type: String,
+        trim: true,
+        match: [
+            /^[a-z'-\s]+$/i,
+            'Name can only include letters, spaces, \', and -'
+        ]
     },
     following: [{
         type: Schema.Types.ObjectId,
@@ -66,6 +56,10 @@ const userSchema = new Schema({
 })
 userSchema.plugin(uniqueValidator);
 userSchema.pre(`save`, function (next) {
+    if (this.isModified('name')) {
+        this.name = this.name.replace(/(\s(?=\s))+/g, ''); // Remove extra white space
+    }
+
     var user = this;
     //if (!user.isModified('password')) return next();
     bcrypt.hash(user.password, 10)

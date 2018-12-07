@@ -22,7 +22,7 @@
     font-size: 16px;
   }
   #handle {
-    color: rgb(106, 105, 105);
+    color: $color-gray;
     position: absolute;
     top: 50%;
     left: 35%;
@@ -51,7 +51,7 @@
 
   .profile-list {
       font-size: 12px;
-      color: rgb(106, 105, 105);
+      color: $color-gray;
   }
   .profile-stats {
       position: absolute;

@@ -36,11 +36,14 @@ const Navbar = props => (
           </li>
         </ul>
         <ul className="nav-right">
-          <li>
-            <a href="/post">
+          
+            <a className="post" href="/post">
               <i className="fa fa-edit" />Post
             </a>
-          </li>
+            <a className="avatar" href="/profile">
+              <img className="profile-settings" src="https://www.gstatic.com/webp/gallery/1.jpg" />
+            </a>
+          
         </ul>
       </div>
     </nav>

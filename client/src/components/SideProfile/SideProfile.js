@@ -30,4 +30,6 @@ const SideProfile = props => (
   </div>
 );
 
+
+
 export default SideProfile;

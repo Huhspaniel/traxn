@@ -80,6 +80,29 @@ module.exports = function (app) {
             .catch(err => res.json(errObj(err)));
     }, loginUser);
 
+    app.post('/repost/:id', authJWT, (req, res) => {
+        Track.findOne({ _id: req.params.id })
+            .then(track => {
+                let update;
+                if (track.repostedBy.find(user => user == req.body.user)) {
+                    update = {
+                        $pull: {
+                            repostedBy: req.body.user
+                        }
+                    }
+                } else {
+                    update = {
+                        $push: {
+                            repostedBy: req.body.user
+                        }
+                    }
+                }
+                return Track.findOneAndUpdate({ _id: req.params.id }, update);
+            })
+            .then(data => res.json(data))
+            .catch(err => res.json(errObj(err)));
+    })
+
 
     // Alternate method of JWT authentication, using routes rather than middleware function
     /*    

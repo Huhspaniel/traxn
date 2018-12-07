@@ -33,7 +33,11 @@ const trackSchema = new Schema({
         immutable: {
             allowOnInit: true
         }
-    }
+    },
+    repostedBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 trackSchema.pre('save', function () {
     if (this.isNew) {

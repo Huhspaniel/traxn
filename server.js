@@ -4,6 +4,8 @@ for (let v in envVars) {
 }
 
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const csrf = require('csurf');
 const path = require('path');
 const PORT = process.env.PORT || 8080;
 const mongoose = require('mongoose');
@@ -28,6 +30,8 @@ app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === 'production')
     app.use(express.static(path.join(__dirname, './client/build')));
 app.use(express.json());
+app.use(cookieParser(process.env.COOKIE_KEY));
+app.use(csrf({ cookie: true }));
 
 require('./routes')(app);
 

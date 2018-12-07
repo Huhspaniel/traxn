@@ -1,11 +1,14 @@
-const { 
-    User, 
+const {
+    User,
     Track,
     ƒ: { getFeed }
 } = require('../models');
-const { errObj, userLogin, authJWT } = require('./route-functions.js');
+const { errObj, loginUser, authJWT } = require('./route-functions.js');
 
 module.exports = function (app) {
+    app.get('/csrf', (req, res) => {
+        res.json({ csrfToken: req.csrfToken() })
+    })
     app.route(`/api/users`)
         .get((req, res) => { //---------need to limit response later for production
             User.find({})
@@ -68,12 +71,14 @@ module.exports = function (app) {
     // Request will contest username and password
     // After comparing with database using bcrypt decryption, response with jwt token
     // If error, response with error object
-    app.post(`/login`, function (req, res) {
-        User.findOne({ username: req.body.username }) //since the user only knows username and password
-            .then(user => userLogin(user, req.body.password))
-            .then(data => res.json(data))
+    app.post(`/login`, function getUser(req, res, next) {
+        User.findOne({ username: req.body.username })
+            .then(user => {
+                req.body.user = user;
+                next();
+            })
             .catch(err => res.json(errObj(err)));
-    });
+    }, loginUser);
 
 
     // Alternate method of JWT authentication, using routes rather than middleware function

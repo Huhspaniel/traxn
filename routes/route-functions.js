@@ -6,41 +6,39 @@ const errObj = err => ({
         [err.name]: err.message
     }
 });
-function userLogin(user, password) {
-    return new Promise((resolve, reject) => {
-        if (!user) {
-            reject(new Error(`No such user or bad request format`))
-        } else {
-            bcrypt.compare(password, user.password)
-                .then(function createJWT(res) {
-                    if (res) {
-                        const token = jwt.sign({ user_id: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
-                        // sending id to client will enable frontend to send id back to server to edit tracks
-                        resolve({
-                            status: `success`,
-                            message: `Logged in`,
-                            data: { user_id: user.id, username: user.username, token: token }
-                        });
-                    } else {
-                        reject(new Error(`Incorrect password`));
-                    }
-                })
-                .catch(reject);
-        }
-    })
+function loginUser(req, res, next) {
+    const { user, password } = req.body;
+    if (!user) {
+        res.json(errObj(new Error(`Invalid Login`)))
+    } else {
+        bcrypt.compare(password, user.password)
+            .then(function createJWT(valid) {
+                if (valid) {
+                    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
+                    res.cookie('jwt', token);
+                    res.json({
+                        success: true,
+                        userId: user._id
+                    });
+                } else {
+                    res.json(errObj(new Error(`Invalid Login`)))
+                }
+            })
+            .catch(err => res.json(errObj(err)));
+    }
 }
 // Middleware function to verify the user using JWT authentification
 // Frontend must include valid JWT token on the header
 // Control is passed to the next function(whichever route that included this)
 // The decoded user_id is also passed to next in the request body
 function authJWT(req, res, next) {
-    const token = req.headers[`x-access-token`];
+    const token = req.cookies.jwt;
     jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
         if (err) {
             req.body.user = null;
             res.status(401).json(errObj(new Error('Invalid token')));
         } else {
-            req.body.user_id = decoded.user_id;
+            req.body.userId = decoded.userId;
             next();
         }
     });
@@ -51,7 +49,7 @@ function authDev(req, res, next) {
 }
 module.exports = {
     errObj,
-    userLogin,
+    loginUser,
     authJWT,
     authDev
 }

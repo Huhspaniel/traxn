@@ -16,31 +16,53 @@ html {
   position: relative;
 }
 
+/* initial posistion */
 .message-form-enter {
   opacity: 0;
-  transform: translateY(-100%);
+  transform: translateY(-120%);
 }
 
+/* position after transistion */
 .message-form-enter.message-form-enter-active {
   opacity: 1;
   transform: translateY(0%);
-  transition: all 900ms ease-in;
+  transition: all 1000ms ease-in;
 }
 
+/* position befour exit */
 .message-form-leave {
   opacity: 1;
+  transform: translateY(0%);
 }
 
+/* no longer showing on page */
 .message-form-leave.message-form-leave-active {
   opacity: 0.25;
-  transition: all 900ms ease-in;
+  transition: all 1000ms ease-in;
+  transform: translateY(-120%);
 }
 
 .message-form-enter + .messages-container {
-  transform: translateY(-196.31px);
+  transform: translateY(-234.31px);
 }
 
 .message-form-enter.message-form-enter-active + .messages-container {
   transform: translateY(0px);
-  transition: all 900ms ease-in;
+  transition: all 1000ms ease-in;
+
+}
+
+.message-form-leave + .messages-container {
+  transform: translateY(0px);
+}
+
+.message-form-leave.message-form-leave-active + .messages-container {
+  transform: translateY(-234.31px);
+  transition: all 1000ms ease-in;
+}
+
+.newMessageButton{
+  position: absolute;
+  margin-left: 30%;
+  margin-top: -3%;
 }

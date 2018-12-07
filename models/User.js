@@ -54,20 +54,28 @@ const userSchema = new Schema({
     following: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }]
+    }],
+    _publicKey: {
+        type: String,
+        immutable: true
+    },
+    _privateKey: { // AES encrypted
+        type: String,
+        immutable: true
+    }
 })
 userSchema.plugin(uniqueValidator);
-userSchema.pre(`save`, function(next) {
+userSchema.pre(`save`, function (next) {
     var user = this;
     //if (!user.isModified('password')) return next();
     bcrypt.hash(user.password, 10)
-    .then(function(hashed) {
-        user.password = hashed;
-        next();        
-    })
-    .catch(function(err) {
-        res.json({status: "error", message: err});
-    });
+        .then(function (hashed) {
+            user.password = hashed;
+            next();
+        })
+        .catch(function (err) {
+            res.json({ status: "error", message: err });
+        });
 });
 
 module.exports = mongoose.model('User', userSchema);

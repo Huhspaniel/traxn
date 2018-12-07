@@ -6,32 +6,53 @@ const Track = props => (
   <div className="track-main">
     <img className="track-img" src={props.userPic} />
     <div className="track-header">
-        <p id="track-screen-name">{props.screenName}</p>
-        <p id="track-handle">{props.userName}</p>
-        <p id="track-timestamp"> ⋅ {props.timeStamp}</p>
-      </div>
-    <div className="track-content">
-      {props.TrackContent}
+      <p id="track-screen-name">{props.screenName}</p>
+      <p id="track-handle">{props.userName}</p>
+      <p id="track-timestamp"> ⋅ {props.timeStamp}</p>
     </div>
+    <div className="track-content">{props.trackContent}</div>
     <div className="track-buttons">
-      <p className="repost" onClick={props.repost}><i class="fa fa-retweet"></i></p>
-      <p className="dislike" onClick={props.dislike}><i class="far fa-thumbs-down"></i></p>
-      <p className="direct-message" onClick={props.directMessage}><i class="far fa-envelope"></i></p>
+      <p className="repost" onClick={props.repost}>
+        <i className="fa fa-retweet" />
+      </p>
+      <p className="dislike" onClick={props.dislike}>
+        <i className="far fa-thumbs-down" />
+      </p>
+      <p className="direct-message" onClick={props.directMessage}>
+        <i className="far fa-envelope" />
+      </p>
     </div>
   </div>
 );
+
+axios
+      .get(`/api/tracks`)
+      .then(res => {
+        console.log(res.data);
+        // this.setState({ feed: tracks });
+      })
+      .catch(err => console.log(err));
 
 class TrackList extends React.Component {
   state = {
     feed: []
   };
 
-  getTracks = () => {
-    axios.get(`/api/tracks}`)
-      .then(tracks => {
-        this.setState({ feed: tracks });
+  getPublic = () => {
+    axios
+      .get(`/api/tracks`)
+      .then(res => {
+        this.setState({ feed: res.data });
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
+  };
+  getFollowing = () => {
+    axios
+      .get(`/api/tracks/following`)
+      .then(res => {
+        this.setState({ feed: res.data });
+      })
+      .catch(err => console.log(err));
   };
 
   /*
@@ -52,51 +73,26 @@ class TrackList extends React.Component {
   */
 
   render() {
-    return (
-      // <div>
-      //     {this.state.followingPosts.map((post, i)=>(
-      // <Track
-      // key={i}
-      // TrackContent={post.text}
-      // userPic={post.profilePic}
-      // dislike={this.dislike}
-      // repost={this.repost} />
-      //     ))}
+    if (!this.state.feed[0]) {
+      if (this.props.filter === "public") {
+        this.getPublic();
+      } else if (this.props.filter === "following") {
+        this.getFollowing();
+      }
+    }
 
-      // </div>
-      <div className='tracklist'>
-        <Track
-          key="test"
-          screenName="John Hancock"
-          userName="#jHan99"
-          timeStamp = '24m'
-          TrackContent="The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here'"
-          userPic="https://www.gstatic.com/webp/gallery/1.jpg"
-        />
-        <Track
-          key="test"
-          screenName="John Hancock"
-          userName="#jHan99"
-          timeStamp = '24m'
-          TrackContent="The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here'"
-          userPic="https://www.gstatic.com/webp/gallery/1.jpg"
-        />
-        <Track
-          key="test"
-          screenName="John Hancock"
-          userName="#jHan99"
-          timeStamp = '24m'
-          TrackContent="The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here'"
-          userPic="https://www.gstatic.com/webp/gallery/1.jpg"
-        />
-        <Track
-          key="test"
-          screenName="John Hancock"
-          userName="#jHan99"
-          timeStamp = '24m'
-          TrackContent="The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here'"
-          userPic="https://www.gstatic.com/webp/gallery/1.jpg"
-        />
+    return (
+      <div className="tracklist">
+        {this.state.feed.map(track => (
+          <Track
+            screenName={track.user.name.first + track.user.name.last}
+            userPic="https://www.gstatic.com/webp/gallery/1.jpg"
+            userName={"#" + track.user.username}
+            timeStamp={track._postedAt}
+            trackContent={track.content}
+            key={track._id}
+          />
+        ))}
       </div>
     );
   }

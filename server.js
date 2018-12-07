@@ -7,7 +7,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const csrf = require('csurf');
 const path = require('path');
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3001;
 const mongoose = require('mongoose');
 mongoose.plugin(function immutableValidator(schema, options) {
     schema.pre('validate', function () {

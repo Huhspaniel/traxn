@@ -39,11 +39,17 @@ const ComposeMessage = props => (
         name="send"
         onClick={props.sendMessage}
       />
+      <input
+        type="submit"
+        value="Cancel"
+        onClick={props.closeForm}
+        name="closeForm"
+      />
     </form>
   </div>
 );
 
-const FirstChild = (props) => {
+const FirstChild = props => {
   const childrenArray = React.Children.toArray(props.children);
   return childrenArray[0] || null;
 };
@@ -55,6 +61,23 @@ class Inbox extends React.Component {
     newMessage: "",
 
     sendTo: ""
+  };
+
+  sendMessage = event => {
+    event.preventDefault();
+    {
+      /* Need to configure back end for messaging, Function would go here */
+    }
+    this.setState({
+      showNewMessage: !this.state.showNewMessage
+    });
+  };
+
+  closeForm = event => {
+    event.preventDefault();
+    this.setState({
+      showNewMessage: !this.state.showNewMessage
+    });
   };
 
   changeHandler = event => {
@@ -74,14 +97,23 @@ class Inbox extends React.Component {
   render() {
     return (
       <div className="inbox-container">
+        {!this.state.showNewMessage && (
+          <form className="newMessageButton">
+            <input
+              type="submit"
+              value="New Message"
+              onClick={this.showNewMessage}
+            />
+          </form>
+        )}
         <ReactCSSTransitionGroup
           transitionName="message-form"
           transitionAppear={true}
           transitionEnter={true}
           transitionLeave={true}
-          transitionEnterTimeout={900}
-          transitionLeaveTimeout={900}
-          transitionAppearTimeout={900}
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={1000}
+          transitionAppearTimeout={1000}
           component={FirstChild}
         >
           {this.state.showNewMessage && (
@@ -89,17 +121,12 @@ class Inbox extends React.Component {
               changeHandler={this.changeHandler}
               inputValue={this.state.newMessage}
               sendToValue={this.state.sendTo}
+              sendMessage={this.sendMessage}
+              closeForm={this.closeForm}
               key="createMessageToggler"
             />
           )}
         </ReactCSSTransitionGroup>
-        {!this.state.showNewMessage && <form>
-          <input
-            type="submit"
-            value="New Message"
-            onClick={this.showNewMessage}
-          />
-        </form>}
         <div className="messages-container">
           <Message /> {/*Should map*/}
         </div>

@@ -56,7 +56,7 @@ module.exports = function (app) {
         })
         .get((req, res) => {
             Track.find({ _id: req.params.id })
-                .populate('user', `-password -email -name`)
+                .populate('user', `-password -email`)
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
         })

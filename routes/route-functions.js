@@ -14,11 +14,11 @@ function loginUser(req, res, next) {
         bcrypt.compare(password, user.password)
             .then(function createJWT(valid) {
                 if (valid) {
-                    const token = jwt.sign({ user_id: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
+                    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
                     res.cookie('jwt', token);
                     res.json({
                         success: true,
-                        user_id: user._id
+                        userId: user._id
                     });
                 } else {
                     res.json(errObj(new Error(`Invalid Login`)))
@@ -38,11 +38,12 @@ function authJWT(req, res, next) {
             req.body.user = null;
             res.status(401).json(errObj(new Error('Invalid token')));
         } else {
-            req.body.user = decoded.user_id;
+            req.body.userId = decoded.userId;
             next();
         }
     });
 }
+
 function authDev(req, res, next) {
 
 }

@@ -40,11 +40,12 @@ function authJWT(req, res, next) {
             req.body.user = null;
             res.status(401).json(errObj(new Error('Invalid token')));
         } else {
-            req.body.user = decoded.user_id;
+            req.body.user_id = decoded.user_id;
             next();
         }
     });
 }
+
 function authDev(req, res, next) {
 
 }

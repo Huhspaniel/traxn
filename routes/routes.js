@@ -21,9 +21,13 @@ module.exports = function (app) {
 
     app.route('/api/tracks')
         .post(authJWT, (req, res) => {
-            Track.create(req.body)
-                .then(data => res.json(data))
-                .catch(err => res.json(errObj(err)));
+            if (req.body.user_id === req.body.user) {
+                Track.create(req.body)
+                    .then(data => res.json(data))
+                    .catch(err => res.json(errObj(err)));
+            } else {
+                res.json(errObj({name: "error", message: "Track.user does not match JWT"}));
+            }
         })
         .get((req, res) => {
             const { period, u } = req.query;
@@ -31,8 +35,9 @@ module.exports = function (app) {
                 .then(tracks => res.json(tracks))
                 .catch(err => res.json(errObj(err)));
         })
+
     app.get('/api/tracks/following', authJWT, (req, res) => {
-        User.findById(req.body.user)
+        User.findById(req.body.user_id)
             .then(user => getFeed(req.query.period, user.following))
             .then(tracks => res.json(tracks))
             .catch(err => res.json(errObj(err)));
@@ -40,9 +45,10 @@ module.exports = function (app) {
 
     app.route('/api/tracks/:id')
         .put(authJWT, (req, res) => {
-            Track.findById(req.params.id)
-                .then(doc => {
-                    doc.set(req.body);
+            Track.findOne({_id: req.params.id, user: req.body.user_id})
+                .then(
+                    doc => {
+                        doc.set(req.body);
                     return doc.save();
                 })
                 .then(data => res.json(data))
@@ -54,8 +60,8 @@ module.exports = function (app) {
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
         })
-        .delete(authJWT, (req, res) => { // must refactor so user can only delete his own posts
-            Track.findByIdAndDelete(req.params.id)
+        .delete(authJWT, (req, res) => {
+            Track.findOneAndDelete({_id: req.params.id, user: req.body.user_id})
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
             // Track.findById(req.params.id)
@@ -74,32 +80,4 @@ module.exports = function (app) {
             .then(data => res.json(data))
             .catch(err => res.json(errObj(err)));
     });
-
-
-    // Alternate method of JWT authentication, using routes rather than middleware function
-    /*    
-        // Authentication route
-        // All routes starting with below route will be authenticated
-        // Checks if the JWT token is includeded in the header
-        // Decoded username passed to next function call
-        app.use(`/api/auth`, function (req, res, next) {
-            const token = req.headers[`x-access-token`];
-            try {
-                if (token) {
-                    jwt.verify(token, app.get(`JWTKey`), function(err, decoded) {
-                        if (err) {
-                            throw err.message;
-                        } else {
-                            req.body.username = decoded.username; // not really necessary unless next function use it
-                            next();
-                        }
-                    });
-                } else {
-                    throw new Error(`No token provided`);
-                }
-            } catch (err) {
-                res.json(errObj(err));
-            }
-        });
-    */
 }

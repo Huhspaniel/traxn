@@ -97,7 +97,7 @@ module.exports = function (app) {
                         }
                     }
                 }
-                return Track.findOneAndUpdate({ _id: req.params.id }, update);
+                return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
             })
             .then(data => res.json(data))
             .catch(err => res.json(errObj(err)));

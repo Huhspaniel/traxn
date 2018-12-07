@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "axios";
+import axios from "axios";
 import "../Tracklist/Tracklist.scss";
 
 const Track = props => (
@@ -23,12 +23,33 @@ const Track = props => (
 
 class TrackList extends React.Component {
   state = {
-    followingPosts: TrackList
+    feed: []
   };
 
   getTracks = () => {
-    Axios.get();
+    axios.get(`/api/tracks}`)
+      .then(tracks => {
+        this.setState({ feed: tracks });
+      })
+      .catch(err => console.log(err))
   };
+
+  /*
+    /api/tracks?period={unit},{quantity}&u={userid},{userid}...
+        Gets all tracks, filtering based on time period, and
+        specific users. If {period} is not defined, gets tracks for
+        all time. If {u} is not defined, gets tracks for all users.
+        
+        For example, if {period} = 'week,3', will only get tracks 
+        from past 3 weeks. If {u} = 'user1_id,user2_id,user3_id'
+        will only get tracks posted by user1, user2, user3.
+
+
+    /api/tracks/following?period={unit},{quantity}
+        Only gets tracks posted by those a user is following.
+        Only accessible when user is logged in using JWT authentication.
+        The JWT token will automatically be stored in cookies upon login.
+  */
 
   render() {
     return (

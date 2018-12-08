@@ -6,9 +6,9 @@ const Track = props => (
   <div className="track-main">
     <img className="track-img" src={props.userPic} />
     <div className="track-header">
-      <p id="track-screen-name">{props.screenName}</p>
-      <p id="track-handle">{props.userName}</p>
-      <p id="track-timestamp"> ⋅ {props.timeStamp}</p>
+      <p className="track-screen-name">{props.screenName}</p>
+      <p className="track-handle">{props.userName}</p>
+      <p className="track-timestamp"> ⋅ {props.timeStamp}</p>
     </div>
     <div className="track-content">{props.trackContent}</div>
     <div className="track-buttons">
@@ -42,6 +42,7 @@ class TrackList extends React.Component {
     axios
       .get(`/api/tracks`)
       .then(res => {
+        console.log(res);
         this.setState({ feed: res.data });
       })
       .catch(err => console.log(err));
@@ -50,6 +51,7 @@ class TrackList extends React.Component {
     axios
       .get(`/api/tracks/following`)
       .then(res => {
+        console.log(res);
         this.setState({ feed: res.data });
       })
       .catch(err => console.log(err));
@@ -83,9 +85,9 @@ class TrackList extends React.Component {
 
     return (
       <div className="tracklist">
-        {this.state.feed.map(track => (
+        {this.state.feed.map(track => (console.log(track) || 
           <Track
-            screenName={track.user.name.first + track.user.name.last}
+            screenName={track.user.displayName}
             userPic="https://www.gstatic.com/webp/gallery/1.jpg"
             userName={"#" + track.user.username}
             timeStamp={track._postedAt}

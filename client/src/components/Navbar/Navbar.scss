@@ -9,7 +9,6 @@ $color-hover: rgb(238, 238, 238);
   width: 100%;
   background-color: rgb(24, 24, 24);
   height: 45px;
-  border-radius: 0px 0px 11px 11px;
   z-index: 999;
 }
 
@@ -36,18 +35,17 @@ $color-hover: rgb(238, 238, 238);
 
 .navbar_navigation-items {
   width: 100%;
-  position: relative;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: auto 1fr;
-  padding: 0 30px;
+ 
 
   ul.nav-right {
     display: grid;
     justify-self: right;
     grid-template-rows: 2px;
     grid-template-columns: 50% 50%;
-    margin-bottom: 27px;
+    
 
     .post {
       grid-column-start: 1;

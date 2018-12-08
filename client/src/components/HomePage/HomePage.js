@@ -5,7 +5,7 @@ import SideProfile from "../SideProfile/SideProfile";
 class HomePage extends React.Component {
 
   state={
-    filter: 'public',
+    filter: 'following',
     trackList:[]
   }
 
@@ -13,6 +13,17 @@ class HomePage extends React.Component {
 
   }
 
+  setFilterPublic = filter => {
+    this.setState({
+      filter: 'public'
+    });
+  }
+
+  setFilterFollowing = filter => {
+    this.setState({
+      filter: 'following'
+    });
+  }
 
   render() {
     return(
@@ -21,6 +32,9 @@ class HomePage extends React.Component {
           <SideProfile />
         </div>
         <div className="homepage-newsfeed">
+        <div className="newsfeed-tabs">
+        <p onClick={this.setFilterPublic}>Public</p><p onClick={this.setFilterFollowing}>Following</p>
+        </div>
           <TrackList filter={this.state.filter} />
         </div>
       </div>

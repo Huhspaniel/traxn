@@ -52,25 +52,25 @@
         grid-area: header;
         display: flex;
 
-        #track-screen-name {
+        .track-screen-name {
             color: black;
             font-size: 15px;
             font-weight: bold;
         }
-        #track-handle {
+        .track-handle {
             color: gray;
             font-size: 15px;
             font-weight: thin;
             margin-left: 5px;
         }
-        #track-timestamp {
+        .track-timestamp {
             color: gray;
             font-size: 15px;
             margin-left: 5px;
         }
     }
 
-    #track-message {
+    .track-message {
         color: black;
         font-weight: thin;
         left: 13%;

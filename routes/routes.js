@@ -22,6 +22,34 @@ module.exports = function (app) {
                 .catch(err => res.json(errObj(err)));
         });
 
+    app.route('/api/users/me')
+        .get(authJWT, (req,res) => {
+            User.findById(req.body.userId)
+                .then(res.json)
+                .catch(err => res.json(errObj(err)))
+        })
+        .put(authJWT, (req, res) => {
+            User.findById(req.body.userId)
+                .then(user => {
+                    user.set(req.body);
+                    return user.save();
+                })
+                .then(res.json)
+                .catch(err => res.json(errObj(err)))
+        })
+
+    app.post('/follow/:userId', authJWT, (req, res) => {
+        User.findByIdAndUpdate(req.body.userId, { 
+            $push: { following: req.params.userId } 
+        }, { new: true })
+            .then(res.json)
+            .catch(err => res.json(errObj(err)));
+    })
+
+    app.put('/:userId/change_password', authJWT, (req, res) => { // placeholder
+        res.json('change password');
+    })
+
     app.route('/api/tracks')
         .post(authJWT, (req, res) => {
             req.body.user = req.body.userId;

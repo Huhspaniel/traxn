@@ -31,7 +31,10 @@ const userSchema = new Schema({
         match: [
             /(?=.*[a-z])(?=.*[0-9]).*/i,
             'Password must contain at least one letter and one number'
-        ]
+        ],
+        immutable: {
+            allowOnNew: true
+        }
     },
     displayName: {
         type: String,

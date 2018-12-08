@@ -38,7 +38,7 @@ const userSchema = new Schema({
         trim: true,
         match: [
             /^[a-z'-\s]+$/i,
-            'Name can only include letters, spaces, \', and -'
+            'Dipslay name can only include letters, spaces, \', and -'
         ]
     },
     following: [{

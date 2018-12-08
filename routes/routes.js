@@ -1,9 +1,9 @@
 const {
     User,
     Track,
-    ƒ: { getFeed }
-} = require('../models');
-const { errObj, loginUser, authJWT } = require('./route-functions.js');
+    _functions: { getFeed }
+} = require('../db');
+const { errObj, loginUser, authJWT } = require('./functions.js');
 
 module.exports = function (app) {
     app.get('/csrf', (req, res) => {

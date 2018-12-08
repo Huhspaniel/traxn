@@ -11,7 +11,7 @@ const trackSchema = new Schema({
     _postedAt: {
         type: Date,
         immutable: true,
-        defaultValue: new Date
+        default: new Date
     },
     _updatedAt: { // Allow updates? TBD
         type: Date,

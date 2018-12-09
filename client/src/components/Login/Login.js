@@ -87,17 +87,15 @@ class LoginModal extends React.Component {
 
     getToken = () => {
         // const token = cookie.get('csrfToken');
-        const token = localStorage.getItem('csrfToken');
+
 
         axios({
             method: 'get',
             url: '/csrf',
-            timeout: 10000,
-            headers: { 'csrf-token' : token }
-
         }).then((res) => {
             console.log(res);
-            localStorage.setItem( 'csrf-token', res.data )
+            axios.defaults.headers.common['csrf-token'] = res.data.csrfToken;
+            console.log(res.data.csrfToken);
             this.setState({ accessGranted: true })
         }).catch(err => console.log(err));
     }

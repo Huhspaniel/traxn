@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import cookie from 'react-cookies';
 
 const Login = (props) => (
             <div className="login-div">
@@ -46,13 +47,21 @@ class LoginModal extends React.Component {
         isActive: false,
         value: '',
         loggedIn: false,
-        accessGranted: false
+        accessGranted: false,
+
+        username: '',
+        password: '',
+
+        email: '',
+        displayName: ''
     }
 
     sendLogin = () => {
-        let loginCredentials = [];
-        let username = props.userValue;
-        let password = props.passValue
+        let loginCredentials = {
+            username: this.state.username,
+            password: this.state.password
+        };
+        
         axios
           .post(`/login`, loginCredentials)
           .then(user => {
@@ -65,7 +74,10 @@ class LoginModal extends React.Component {
     createUser = () => {
         axios
       .post(`/api/users`, {
-          username: this.p
+          username: this.state.username,
+          password: this.state.password,
+          email: this.state.email,
+          displayName: this.state.displayName
       })
       .then(res => {
         console.log(res);
@@ -74,13 +86,25 @@ class LoginModal extends React.Component {
     }
 
     getToken = () => {
-        axios
-        .get('csrf')
-        .then(csrfToken => {
-            console.log(csrfToken);
+        // const token = cookie.get('csrfToken');
+
+            window.setAuthToken = (token) => {
+            window.axios.defaults.headers.Authorization = 'Bearer ' + token;
+            window.Echo.options.auth.headers.Authorization = 'Bearer ' + token;
+            localStorage.setItem('token', token);
+        }
+        axios({
+            method: 'get',
+            url: '/csrf',
+            timeout: 10000,
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+
+        }).then((res) => {
+            console.log(res);
             this.setState({ accessGranted: true })
-        })
-        .catch(err => console.log(err));
+        }).catch(err => console.log(err));
     }
 
     componentWillMount(){

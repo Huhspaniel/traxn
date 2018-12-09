@@ -87,7 +87,7 @@ class LoginModal extends React.Component {
 
     getToken = () => {
         // const token = cookie.get('csrfToken');
-        const token = localStorage.getItem('csrf-token');
+        const token = localStorage.getItem('csrfToken');
 
         axios({
             method: 'get',

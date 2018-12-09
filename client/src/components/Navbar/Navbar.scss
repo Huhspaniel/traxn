@@ -43,14 +43,19 @@ $color-hover: rgb(238, 238, 238);
   ul.nav-right {
     display: grid;
     justify-self: right;
-    grid-template-rows: 2px;
-    grid-template-columns: 50% 50%;
+   
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     
-
-    .post {
+    .login {
       grid-column-start: 1;
     }
+
+    .post {
+      
+      grid-column-start: 3;
+    }
     .avatar {
+      grid-column-start: 4;
     }
   }
 

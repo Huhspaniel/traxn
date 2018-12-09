@@ -12,8 +12,8 @@ const Login = (props) => (
                 <input onChange={props.changeHandler} 
                 type="text" name="username"
                 value={props.value} placeholder="password" />
-
-                <p className="login-btn" onClick={props.toggleHandler}>Login</p>
+                <p className="send-login" onClick={props.loginHandler}>Login</p>
+                <p className="login-btn" onClick={props.toggleHandler}>Close</p>
                     
                 </Modal>
             </div>
@@ -25,21 +25,33 @@ class LoginModal extends React.Component {
     state = {
         isActive: false,
         value: '',
-        loggedIn: false
+        loggedIn: false,
+        accessGranted: false
     }
 
-    getPublic = () => {
+    sendLogin = () => {
         axios
-          .get(`/api/users`)
-          .then(res => {
-            console.log(res);
-            this.setState({ loggedIn: res.data });
+          .post(`/login`)
+          .then(user => {
+            console.log(user);
+            this.setState({ loggedIn: true });
           })
           .catch(err => console.log(err));
       };
 
+    getToken = () => {
+        axios
+        .get('csrf')
+        .then(csrfToken => {
+            console.log(csrfToken);
+            this.setState({ accessGranted: true })
+        })
+        .catch(err => console.log(err));
+    }
+
     componentWillMount(){
         Modal.setAppElement('body');
+        this.getToken();
     }
 
     handleToggle = () => {
@@ -58,7 +70,8 @@ class LoginModal extends React.Component {
     render() {
         return (
             <div className='login-modal'>
-                <Login 
+                <Login
+                loginHandler = {this.sendLogin}
                 isActive = {this.state.isActive}
                 toggleHandler={this.handleToggle}
                 changeHandler={this.handleChange}/>

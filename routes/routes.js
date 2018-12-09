@@ -3,76 +3,104 @@ const {
     Track,
     ƒ: { getFeed }
 } = require('../models');
-const { errObj, loginUser, authJWT } = require('./route-functions.js');
+const { loginUser, authJWT, authDev } = require('./route-functions.js');
 
 module.exports = function (app) {
     app.get('/csrf', (req, res) => {
         res.json({ csrfToken: req.csrfToken() })
     })
     app.route(`/api/users`)
-        .get((req, res) => { //---------need to limit response later for production
+        .get((req, res, next) => { //---------need to limit response later for production
             User.find({})
                 .populate('following')
                 .then(data => res.json(data))
-                .catch(err => res.json(errObj(err)));
+                .catch(next);
         })
-        .post((req, res) => {
+        .post((req, res, next) => {
             User.create(req.body)
                 .then(data => res.json(data))
-                .catch(err => res.json(errObj(err)));
+                .catch(next);
         });
 
-    app.route('/api/users/me')
-        .get(authJWT, (req,res) => {
-            User.findById(req.body.userId)
-                .then(res.json)
-                .catch(err => res.json(errObj(err)))
+    app.route('/api/users/:id')
+        .get(authJWT, (req, res, next) => {
+            User.findOne({ _id: req.params.id })
+                .then(data => {
+                    if (data) {
+                        data.password = undefined;
+                        req.body.user = data;
+                    } else {
+                        return next(new Error('User not found'));
+                    }
+
+                    if (req.body.userId !== data._id) {
+                        return next(new Error('Invalid token'));
+                    }
+                    res.json(data);
+                })
+                .catch(next);
+        }, (err, req, res, next) => {
+            const { user } = req.body;
+            if (err.message === 'Invalid token' && user) {
+                user.email = user.following = undefined;
+                return res.json(user);
+            }
+            next(err);
         })
-        .put(authJWT, (req, res) => {
-            User.findById(req.body.userId)
+        .put(authJWT, (req, res, next) => {
+            const action = req.query.action;
+            User.findOne({ _id: req.body.userId })
                 .then(user => {
-                    user.set(req.body);
+                    if (!user) next(new Error('User not found'));
+                    switch (action) {
+                        case 'follow': {
+                            const followId = req.body.userId;
+                            if (followId instanceof Array) {
+
+                            }
+                            const following = user.following;
+                            let followingIndex;
+                            followingIndex = following.indexOf(followingId);
+                            if (followingIndex === -1) {
+                                following.splice(followingIndex, 1);
+                            } else {
+                                following.push(followId);
+                            }
+                            user.following = following;
+                            break;
+                        } default: {
+                            user.set(req.body);
+                        }
+                    }
                     return user.save();
                 })
-                .then(res.json)
-                .catch(err => res.json(errObj(err)))
+                .then(data => res.json(data))
+                .catch(next)
         })
 
-    app.post('/follow/:userId', authJWT, (req, res) => {
-        User.findByIdAndUpdate(req.body.userId, { 
-            $push: { following: req.params.userId } 
-        }, { new: true })
-            .then(res.json)
-            .catch(err => res.json(errObj(err)));
-    })
-
-    app.put('/:userId/change_password', authJWT, (req, res) => { // placeholder
-        res.json('change password');
-    })
-
     app.route('/api/tracks')
-        .post(authJWT, (req, res) => {
+        .post(authJWT, (req, res, next) => {
             req.body.user = req.body.userId;
             Track.create(req.body)
                 .then(data => res.json(data))
-                .catch(err => res.json(errObj(err)));
+                .catch(next);
         })
         .get((req, res) => {
             const { period, u } = req.query;
             getFeed(period, u ? u.split(',') : null)
                 .then(tracks => res.json(tracks))
-                .catch(err => res.json(errObj(err)));
+                .catch(next);
         })
 
-    app.get('/api/tracks/following', authJWT, (req, res) => {
+    app.get('/api/tracks/following', authJWT, (req, res, next) => {
         User.findById(req.body.userId)
             .then(user => getFeed(req.query.period, user.following))
             .then(tracks => res.json(tracks))
-            .catch(err => res.json(errObj(err)));
+            .catch(next);
     })
 
     app.route('/api/tracks/:id')
-        .put(authJWT, (req, res) => {
+        .put(authJWT, (req, res, next) => {
             Track.findOne({ _id: req.params.id, user: req.body.userId })
                 .then(
                     doc => {
@@ -80,22 +108,18 @@ module.exports = function (app) {
                         return doc.save();
                     })
                 .then(data => res.json(data))
-                .catch(err => res.json(errObj(err)));
+                .catch(next);
         })
         .get((req, res) => {
             Track.find({ _id: req.params.id })
-                .populate('user', `-password -email`)
+                .populate('user', `-password -email -following`)
                 .then(data => res.json(data))
-                .catch(err => res.json(errObj(err)));
+                .catch(next);
         })
         .delete(authJWT, (req, res) => {
             Track.findOneAndDelete({ _id: req.params.id, user: req.body.userId })
                 .then(data => res.json(data))
-                .catch(err => res.json(errObj(err)));
-            // Track.findById(req.params.id)
-            //     .then(track => {
-            //         if (track.user._id === req.body.user)
-            //     })
+                .catch(next);
         })
 
     // Login the user
@@ -108,10 +132,10 @@ module.exports = function (app) {
                 req.body.user = user;
                 next();
             })
-            .catch(err => res.json(errObj(err)));
+            .catch(next);
     }, loginUser);
 
-    app.post('/repost/:id', authJWT, (req, res) => {
+    app.post('/repost/:id', authJWT, (req, res, next) => {
         Track.findOne({ _id: req.params.id })
             .then(track => {
                 let update;
@@ -131,6 +155,6 @@ module.exports = function (app) {
                 return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
             })
             .then(data => res.json(data))
-            .catch(err => res.json(errObj(err)));
+            .catch(next);
     });
 }

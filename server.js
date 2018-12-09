@@ -3,18 +3,20 @@ if (process.env.NODE_ENV !== 'production') {
     for (let v in envVars) {
         process.env[v] = envVars[v];
     }
+} else {
+    process.env.PROD = true;
 }
 
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const csrf = require('csurf');
 const path = require('path');
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3001;
 const mongoose = require('mongoose');
 mongoose.plugin(function immutableValidator(schema, options) {
     schema.pre('validate', function () {
         const isImmutable = ({ path, options: { immutable } }) => (
-            immutable && this.isModified(path) && !(this.isNew && immutable.allowOnInit)
+            immutable && this.isModified(path) && !(this.isNew && immutable.allowOnNew)
         );
         schema.eachPath((path, schemaType) => {
             if (isImmutable(schemaType)) {
@@ -36,6 +38,17 @@ app.use(cookieParser(process.env.COOKIE_KEY));
 app.use(csrf({ cookie: true }));
 
 require('./routes')(app);
+
+app.use(function handleError(err, req, res, next) {
+    console.error(err.stack);
+    res.json({
+        error: {
+            name: err.name,
+            message: err.message,
+            stack: err.stack.split('\n')
+        }
+    })
+});
 
 app.listen(PORT, () => {
     console.log(`App listening on http://localhost:${PORT}`);

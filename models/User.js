@@ -42,7 +42,8 @@ const userSchema = new Schema({
         match: [
             /^[a-z'-\s]+$/i,
             'Name can only include letters, spaces, \', and -'
-        ]
+        ],
+        required: true
     },
     following: [{
         type: Schema.Types.ObjectId,

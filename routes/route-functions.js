@@ -1,15 +1,10 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const errObj = err => ({
-    error: {
-        [err.name]: err.message
-    }
-});
 function loginUser(req, res, next) {
     const { user, password } = req.body;
     if (!user) {
-        res.json(errObj(new Error(`Invalid Login`)))
+        next(new Error(`Invalid Login`))
     } else {
         bcrypt.compare(password, user.password)
             .then(function createJWT(valid) {
@@ -21,10 +16,10 @@ function loginUser(req, res, next) {
                         userId: user._id
                     });
                 } else {
-                    res.json(errObj(new Error(`Invalid Login`)))
+                    next(new Error(`Invalid Login`))
                 }
             })
-            .catch(err => res.json(errObj(err)));
+            .catch(next);
     }
 }
 // Middleware function to verify the user using JWT authentification
@@ -36,7 +31,7 @@ function authJWT(req, res, next) {
     jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
         if (err) {
             req.body.user = null;
-            res.status(401).json(errObj(new Error('Invalid token')));
+            next(new Error('Invalid token'));
         } else {
             req.body.userId = decoded.userId;
             next();
@@ -45,10 +40,26 @@ function authJWT(req, res, next) {
 }
 
 function authDev(req, res, next) {
-
+    let token = req.header('Authorization');
+    let err;
+    if (token) {
+        token = token.split(' ');
+        if (token[0] === 'Bearer') {
+            if (token[1] === process.env.DEV_KEY) {
+                return next();
+            } else {
+                err = new Error('Invalid token')
+            }
+        } else {
+            err = new Error('Authorization header does not follow Bearer scheme')
+        }
+    } else {
+        err = new Error('No authorization provided');
+    }
+    res.status(401);
+    next(err);
 }
 module.exports = {
-    errObj,
     loginUser,
     authJWT,
     authDev

@@ -43,7 +43,7 @@ const Navbar = props => (
         <LoginModal className="login"/> 
        
               
-        <a className="post" href="/post">
+        <a className="post" href="#">
               <i className="fa fa-edit" />
             </a>
             <a className="avatar" href="/profile">

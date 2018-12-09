@@ -1,31 +1,66 @@
 import React from "react";
 import TrackList from "../Tracklist/TrackList";
 import SideProfile from "../SideProfile/SideProfile";
+import axios from 'axios';
 
 class HomePage extends React.Component {
 
-  state={
+  state= {
     filter: 'following',
-    trackList:[]
+    feed: null
   }
 
-  getTracks=()=>{
+  /*
+    /api/tracks?period={unit},{quantity}&u={userid},{userid}...
+        Gets all tracks, filtering based on time period, and
+        specific users. If {period} is not defined, gets tracks for
+        all time. If {u} is not defined, gets tracks for all users.
+        
+        For example, if {period} = 'week,3', will only get tracks 
+        from past 3 weeks. If {u} = 'user1_id,user2_id,user3_id'
+        will only get tracks posted by user1, user2, user3.
 
-  }
 
-  setFilterPublic = filter => {
-    this.setState({
-      filter: 'public'
-    });
-  }
+    /api/tracks/following?period={unit},{quantity}
+        Only gets tracks posted by those a user is following.
+        Only accessible when user is logged in using JWT authentication.
+        The JWT token will automatically be stored in cookies upon login.
+  */
 
-  setFilterFollowing = filter => {
-    this.setState({
-      filter: 'following'
-    });
-  }
+  getPublic = () => {
+    axios
+      .get(`/api/tracks`)
+      .then(res => {
+        console.log(res);
+        this.setState({
+          feed: res.data || [],
+          filter: 'public'
+        });
+      })
+      .catch(err => console.log(err));
+  };
+  getFollowing = () => {
+    axios
+      .get(`/api/tracks/following`)
+      .then(res => {
+        console.log(res);
+        this.setState({
+          feed: res.data || [],
+          filter: 'following'
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
   render() {
+    if (!this.state.feed) {
+      if (this.state.filter === "public") {
+        this.getPublic();
+      } else if (this.state.filter === "following") {
+        this.getFollowing();
+      }
+    }
+
     return(
       <div className="homepage-content">
         <div className="homepage-profile">
@@ -33,9 +68,9 @@ class HomePage extends React.Component {
         </div>
         <div className="homepage-newsfeed">
         <div className="newsfeed-tabs">
-        <p onClick={this.setFilterPublic}>Public</p><p onClick={this.setFilterFollowing}>Following</p>
+        <p onClick={this.getPublic}>Public</p><p onClick={this.getFollowing}>Following</p>
         </div>
-          <TrackList filter={this.state.filter} />
+          <TrackList feed={this.state.feed} />
         </div>
       </div>
     );

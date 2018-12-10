@@ -1,0 +1,11 @@
+.fa-retweet {
+    color: gray;
+    cursor: pointer;
+    font-weight: thin;
+    margin-right: 50px;
+
+    &:hover {
+        color: rgb(0, 128, 115);
+        cursor: pointer;
+    }
+}

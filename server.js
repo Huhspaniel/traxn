@@ -41,6 +41,7 @@ require('./routes')(app);
 
 app.use(function handleError(err, req, res, next) {
     console.error(err.stack);
+    if (err.name === 'ForbiddenError') res.status(403);
     res.json({
         error: {
             name: err.name,

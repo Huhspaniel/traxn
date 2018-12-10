@@ -35,7 +35,7 @@ const Profile = props => (
       <div className="profile-profile">
         <div className="profile-names">
           <p className="screen-name">{props.displayName}</p>
-          <p className="handle">{props.username}</p>
+          <p className="handle">#{props.username}</p>
         </div>
 
         <div className="profile-info">
@@ -73,33 +73,18 @@ class classProfile extends React.Component {
   }
 
   getUserInfo = () => {
-    axios
-    .get('/api/users')
+    axios.get('/api/users/me')
     .then((res) => {
-      console.log(res)
-      
+      console.log(res);
+      this.setState({
+        username: res.data.username,
+        displayName: res.data.displayName
+      })
     })
   }
 
-  getLoggedInUser = () => {
-    let loginCredentials = {
-        username: this.state.username,
-        password: this.state.password
-    };
-
-    axios
-        .post(`/login`, loginCredentials)
-        .then(res => {
-          console.log(res);
-            
-          this.setState({ displayName: res.displayName })
-          this.setState({ username: res.username })
-        })
-        .catch(err => console.log(err));
-};
-
   componentWillMount() {
-    this.getLoggedInUser()
+    this.getUserInfo();
   }
 
 

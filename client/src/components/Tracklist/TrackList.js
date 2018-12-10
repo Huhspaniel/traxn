@@ -1,5 +1,5 @@
 import React from "react";
-import "../Tracklist/Tracklist.scss";
+import Repost from "../Repost/Repost";
 
 const Track = props => (
   <div className="track-main">
@@ -11,9 +11,7 @@ const Track = props => (
     </div>
     <div className="track-content">{props.trackContent}</div>
     <div className="track-buttons">
-      <p className="repost" onClick={props.repost}>
-        <i className="fa fa-retweet" />
-      </p>
+      <Repost className="repost" />
       <p className="dislike" onClick={props.dislike}>
         <i className="far fa-thumbs-down" />
       </p>

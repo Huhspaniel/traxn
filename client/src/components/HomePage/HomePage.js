@@ -6,7 +6,7 @@ import axios from 'axios';
 class HomePage extends React.Component {
 
   state= {
-    filter: 'following',
+    filter: 'public',
     feed: null
   }
 

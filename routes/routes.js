@@ -19,6 +19,19 @@ module.exports = function (app) {
                 .catch(err => res.json(errObj(err)));
         });
 
+    app.route(`/api/users/:id`)
+        .put((req, res) => {
+            if (req.params.id === req.body.user_id)
+                User.findOne({id: req.body.user_id})
+                .then(
+                    doc => {
+                        doc.set(req.body);
+                    return doc.save();
+                })
+                .then(data => res.json(data))
+                .catch(err => res.json(errObj(err)));
+        });
+
     app.route('/api/tracks')
         .post(authJWT, (req, res) => {
             if (req.body.user_id === req.body.user) {

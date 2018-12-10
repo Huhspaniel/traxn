@@ -164,18 +164,19 @@ module.exports = function (app) {
             Track.findOne({ _id: req.params.id })
                 .then(doc => {
                     const { action } = req.query;
+                    console.log(req.body);
                     if (action === 'repost') {
                         let update;
-                        if (track.repostedBy.find(user => user == req.body.user)) {
+                        if (doc.repostedBy.find(user => user == req.body.user_id)) {
                             update = {
                                 $pull: {
-                                    repostedBy: req.body.user
+                                    repostedBy: req.body.user_id
                                 }
                             }
                         } else {
                             update = {
                                 $push: {
-                                    repostedBy: req.body.user
+                                    repostedBy: req.body.user_id
                                 }
                             }
                         }

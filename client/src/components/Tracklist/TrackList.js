@@ -19,13 +19,13 @@ class Track extends React.Component {
       repostedByUser: !this.state.repostedByUser
     })
     axios
-      .post(`/repost/${track_id}`)
+      .put(`/api/tracks/${track_id}?action=repost`)
       .then(res => {
         console.log(res);
         this.setState({
           retrax: res.data.repostedBy.length,
           repostedByUser: res.data.repostedBy.includes(localStorage.getItem('id'))
-        })
+        });
       })
       .catch(err => console.error(err));
   };
@@ -52,6 +52,7 @@ class Track extends React.Component {
             track_id={this.props.id}
             retraxCount={this.state.retrax}
             handleRepost={this.handleRepost}
+            active={this.state.repostedByUser}
           />
 
           <p className="dislike" onClick={this.props.dislike}>

@@ -31,7 +31,7 @@ const trackSchema = new Schema({
         ref: 'User',
         required: true,
         immutable: {
-            allowOnInit: true
+            allowOnNew: true
         }
     },
     repostedBy: [{

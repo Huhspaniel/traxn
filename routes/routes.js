@@ -162,33 +162,33 @@ module.exports = function (app) {
     app.route('/api/tracks/:id')
         .put((req, res, next) => {
             Track.findOne({ _id: req.params.id })
-                .then(doc => {
+                .then(track => {
                     const { action } = req.query;
                     if (action === 'repost') {
                         let update;
-                        if (track.repostedBy.find(user => user == req.body.user)) {
+                        if (track.repostedBy.find(user => user == req.body.user_id)) {
                             update = {
                                 $pull: {
-                                    repostedBy: req.body.user
+                                    repostedBy: req.body.user_id
                                 }
                             }
                         } else {
                             update = {
                                 $push: {
-                                    repostedBy: req.body.user
+                                    repostedBy: req.body.user_id
                                 }
                             }
                         }
                         return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
-                    } else if (req.body.user_id != doc.user) {
+                    } else if (req.body.user_id != track.user) {
                         next(new Error('Cannot edit other users\' posts'))
                     } else {
                         const update = {};
                         for (let prop in req.body) {
                             update[prop] = req.body[prop];
                         }
-                        doc.set(update);
-                        return doc.save()
+                        track.set(update);
+                        return track.save()
                     }
                 })
                 .then(data => res.json(data))

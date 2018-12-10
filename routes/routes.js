@@ -54,9 +54,13 @@ module.exports = function (app) {
             .catch(next);
     })
 
-    /* ----- JWT secure routes ----- */
+    app.delete('/api/users/:id', (req, res, next) => {
+        User.findByIdAndDelete(req.params.id)
+            .then(data => res.json(data))
+            .catch(next)
+    })
 
-    app.use(authJWT);
+    /* ----- JWT secure routes ----- */
 
     function getUserByJWT(req, res, next) {
         User.findOne({ _id: req.body.user_id })
@@ -102,7 +106,7 @@ module.exports = function (app) {
     }
 
     app.route('/api/users/me')
-        .all(getUserByJWT)
+        .all(authJWT, getUserByJWT)
         .get((req, res) => res.json(req.body.user))
         .put(updateUser)
 
@@ -121,6 +125,7 @@ module.exports = function (app) {
     }
 
     app.route('/api/users/:id')
+        .all(authJWT)
         .get((req, res, next) => {
             if (req.body.user_id === req.params.id) {
                 getUserByJWT(req, res, next);
@@ -146,20 +151,21 @@ module.exports = function (app) {
         }, updateUser)
 
     app.route('/api/tracks')
-        .post((req, res, next) => {
+        .post(authJWT, (req, res, next) => {
             req.body.user = req.body.user_id;
             Track.create(req.body)
                 .then(data => res.json(data))
                 .catch(next);
         })
 
-    app.get('/api/tracks', getUserByJWT, (req, res, next) => {
+    app.get('/api/tracks', authJWT, getUserByJWT, (req, res, next) => {
         getFeed(req.query.period, req.body.user.following)
             .then(tracks => res.json(tracks))
             .catch(next)
     })
 
     app.route('/api/tracks/:id')
+        .all(authJWT)
         .put((req, res, next) => {
             Track.findOne({ _id: req.params.id })
                 .then(track => {

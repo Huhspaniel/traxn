@@ -9,11 +9,11 @@ function loginUser(req, res, next) {
         bcrypt.compare(password, user.password)
             .then(function createJWT(valid) {
                 if (valid) {
-                    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
+                    const token = jwt.sign({ user_id: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
                     res.cookie('jwt', token);
                     res.json({
                         success: true,
-                        userId: user._id
+                        user_id: user._id
                     });
                 } else {
                     next(new Error(`Invalid Login`))
@@ -30,10 +30,11 @@ function authJWT(req, res, next) {
     const token = req.cookies.jwt;
     jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
         if (err) {
-            req.body.user = null;
+            req.body.user_id = null;
+            res.status(401);
             next(new Error('Invalid token'));
         } else {
-            req.body.userId = decoded.userId;
+            req.body.user_id = decoded.user_id;
             next();
         }
     });

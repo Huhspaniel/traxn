@@ -22,139 +22,181 @@ module.exports = function (app) {
                 .catch(next);
         });
 
-    app.route('/api/users/:id')
-        .get(authJWT, (req, res, next) => {
-            User.findOne({ _id: req.params.id })
-                .then(data => {
-                    if (data) {
-                        data.password = undefined;
-                        req.body.user = data;
-                    } else {
-                        return next(new Error('User not found'));
-                    }
-
-                    if (req.body.userId !== data._id) {
-                        return next(new Error('Invalid token'));
-                    }
-                    res.json(data);
-                })
-                .catch(next);
-        }, (err, req, res, next) => {
-            const { user } = req.body;
-            if (err.message === 'Invalid token' && user) {
-                user.email = user.following = undefined;
-                return res.json(user);
-            }
-            next(err);
-        })
-        .put(authJWT, (req, res, next) => {
-            const action = req.query.action;
-            User.findOne({ _id: req.body.userId })
-                .then(user => {
-                    if (!user) next(new Error('User not found'));
-                    switch (action) {
-                        case 'follow': {
-                            const followId = req.body.userId;
-                            if (followId instanceof Array) {
-
-                            }
-                            const following = user.following;
-                            let followingIndex;
-                            followingIndex = following.indexOf(followingId);
-                            if (followingIndex === -1) {
-                                following.splice(followingIndex, 1);
-                            } else {
-                                following.push(followId);
-                            }
-                            user.following = following;
-                            break;
-                        } default: {
-                            user.set(req.body);
-                        }
-                    }
-                    return user.save();
-                })
-                .then(data => res.json(data))
-                .catch(next)
-        })
-
-    app.route('/api/tracks')
-        .post(authJWT, (req, res, next) => {
-            req.body.user = req.body.userId;
-            Track.create(req.body)
-                .then(data => res.json(data))
-                .catch(next);
-        })
-        .get((req, res) => {
-            const { period, u } = req.query;
-            getFeed(period, u ? u.split(',') : null)
-                .then(tracks => res.json(tracks))
-                .catch(next);
-        })
-
-    app.get('/api/tracks/following', authJWT, (req, res, next) => {
-        User.findById(req.body.userId)
-            .then(user => getFeed(req.query.period, user.following))
-            .then(tracks => res.json(tracks))
-            .catch(next);
-    })
-
-    app.route('/api/tracks/:id')
-        .put(authJWT, (req, res, next) => {
-            Track.findOne({ _id: req.params.id, user: req.body.userId })
-                .then(
-                    doc => {
-                        doc.set(req.body);
-                        return doc.save();
-                    })
-                .then(data => res.json(data))
-                .catch(next);
-        })
-        .get((req, res) => {
-            Track.find({ _id: req.params.id })
-                .populate('user', `-password -email -following`)
-                .then(data => res.json(data))
-                .catch(next);
-        })
-        .delete(authJWT, (req, res) => {
-            Track.findOneAndDelete({ _id: req.params.id, user: req.body.userId })
-                .then(data => res.json(data))
-                .catch(next);
-        })
-
-    // Login the user
-    // Request will contest username and password
-    // After comparing with database using bcrypt decryption, response with jwt token
-    // If error, response with error object
-    app.post(`/login`, function getUser(req, res, next) {
+    app.post(`/login`, function getUserByUsername(req, res, next) {
         User.findOne({ username: req.body.username })
             .then(user => {
+                if (!user) return next(new Error('User not found'))
                 req.body.user = user;
                 next();
             })
             .catch(next);
     }, loginUser);
 
-    app.post('/repost/:id', authJWT, (req, res, next) => {
-        Track.findOne({ _id: req.params.id })
-            .then(track => {
-                let update;
-                if (track.repostedBy.find(user => user == req.body.user)) {
-                    update = {
-                        $pull: {
-                            repostedBy: req.body.user
-                        }
-                    }
-                } else {
-                    update = {
-                        $push: {
-                            repostedBy: req.body.user
-                        }
-                    }
-                }
-                return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
-            })
+
+    app.get('/api/tracks', (req, res, next) => {
+        const { filter, period, u } = req.query;
+        switch (filter) {
+            case 'following': {
+                return next();
+            }
+            default: {
+                getFeed(period, u ? u.split(',') : null)
+                    .then(tracks => res.json(tracks))
+                    .catch(next);
+            }
+        }
+    })
+
+    app.get('/api/tracks/:id', (req, res, next) => {
+        Track.find({ _id: req.params.id })
+            .populate('user', `-password -email -following`)
             .then(data => res.json(data))
             .catch(next);
-    });
+    })
+
+    /* ----- JWT secure routes ----- */
+
+    app.use(authJWT);
+
+    function getUserByJWT(req, res, next) {
+        User.findOne({ _id: req.body.user_id })
+            .then(user => {
+                if (!user) {
+                    res.status(404);
+                    return next(new Error('User not found'));
+                }
+                req.body.user = user;
+                // req.body.user.password = null;
+                next();
+            })
+            .catch(next)
+    }
+
+    function updateUser(req, res, next) {
+        const {
+            query: { action, id },
+            body: { user }
+        } = req;
+        switch (action) {
+            case 'follow': {
+                const following = user.following;
+                const idIndex = following.indexOf(id);
+                if (idIndex >= 0) {
+                    following.splice(idIndex, 1);
+                } else {
+                    following.push(id);
+                }
+                user.following = following;
+                break;
+            } default: {
+                const update = {};
+                for (let prop in req.body) {
+                    update[prop] = req.body[prop];
+                }
+                user.set(update);
+            }
+        }
+        user.save()
+            .then(data => res.json(data))
+            .catch(next);
+    }
+
+    app.route('/api/users/me')
+        .all(getUserByJWT)
+        .get((req, res) => res.json(req.body.user))
+        .put(updateUser)
+
+    function getUserPublic(req, res, next) {
+        User.findOne({ _id: req.params.id })
+            .then(user => {
+                if (user) {
+                    user.password = user.email = user.following = undefined;
+                    res.json(user);
+                } else {
+                    res.status(404);
+                    next(new Error('User not found'));
+                }
+            })
+            .catch(next);
+    }
+
+    app.route('/api/users/:id')
+        .get((req, res, next) => {
+            if (req.body.user_id === req.params.id) {
+                getUserByJWT(req, res, next);
+            } else {
+                next(new Error('Invalid user'))
+            }
+        }, (req, res) => res.json(req.body.user),
+            (err, req, res, next) => {
+                if (err.message === 'Invalid token' || err.message === 'Invalid user') {
+                    res.status(200);
+                    getUserPublic(req, res, next);
+                } else {
+                    next(err);
+                }
+            })
+        .put((req, res, next) => {
+            if (req.params.id !== req.body.user_id) {
+                res.status(401);
+                next(new Error('Invalid user'));
+            } else {
+                getUserByJWT(req, res, next);
+            }
+        }, updateUser)
+
+    app.route('/api/tracks')
+        .post((req, res, next) => {
+            req.body.user = req.body.user_id;
+            Track.create(req.body)
+                .then(data => res.json(data))
+                .catch(next);
+        })
+
+    app.get('/api/tracks', getUserByJWT, (req, res, next) => {
+        getFeed(req.query.period, req.body.user.following)
+            .then(tracks => res.json(tracks))
+            .catch(next)
+    })
+
+    app.route('/api/tracks/:id')
+        .put((req, res, next) => {
+            Track.findOne({ _id: req.params.id })
+                .then(doc => {
+                    const { action } = req.query;
+                    if (action === 'repost') {
+                        let update;
+                        if (track.repostedBy.find(user => user == req.body.user)) {
+                            update = {
+                                $pull: {
+                                    repostedBy: req.body.user
+                                }
+                            }
+                        } else {
+                            update = {
+                                $push: {
+                                    repostedBy: req.body.user
+                                }
+                            }
+                        }
+                        return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
+                    } else if (req.body.user_id != doc.user) {
+                        next(new Error('Cannot edit other users\' posts'))
+                    } else {
+                        const update = {};
+                        for (let prop in req.body) {
+                            update[prop] = req.body[prop];
+                        }
+                        doc.set(update);
+                        return doc.save()
+                    }
+                })
+                .then(data => res.json(data))
+                .catch(next);
+        })
+        .delete((req, res) => {
+            Track.findOneAndDelete({ _id: req.params.id, user: req.body.user_id })
+                .then(data => res.json(data))
+                .catch(next);
+        })
 }

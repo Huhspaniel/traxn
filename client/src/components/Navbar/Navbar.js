@@ -2,6 +2,7 @@ import React from "react";
 
 import DrawerToggleButton from "../SideDrawer/DrawerToggleButton";
 import LoginModal from "../Login/Login";
+import PostModal from "../Post/Post";
 
 const Navbar = props => (
   <header className="navbar">
@@ -41,11 +42,9 @@ const Navbar = props => (
         <ul className="nav-right">
         
         <LoginModal className="login"/> 
-       
-              
-        <a className="post" href="#">
-              <i className="fa fa-edit" />
-            </a>
+           
+        <PostModal className="post"/>
+
             <a className="avatar" href="/profile">
               <img className="profile-settings" src="https://www.gstatic.com/webp/gallery/1.jpg" />
             </a>

@@ -65,7 +65,7 @@ class LoginModal extends React.Component {
         axios
             .post(`/login`, loginCredentials)
             .then(user => {
-                console.log(user);
+                
                 this.setState({ loggedIn: true });
             })
             .catch(err => console.log(err));
@@ -73,7 +73,7 @@ class LoginModal extends React.Component {
 
     createUser = () => {
         const token = localStorage.getItem('csrf-token');
-        console.log(token);
+        
         console.log(axios.defaults.headers)
         axios
             .post(`/api/users`, {

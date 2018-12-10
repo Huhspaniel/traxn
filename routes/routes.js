@@ -24,6 +24,7 @@ module.exports = function (app) {
 
     app.route('/api/tracks')
         .post(authJWT, (req, res) => {
+            req.body.user = req.body.userId;
             Track.create(req.body)
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
@@ -34,8 +35,9 @@ module.exports = function (app) {
                 .then(tracks => res.json(tracks))
                 .catch(err => res.json(errObj(err)));
         })
+
     app.get('/api/tracks/following', authJWT, (req, res) => {
-        User.findById(req.body.user)
+        User.findById(req.body.userId)
             .then(user => getFeed(req.query.period, user.following))
             .then(tracks => res.json(tracks))
             .catch(err => res.json(errObj(err)));
@@ -43,22 +45,23 @@ module.exports = function (app) {
 
     app.route('/api/tracks/:id')
         .put(authJWT, (req, res) => {
-            Track.findById(req.params.id)
-                .then(doc => {
-                    doc.set(req.body);
-                    return doc.save();
-                })
+            Track.findOne({ _id: req.params.id, user: req.body.userId })
+                .then(
+                    doc => {
+                        doc.set(req.body);
+                        return doc.save();
+                    })
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
         })
         .get((req, res) => {
             Track.find({ _id: req.params.id })
-                .populate('user').populate('taggedUsers')
+                .populate('user', `-password -email`)
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
         })
-        .delete(authJWT, (req, res) => { // must refactor so user can only delete his own posts
-            Track.findByIdAndDelete(req.params.id)
+        .delete(authJWT, (req, res) => {
+            Track.findOneAndDelete({ _id: req.params.id, user: req.body.userId })
                 .then(data => res.json(data))
                 .catch(err => res.json(errObj(err)));
             // Track.findById(req.params.id)
@@ -80,31 +83,26 @@ module.exports = function (app) {
             .catch(err => res.json(errObj(err)));
     }, loginUser);
 
-
-    // Alternate method of JWT authentication, using routes rather than middleware function
-    /*    
-        // Authentication route
-        // All routes starting with below route will be authenticated
-        // Checks if the JWT token is includeded in the header
-        // Decoded username passed to next function call
-        app.use(`/api/auth`, function (req, res, next) {
-            const token = req.headers[`x-access-token`];
-            try {
-                if (token) {
-                    jwt.verify(token, app.get(`JWTKey`), function(err, decoded) {
-                        if (err) {
-                            throw err.message;
-                        } else {
-                            req.body.username = decoded.username; // not really necessary unless next function use it
-                            next();
+    app.post('/repost/:id', authJWT, (req, res) => {
+        Track.findOne({ _id: req.params.id })
+            .then(track => {
+                let update;
+                if (track.repostedBy.find(user => user == req.body.user)) {
+                    update = {
+                        $pull: {
+                            repostedBy: req.body.user
                         }
-                    });
+                    }
                 } else {
-                    throw new Error(`No token provided`);
+                    update = {
+                        $push: {
+                            repostedBy: req.body.user
+                        }
+                    }
                 }
-            } catch (err) {
-                res.json(errObj(err));
-            }
-        });
-    */
+                return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
+            })
+            .then(data => res.json(data))
+            .catch(err => res.json(errObj(err)));
+    });
 }

@@ -1,6 +1,8 @@
-const envVars = require('./env-vars');
-for (let v in envVars) {
-    process.env[v] = envVars[v];
+if (process.env.NODE_ENV !== 'production') {
+    var envVars = require('./env-vars');
+    for (let v in envVars) {
+        process.env[v] = envVars[v];
+    }
 }
 
 const express = require('express');

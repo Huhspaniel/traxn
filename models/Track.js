@@ -11,7 +11,7 @@ const trackSchema = new Schema({
     _postedAt: {
         type: Date,
         immutable: true,
-        defaultValue: new Date
+        default: new Date
     },
     _updatedAt: { // Allow updates? TBD
         type: Date,
@@ -33,7 +33,11 @@ const trackSchema = new Schema({
         immutable: {
             allowOnInit: true
         }
-    }
+    },
+    repostedBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 trackSchema.pre('save', function () {
     if (this.isNew) {

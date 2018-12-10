@@ -1,5 +1,6 @@
 import React from "react";
 import Tracklist from "../Tracklist/TrackList";
+import axios from "axios";
 
 const Stat = props => (
   <div className={props.className + " stat"}>
@@ -18,7 +19,7 @@ const Profile = props => (
 
     <div className="profile-bar">
       <div className="stats">
-        <Stat className="trax" display="Trax" stat="111" />
+        <Stat className="trax" display="Trax" stat={props.numberOfTrax} />
         <Stat className="record" display="Record" stat="1.4m" />
         <Stat className="rank" display="Rank" stat="33" />
         <Stat className="retrax" display="Retrax" stat="33" />
@@ -33,8 +34,8 @@ const Profile = props => (
     <div className="profile-content">
       <div className="profile-profile">
         <div className="profile-names">
-          <p className="screen-name">John Hancock</p>
-          <p className="handle">#Jhan99</p>
+          <p className="screen-name">{props.displayName}</p>
+          <p className="handle">{props.username}</p>
         </div>
 
         <div className="profile-info">
@@ -63,5 +64,54 @@ const Profile = props => (
   </div>
 );
 
+class classProfile extends React.Component {
+  state = {
+    displayName: '',
+    username: '',
+    numberOfTrax: 0
+    
+  }
 
-export default Profile;
+  getUserInfo = () => {
+    axios
+    .get('/api/users')
+    .then((res) => {
+      console.log(res)
+      
+    })
+  }
+
+  getLoggedInUser = () => {
+    let loginCredentials = {
+        username: this.state.username,
+        password: this.state.password
+    };
+
+    axios
+        .post(`/login`, loginCredentials)
+        .then(res => {
+          console.log(res);
+            
+          this.setState({ displayName: res.displayName })
+          this.setState({ username: res.username })
+        })
+        .catch(err => console.log(err));
+};
+
+  componentWillMount() {
+    this.getLoggedInUser()
+  }
+
+
+  render() {
+    return (
+      <Profile
+      displayName = {this.state.displayName}
+      username = {this.state.username}
+      />
+    )
+  }
+}
+
+
+export default classProfile;

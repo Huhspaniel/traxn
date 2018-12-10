@@ -64,9 +64,9 @@ class LoginModal extends React.Component {
 
         axios
             .post(`/login`, loginCredentials)
-            .then(user => {
-                console.log(user);
-                
+            .then(res => {
+                console.log(res);
+                localStorage.setItem('id', res.data.user_id)
                 this.setState({ loggedIn: true });
             })
             .catch(err => console.log(err));

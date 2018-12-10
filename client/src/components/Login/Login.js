@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import "./Login.scss";
 // import cookie from 'react-cookies';
 
 const Login = (props) => (
@@ -17,7 +18,6 @@ const Login = (props) => (
             <button className="send-login" onClick={props.loginHandler}>Login</button>
 
             <br />
-            <h4>Or</h4>
             <br />
 
             <h3>Sign Up</h3>
@@ -34,8 +34,11 @@ const Login = (props) => (
                 type="text" name="displayName"
                 value={props.value} placeholder="display name" />
             <button className="signup-btn" onClick={props.signupHandler}>Sign Up</button>
-
-            <p className="login-btn" onClick={props.toggleHandler}>Close</p>
+            <br />
+            <br />
+            <br />
+            <br />
+            <button className="login-btn" onClick={props.toggleHandler}>Close</button>
 
         </Modal>
     </div>

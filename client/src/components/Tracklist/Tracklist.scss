@@ -18,7 +18,6 @@
     padding: 20px;
     grid-gap: 10px;
     border-radius: 2px;
-    cursor: pointer;
     &:hover {
         background-color: rgb(238, 238, 238);
     }
@@ -86,19 +85,23 @@
         p {
             margin: 0;
         }
-        .repost {
-            .fa-retweet {
-                color: gray;
-                cursor: pointer;
-                font-weight: thin;
-                margin-right: 50px;
+        // .repost-wrapper {
+        //     justify-items: center;
+        //     align-items: center;
+        //     .fa-retweet {
+        //         cursor: pointer;
+        //         color: gray;
+        //         font-weight: thin;
+        //         margin: 0;
 
-                &:hover {
-                    color: rgb(0, 128, 115);
-                    cursor: pointer;
-                }
-            }
-        }
+        //         &:hover {
+        //             color: rgb(0, 128, 115);
+        //         }
+        //     }
+        //     &.active {
+        //         color: rgb(0, 128, 115);
+        //     }
+        // }
 
         .dislike {
             .fa-thumbs-down {

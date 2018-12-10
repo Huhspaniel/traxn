@@ -164,6 +164,7 @@ module.exports = function (app) {
             Track.findOne({ _id: req.params.id })
                 .then(track => {
                     const { action } = req.query;
+                    console.log(req.body);
                     if (action === 'repost') {
                         let update;
                         if (track.repostedBy.find(user => user == req.body.user_id)) {

@@ -99,11 +99,11 @@ class LoginModal extends React.Component {
       this.setState({
         redirect: "invalidLogin"
       });
-    } else if(this.state.loggedIn) {
-        this.setState({
-            redirect: "homePage",
-            isActive: false
-          });
+    } else if (this.state.loggedIn) {
+      this.setState({
+        redirect: "homePage",
+        isActive: false
+      });
     }
   };
 
@@ -125,10 +125,12 @@ class LoginModal extends React.Component {
       .then(res => {
         if (res.data.error) {
           console.log(res.data.error);
+          localStorage.removeItem("id");
           this.setState({ loggedIn: false });
           this.setRedirect();
         } else {
           console.log(res.data);
+          localStorage.setItem("id", res.data.user_id);
           this.setState({ loggedIn: true });
           this.setRedirect();
         }
@@ -193,7 +195,7 @@ class LoginModal extends React.Component {
           toggleHandler={this.handleToggle}
           changeHandler={this.handleChange}
         />
-        {this.state.redirect === "invalidLogin" && (<FailedLogIn/>)}
+        {this.state.redirect === "invalidLogin" && <FailedLogIn />}
       </div>
     );
   }

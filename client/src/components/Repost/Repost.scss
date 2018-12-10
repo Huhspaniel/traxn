@@ -1,11 +1,31 @@
-.fa-retweet {
-    color: gray;
-    cursor: pointer;
-    font-weight: thin;
-    margin-right: 50px;
-
-    &:hover {
-        color: rgb(0, 128, 115);
+.repost-wrapper {
+    display: grid;
+    grid-template-columns: 25px 25px 25px 25px;
+    
+    .fa-retweet {
+        grid-column-start: 1;
+        color: gray;
         cursor: pointer;
+        font-weight: thin;
+        
+    
+        &:hover {
+            color: rgb(0, 128, 115);
+        }
     }
+    
+    p {
+        grid-column-start: 2;
+        font-size: 11px;
+        margin: 0;
+        padding: 0;
+        color: gray;
+    }
+
+    &.active {
+        .fa-retweet, p {
+            color: rgb(0, 128, 115);
+        }
+    }
+
 }

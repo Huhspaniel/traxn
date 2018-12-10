@@ -31,7 +31,10 @@ const userSchema = new Schema({
         match: [
             /(?=.*[a-z])(?=.*[0-9]).*/i,
             'Password must contain at least one letter and one number'
-        ]
+        ],
+        immutable: {
+            allowOnNew: true
+        }
     },
     displayName: {
         type: String,
@@ -39,11 +42,13 @@ const userSchema = new Schema({
         match: [
             /^[a-z'-\s]+$/i,
             'Name can only include letters, spaces, \', and -'
-        ]
+        ],
+        required: true
     },
     following: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        immutable: true
     }],
     _publicKey: {
         type: String,
@@ -60,16 +65,16 @@ userSchema.pre(`save`, function (next) {
         this.name = this.name.replace(/(\s(?=\s))+/g, ''); // Remove extra white space
     }
 
-    var user = this;
-    //if (!user.isModified('password')) return next();
-    bcrypt.hash(user.password, 10)
-        .then(function (hashed) {
-            user.password = hashed;
-            next();
-        })
-        .catch(function (err) {
-            res.json({ status: "error", message: err });
-        });
+    if (this.isModified('password')) {
+        bcrypt.hash(this.password, 10)
+            .then((hashed) => {
+                this.password = hashed;
+            })
+            .catch((err) => {
+                this.invalidate('password', err);
+            });
+    }
+    next();
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,7 +1,6 @@
 import React from "react";
 
 import DrawerToggleButton from "../SideDrawer/DrawerToggleButton";
-import LoginModal from "../Login/Login";
 import PostModal from "../Post/Post";
 
 const Navbar = props => (
@@ -41,7 +40,7 @@ const Navbar = props => (
 
         <ul className="nav-right">
         
-        <LoginModal className="login"/> 
+        <a href='/signin'>Sign in</a>
            
         <PostModal className="post"/>
 

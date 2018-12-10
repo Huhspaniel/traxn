@@ -167,11 +167,7 @@ module.exports = function (app) {
                     console.log(req.body);
                     if (action === 'repost') {
                         let update;
-<<<<<<< HEAD
-                        if (doc.repostedBy.find(user => user == req.body.user_id)) {
-=======
                         if (track.repostedBy.find(user => user == req.body.user_id)) {
->>>>>>> b8889bf52083310a3afe746f27f3037ee64daba8
                             update = {
                                 $pull: {
                                     repostedBy: req.body.user_id

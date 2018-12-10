@@ -41,7 +41,7 @@ const userSchema = new Schema({
         trim: true,
         match: [
             /^[a-z'-\s]+$/i,
-            'Name can only include letters, spaces, \', and -'
+            'Display name can only include letters, spaces, \', and -'
         ],
         required: true
     },
@@ -65,16 +65,21 @@ userSchema.pre(`save`, function (next) {
         this.name = this.name.replace(/(\s(?=\s))+/g, ''); // Remove extra white space
     }
 
+    console.log(this.isModified('password'))
     if (this.isModified('password')) {
         bcrypt.hash(this.password, 10)
             .then((hashed) => {
+                console.log(hashed)
                 this.password = hashed;
+                next();
             })
             .catch((err) => {
                 this.invalidate('password', err);
+                next();
             });
+    } else {
+        next();
     }
-    next();
 });
 
 module.exports = mongoose.model('User', userSchema);

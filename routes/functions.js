@@ -16,6 +16,7 @@ function loginUser(req, res, next) {
                         user_id: user._id
                     });
                 } else {
+                    res.status(401);
                     next(new Error(`Invalid Login`))
                 }
             })

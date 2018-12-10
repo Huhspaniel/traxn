@@ -6,7 +6,10 @@ const Post = (props) => (
     <div className="post-wrapper">
     <i onClick={props.toggleHandler} className="far fa-edit"></i>
     <Modal isOpen={props.isActive}>
-    <textarea name='content' type="text" onChange={props.changeHandler} value={props.inputValue} placeholder="what would you like to say..."/>
+    <textarea name='content' type="text"
+    onChange={props.changeHandler}
+    value={props.inputValue}
+    placeholder="what would you like to say..."/>
     <button className="post-btn" onClick={props.postHandler}>Post</button>
 
     <button className="close" onClick={props.toggleHandler}>Close</button>
@@ -23,7 +26,7 @@ class PostModal extends React.Component {
         content: ''
     }
 
-    handlePost() {
+    handlePost = () => {
         axios.post('/api/tracks', {
             content: this.state.content
         }).then(res => {

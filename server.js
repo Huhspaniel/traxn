@@ -39,6 +39,14 @@ app.use(csrf({ cookie: true }));
 
 require('./routes')(app);
 
+function sendHTML(res) {
+    res.sendFile(path.join(__dirname, './client/build/index.html'));
+}
+
+app.get('*', (req, res) => {
+    sendHTML(res);
+});
+
 app.use(function handleError(err, req, res, next) {
     console.error(err.stack);
     if (err.name === 'ForbiddenError') res.status(403);

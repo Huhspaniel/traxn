@@ -20,7 +20,7 @@ module.exports = function (app) {
         });
 
     app.route(`/api/users/:id`)
-        .put((req, res) => {
+        .put(authJWT, (req, res) => {
             if (req.params.id === req.body.user_id)
                 User.findOne({id: req.body.user_id})
                 .then(

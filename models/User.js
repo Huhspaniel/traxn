@@ -73,3 +73,14 @@ userSchema.pre(`save`, function (next) {
 });
 
 module.exports = mongoose.model('User', userSchema);
+
+
+/* postman format
+{
+	"_csrf": "4yUr7KYq-3Kfq5_Ix8e2EbG-WYDd4RWgHns4",
+	"username": "melllymell",
+	"email": "melly@gmail.com",
+	"password": "mellypass2",
+	"displayName": "Melly Mell"
+}
+*/

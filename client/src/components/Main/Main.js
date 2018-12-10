@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from '../HomePage/HomePage';
 import Scoreboard from '../Scoreboard/Scoreboard';

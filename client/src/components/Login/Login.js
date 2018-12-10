@@ -173,7 +173,8 @@ class LoginModal extends React.Component {
 
   handleToggle = () => {
     this.setState({
-      isActive: !this.state.isActive
+      isActive: !this.state.isActive,
+      redirect: ""
     });
   };
 

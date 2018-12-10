@@ -19,11 +19,16 @@ const Post = (props) => (
     
 )
 
+const ErrorMessage = props => (
+    <p>Content must be between 1 and 333 characters. </p>
+);
+
 class PostModal extends React.Component {
     state = {
         isActive: false,
         value: '',
-        content: ''
+        content: '',
+        showError: false
     }
 
     handlePost = () => {
@@ -31,6 +36,15 @@ class PostModal extends React.Component {
             content: this.state.content
         }).then(res => {
             console.log(res);
+            if(!res.data.error)
+            this.setState({
+                isActive: false
+            })
+            else if(res.data.error){
+                this.setState({
+                    showError: true
+                })
+            }
         }).catch(err => console.log(err));
     }
 
@@ -40,7 +54,8 @@ class PostModal extends React.Component {
 
     handleToggle = () => {
         this.setState({
-            isActive: !this.state.isActive
+            isActive: !this.state.isActive,
+            showError: false
         })
     }
 
@@ -54,12 +69,14 @@ class PostModal extends React.Component {
     render() {
         return (
             <div className="post-modal">
+            {this.state.showError && (<ErrorMessage/>)}
             <Post 
             postHandler = {this.handlePost}
             toggleHandler = {this.handleToggle}
             changeHandler = {this.handleChange}
             isActive={this.state.isActive}
             />
+            
             </div> 
         )
     }

@@ -1,33 +1,10 @@
 import React from 'react';
-import axios from 'axios';
-
-const RepostComponent = (props) => (
-
-    <i className="fa fa-retweet" onClick={props.repostHandler} />
-)
     
-
-class Repost extends React.Component {
-    state = {
-        
-    }
-
-    handleRepost = () => {
-        axios.post('/repost/:5c0c183fa737125f8ee738ed')
-        .then((res) => {
-            console.log(res);
-        }).catch((err) => {console.log(err)});
-    }
-
-    render() {
-        return(
-            <p>
-                <RepostComponent 
-                repostHandler = {this.handleRepost}
-                />
-            </p>
-        )
-    }
-}
+const Repost = props => (
+    <div className="repost-wrapper" onClick={e => { props.handleRepost(props.track_id) }}>
+        <i className="fa fa-retweet" />
+        <p className="retraxCount">{props.retraxCount}</p>
+    </div>
+)
 
 export default Repost;

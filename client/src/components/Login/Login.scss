@@ -1,20 +1,177 @@
-.login-modal {
-    padding: 0;
-    margin: 0;
-    p {
-        padding: 0;
-        margin: 0;
-        color: white;
-        font-size: 13px;
-        cursor: pointer;
+.login-signup {
+    position: fixed;
+    display: grid;
+    background: $color-primary;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
 
-        &:hover {
-            color: $color-primary
+    .menu {
+        justify-self: center;
+        grid-column-start: 2;
+        grid-row-start: 2;
+        background-color: white;
+        border-radius: 2px;
+        height: 300px;
+        width: 300px;
+
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr 1fr  1fr  1fr  1fr 1fr 1fr;
+
+        .signup-menu {
+            grid-row-start: 1;
+            color: black;
+            font-size: 19px;
+            margin-left: 10px;
+            
+        }
+
+        .login-menu {
+            grid-row-start: 1;
+            color: black;
+            font-size: 19px;
+            margin-left: 10px;
+            
+        }
+
+        .user-input {
+            grid-row-start: 3;
+            height: 20px;
+            margin: 0 10px 0 10px;
+        }
+
+        .signupUser-input {
+            grid-row-start: 2;
+            height: 20px;
+            margin: 0 10px 0 10px;
+        }
+
+        .pass-input {
+            grid-row-start: 4;
+            height: 20px;
+            margin: 0 10px 0 10px;
+        }
+
+        .signupPass-input {
+            grid-row-start: 3;
+            height: 20px;
+            margin: 0 10px 0 10px;
+        }
+        .email-input {
+            grid-row-start: 4;
+            height: 20px;
+            margin: 0 10px 0 10px;
+        }
+        .name-input {
+            grid-row-start: 5;
+            height: 20px;
+            margin: 0 10px 0 10px;
+        }
+
+        .signup-btn {
+            grid-row-start: 7;
+            margin: 0 100px 0 100px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: .6s;
+            overflow: hidden;
+            
+
+            &:active {
+                color: '';
+            }
+            &:focus {
+                outline: none;
+            }
+            &:before {
+                content: '';
+                
+                opacity: .5s;
+                filter: blur(30px);
+                transform: translateX(-130px) skewX(-15deg);
+            }
+            &:after {
+                content: '';
+                
+                opacity: 0;
+                filter: blur(30px);
+                transform: translate(-100px) scaleX(-15deg);
+            }
+            &:hover {
+                color: white;
+                background: rgb(255, 190, 213);
+                &:before {
+                    transform: translateX(300px) skewX(-15deg);
+                    opacity: .6;
+                    transition: .7s;
+                }
+                &:after {
+                    transform: translateX(300px) skewX(-15deg);
+                    opacity: 1;
+                    transition: .7s;
+                }
+            }
+        }
+
+        .send-login {
+            grid-row-start: 7;
+            margin: 0 100px 0 100px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: .6s;
+            overflow: hidden;
+            
+
+            &:active {
+                color: '';
+            }
+            &:focus {
+                outline: none;
+            }
+            &:before {
+                content: '';
+                
+                opacity: .5s;
+                filter: blur(30px);
+                transform: translateX(-130px) skewX(-15deg);
+            }
+            &:after {
+                content: '';
+                
+                opacity: 0;
+                filter: blur(30px);
+                transform: translate(-100px) scaleX(-15deg);
+            }
+            &:hover {
+                color: white;
+                background: rgb(255, 190, 213);
+                &:before {
+                    transform: translateX(300px) skewX(-15deg);
+                    opacity: .6;
+                    transition: .7s;
+                }
+                &:after {
+                    transform: translateX(300px) skewX(-15deg);
+                    opacity: 1;
+                    transition: .7s;
+                }
+            }
+
+
+        }
+
+        .signup-toggle {
+            grid-row-start: 9;
+            color: $color-primary;
+            justify-self: center;
+            cursor: pointer;
+            font-size: 13px;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
-}
-
-.login-popup {
-   background-color: aqua;
 }
 

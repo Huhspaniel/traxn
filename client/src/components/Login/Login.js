@@ -48,7 +48,7 @@ const Login = props => (
           <input
             className="signupPass-input"
             onChange={props.changeHandler}
-            type="text"
+            type="password"
             name="password"
             value={props.value}
             placeholder="Password"

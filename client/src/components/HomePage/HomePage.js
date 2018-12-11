@@ -7,7 +7,9 @@ class HomePage extends React.Component {
 
   state= {
     filter: 'public',
-    feed: null
+    feed: null,
+    value: '',
+    content: ''
   }
 
   /*
@@ -26,6 +28,21 @@ class HomePage extends React.Component {
         Only accessible when user is logged in using JWT authentication.
         The JWT token will automatically be stored in cookies upon login.
   */
+
+ handleChange = (event) => {
+  console.log(event.target.name)
+  this.setState({
+      [event.target.name]: event.target.value
+  });
+}
+
+handlePost = () => {
+  axios.post('/api/tracks', {
+      content: this.state.content
+  }).then(res => {
+      console.log(res);
+  }).catch(err => console.log(err));
+}
 
   getPublic = () => {
     axios
@@ -52,6 +69,11 @@ class HomePage extends React.Component {
       .catch(err => console.log(err));
   };
 
+  componentDidMount() {
+    this.getPublic();
+    this.getFollowing();
+  }
+
   render() {
     if (!this.state.feed) {
       if (this.state.filter === "public") {
@@ -67,6 +89,19 @@ class HomePage extends React.Component {
           <SideProfile />
         </div>
         <div className="homepage-newsfeed">
+
+        <div className="new-post">
+        <img
+              className="avatar-img"
+              src="https://www.gstatic.com/webp/gallery/1.jpg"
+            />
+
+            <textarea className="textarea" name='content' type="text" placeholder="What would you like to say?"
+            onChange={this.handleChange}
+            value={this.inputValue} />
+            <p onClick={this.handlePost} className="post-track">Post</p>
+        </div>
+
         <div className="newsfeed-tabs">
         <p onClick={this.getPublic}>Public</p><p onClick={this.getFollowing}>Following</p>
         </div>

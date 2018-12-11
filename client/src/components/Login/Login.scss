@@ -46,9 +46,8 @@
                 box-shadow: 0 0 5px $color-primary;
             }
         }
-
-        .submit-btn {
-            border-radius: 2px;
+@mixin button {
+    border-radius: 2px;
             cursor: pointer;
             transition: .16s;
             overflow: hidden;
@@ -91,6 +90,9 @@
                     transition: .7s;
                 }
             }
+}
+        .submit-btn {
+            @include button;
         }
 
         .signup-toggle {

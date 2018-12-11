@@ -5,3 +5,20 @@
         cursor: pointer;
     }
 }
+
+.modal {
+    background-color: $color-primary;
+    position: fixed;
+    width: 100px;
+    height: 0px;
+    top: 20%;
+    left: 37%;
+    padding: 200px;
+    outline: none;
+    border-radius: 2px;
+}
+
+.textarea {
+    width: 100px;
+}
+

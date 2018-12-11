@@ -3,10 +3,11 @@ import Modal from 'react-modal';
 import axios from 'axios';
 
 const Post = (props) => (
+    
     <div className="post-wrapper">
     <i onClick={props.toggleHandler} className="far fa-edit"></i>
-    <Modal isOpen={props.isActive}>
-    <textarea name='content' type="text"
+    <Modal className="modal" isOpen={props.isActive}>
+    <textarea className="textarea" name='content' type="text"
     onChange={props.changeHandler}
     value={props.inputValue}
     placeholder="what would you like to say..."/>

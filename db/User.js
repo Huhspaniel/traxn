@@ -57,6 +57,10 @@ const userSchema = new Schema({
     _privateKey: { // AES encrypted
         type: String,
         immutable: true
+    },
+
+    imageUrl: {
+        type: String,
     }
 })
 userSchema.plugin(uniqueValidator);

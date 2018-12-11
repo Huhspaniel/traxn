@@ -27,7 +27,7 @@ const Profile = props => (
       </div>
 
       <div className="edit-profile">
-        <p>Edit Profile</p>
+        <a href="/settings"><p>Edit Profile</p></a>
       </div>
     </div>
 

@@ -7,6 +7,7 @@ import Alerts from '../Alerts/Alerts';
 import Messages from '../Messages/Messages';
 import Profile from '../Profile/Profile';
 import Settings from '../Settings/Settings';
+import Login from '../Login/Login';
 
 const Main = (props) => (
     <Switch>
@@ -16,6 +17,7 @@ const Main = (props) => (
         <Route path="/messages" component={ Messages } />
         <Route path="/settings" component={ Settings } />
         <Route path="/$:username" render={(_props) => <Profile {..._props} user={props.user} loggedIn={props.loggedIn} />} />
+        <Route path="/signin" component={ Login } />
     </Switch>
 );
 

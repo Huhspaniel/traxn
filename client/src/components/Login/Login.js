@@ -2,72 +2,76 @@ import React from "react";
 import Modal from "react-modal";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-// import cookie from 'react-cookies';
 
 const Login = props => (
-  <div className="login-div">
-    <p onClick={props.toggleHandler}>Login/Sign Up</p>
-    <Modal isOpen={props.isActive}>
-      <h3>Login</h3>
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="username"
-        value={props.userValue}
-        placeholder="username"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="password"
-        value={props.passValue}
-        placeholder="password"
-      />
-      <button className="send-login" onClick={props.loginHandler}>
-        Login
-      </button>
-
-      <br />
-      <h4>Or</h4>
-      <br />
-
-      <h3>Sign Up</h3>
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="username"
-        value={props.value}
-        placeholder="username"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="password"
-        value={props.value}
-        placeholder="password"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="email"
-        value={props.value}
-        placeholder="email"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="displayName"
-        value={props.value}
-        placeholder="display name"
-      />
-      <button className="signup-btn" onClick={props.signupHandler}>
-        Sign Up
-      </button>
-
-      <p className="login-btn" onClick={props.toggleHandler}>
-        Close
-      </p>
-    </Modal>
+  <div className="login-signup">
+    {props.loginMenuBool ? (
+      <div className="menu">
+        <p className="login-menu">
+          Login
+        </p>
+        <input
+          className="user-input"
+          onChange={props.changeHandler}
+          type="text"
+          name="username"
+          value={props.userValue}
+          placeholder="username"
+        />
+        <input
+          className="pass-input"
+          onChange={props.changeHandler}
+          type="password"
+          name="password"
+          value={props.passValue}
+          placeholder="password"
+        />
+        <button className="send-login" onClick={props.loginHandler}>
+          Login
+        </button>
+        <p className="signup-toggle" onClick={props.toggleMenu}>
+          Don't have an account? Sign up!
+        </p>
+      </div>
+    ) : (
+      <div className="menu">
+        <p className="signup-menu">Sign Up</p>
+        <input className="signupUser-input"
+          onChange={props.changeHandler}
+          type="text"
+          name="username"
+          value={props.value}
+          placeholder="username"
+        />
+        <input className="signupPass-input"
+          onChange={props.changeHandler}
+          type="text"
+          name="password"
+          value={props.value}
+          placeholder="password"
+        />
+        <input className="email-input"
+          onChange={props.changeHandler}
+          type="text"
+          name="email"
+          value={props.value}
+          placeholder="email"
+        />
+        <input className="name-input"
+          onChange={props.changeHandler}
+          type="text"
+          name="displayName"
+          value={props.value}
+          placeholder="display name"
+        />
+        <button className="signup-btn" onClick={props.signupHandler}>
+          Sign Up
+        </button>
+        <p className="signup-toggle" onClick={props.toggleMenu}>
+          Already have an account? Sign in!
+        </p>
+      </div>
+    )}
   </div>
 );
 
@@ -80,7 +84,7 @@ const FailedLogIn = props => (
 
 class LoginModal extends React.Component {
   state = {
-    isActive: false,
+    loginMenuBool: true,
     value: "",
     loggedIn: false,
     accessGranted: false,
@@ -91,6 +95,12 @@ class LoginModal extends React.Component {
 
     email: "",
     displayName: ""
+  };
+
+  toggleMenu = () => {
+    this.setState({
+      loginMenuBool: !this.state.loginMenuBool
+    });
   };
 
   setRedirect = event => {
@@ -172,12 +182,6 @@ class LoginModal extends React.Component {
     this.getToken();
   }
 
-  handleToggle = () => {
-    this.setState({
-      isActive: !this.state.isActive
-    });
-  };
-
   handleChange = event => {
     console.log(event.target.name);
     this.setState({
@@ -187,14 +191,17 @@ class LoginModal extends React.Component {
 
   render() {
     return (
-      <div className="login-modal">
+      <div className="">
         {this.renderRedirect()}
         <Login
+          loginToggler={this.toggleLogin}
+          toggleMenu={this.toggleMenu}
           signupHandler={this.createUser}
           loginHandler={this.sendLogin}
           isActive={this.state.isActive}
           toggleHandler={this.handleToggle}
           changeHandler={this.handleChange}
+          loginMenuBool={this.state.loginMenuBool}
         />
         {this.state.redirect === "invalidLogin" && <FailedLogIn />}
       </div>

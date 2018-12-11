@@ -4,85 +4,64 @@
     background: $color-primary;
     height: 100%;
     width: 100%;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto 1fr 1fr;
 
     .menu {
         justify-self: center;
-        grid-column-start: 2;
         grid-row-start: 2;
         background-color: white;
         border-radius: 2px;
-        height: 300px;
-        width: 300px;
+        box-sizing: border-box;
+        width: 100vw;
+        max-width: 450px;
+        padding: 20px;
 
         display: grid;
-        grid-template-rows: 1fr 1fr 1fr 1fr  1fr  1fr  1fr 1fr 1fr;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
 
-        .signup-menu {
-            grid-row-start: 1;
+        .menu-title {
             color: black;
             font-size: 19px;
-            margin-left: 10px;
-            
+            margin: 0;
         }
 
-        .login-menu {
-            grid-row-start: 1;
-            color: black;
-            font-size: 19px;
-            margin-left: 10px;
-            
+        .inputs {
+            padding: 20px 0;
         }
 
-        .user-input {
-            grid-row-start: 3;
-            height: 20px;
-            margin: 0 10px 0 10px;
+        input {
+            border-width: 0 0 1px 0;
+            border-color: #303030;
+            margin: 5px 0;
+            padding: 10px;
+            box-sizing: border-box;
+            width: 100%;
+            border-radius: 2px;
+            transition: .25s;
+
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 5px $color-primary;
+            }
         }
 
-        .signupUser-input {
-            grid-row-start: 2;
-            height: 20px;
-            margin: 0 10px 0 10px;
-        }
-
-        .pass-input {
-            grid-row-start: 4;
-            height: 20px;
-            margin: 0 10px 0 10px;
-        }
-
-        .signupPass-input {
-            grid-row-start: 3;
-            height: 20px;
-            margin: 0 10px 0 10px;
-        }
-        .email-input {
-            grid-row-start: 4;
-            height: 20px;
-            margin: 0 10px 0 10px;
-        }
-        .name-input {
-            grid-row-start: 5;
-            height: 20px;
-            margin: 0 10px 0 10px;
-        }
-
-        .signup-btn {
-            grid-row-start: 7;
-            margin: 0 100px 0 100px;
+        .submit-btn {
             border-radius: 2px;
             cursor: pointer;
-            transition: .6s;
+            transition: .16s;
             overflow: hidden;
-            
-
+            width: 100vw;
+            max-width: 150px;
+            justify-self: center;
+            padding: 10px 0;
             &:active {
                 color: '';
             }
             &:focus {
                 outline: none;
+                box-shadow: 0 0 5px $color-primary;
             }
             &:before {
                 content: '';
@@ -112,61 +91,15 @@
                     transition: .7s;
                 }
             }
-        }
-
-        .send-login {
-            grid-row-start: 7;
-            margin: 0 100px 0 100px;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: .6s;
-            overflow: hidden;
-            
-
-            &:active {
-                color: '';
-            }
-            &:focus {
-                outline: none;
-            }
-            &:before {
-                content: '';
-                
-                opacity: .5s;
-                filter: blur(30px);
-                transform: translateX(-130px) skewX(-15deg);
-            }
-            &:after {
-                content: '';
-                
-                opacity: 0;
-                filter: blur(30px);
-                transform: translate(-100px) scaleX(-15deg);
-            }
-            &:hover {
-                color: white;
-                background: rgb(255, 190, 213);
-                &:before {
-                    transform: translateX(300px) skewX(-15deg);
-                    opacity: .6;
-                    transition: .7s;
-                }
-                &:after {
-                    transform: translateX(300px) skewX(-15deg);
-                    opacity: 1;
-                    transition: .7s;
-                }
-            }
-
-
         }
 
         .signup-toggle {
-            grid-row-start: 9;
             color: $color-primary;
             justify-self: center;
             cursor: pointer;
             font-size: 13px;
+            margin: 0;
+            padding-top: 20px;
 
             &:hover {
                 text-decoration: underline;

@@ -7,26 +7,26 @@ const Login = props => (
   <div className="login-signup">
     {props.loginMenuBool ? (
       <div className="menu">
-        <p className="login-menu">
-          Login
-        </p>
-        <input
-          className="user-input"
-          onChange={props.changeHandler}
-          type="text"
-          name="username"
-          value={props.userValue}
-          placeholder="username"
-        />
-        <input
-          className="pass-input"
-          onChange={props.changeHandler}
-          type="password"
-          name="password"
-          value={props.passValue}
-          placeholder="password"
-        />
-        <button className="send-login" onClick={props.loginHandler}>
+        <p className="menu-title">Login</p>
+        <div className="inputs">
+          <input
+            className="user-input"
+            onChange={props.changeHandler}
+            type="text"
+            name="username"
+            value={props.userValue}
+            placeholder="Username"
+          />
+          <input
+            className="pass-input"
+            onChange={props.changeHandler}
+            type="password"
+            name="password"
+            value={props.passValue}
+            placeholder="Password"
+          />
+        </div>
+        <button className="submit-btn" onClick={props.loginHandler}>
           Login
         </button>
         <p className="signup-toggle" onClick={props.toggleMenu}>
@@ -35,36 +35,42 @@ const Login = props => (
       </div>
     ) : (
       <div className="menu">
-        <p className="signup-menu">Sign Up</p>
-        <input className="signupUser-input"
-          onChange={props.changeHandler}
-          type="text"
-          name="username"
-          value={props.value}
-          placeholder="username"
-        />
-        <input className="signupPass-input"
-          onChange={props.changeHandler}
-          type="text"
-          name="password"
-          value={props.value}
-          placeholder="password"
-        />
-        <input className="email-input"
-          onChange={props.changeHandler}
-          type="text"
-          name="email"
-          value={props.value}
-          placeholder="email"
-        />
-        <input className="name-input"
-          onChange={props.changeHandler}
-          type="text"
-          name="displayName"
-          value={props.value}
-          placeholder="display name"
-        />
-        <button className="signup-btn" onClick={props.signupHandler}>
+        <p className="menu-title">Sign Up</p>
+        <div className="inputs">
+          <input
+            className="signupUser-input"
+            onChange={props.changeHandler}
+            type="text"
+            name="username"
+            value={props.value}
+            placeholder="Username"
+          />
+          <input
+            className="signupPass-input"
+            onChange={props.changeHandler}
+            type="text"
+            name="password"
+            value={props.value}
+            placeholder="Password"
+          />
+          <input
+            className="email-input"
+            onChange={props.changeHandler}
+            type="text"
+            name="email"
+            value={props.value}
+            placeholder="Email"
+          />
+          <input
+            className="name-input"
+            onChange={props.changeHandler}
+            type="text"
+            name="displayName"
+            value={props.value}
+            placeholder="Display Name"
+          />
+        </div>
+        <button className="submit-btn" onClick={props.signupHandler}>
           Sign Up
         </button>
         <p className="signup-toggle" onClick={props.toggleMenu}>

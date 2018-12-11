@@ -3,6 +3,47 @@ import TrackList from "../Tracklist/TrackList";
 import SideProfile from "../SideProfile/SideProfile";
 import axios from "axios";
 
+class Dropdown extends React.Component {
+  state = {
+    showMenu: false
+  };
+  showMenu = event => {
+    event.preventDefault();
+    this.setState({ showMenu: true }, () => {
+      document.addEventListener("click", this.closeMenu);
+    });
+  };
+  closeMenu = () => {
+    this.setState({ showMenu: false }, () => {
+      document.removeEventListener("click", this.closeMenu);
+    });
+  };
+  selectOption = e => {
+    e.preventDefault();
+    this.props.handleChange(e);
+  };
+  render() {
+    return (
+      <div className={`custom-dropdown ${this.props.className || ""}`}>
+        <div className={"button"} onClick={this.showMenu}>
+          {this.props.label ? this.props.label + ': ' : ''}{this.props.selected}
+        </div>
+        <div className={`options${this.state.showMenu ? "" : " hide-menu"}`}>
+          {this.props.options.map(option => (
+            <option
+              data-label={option.label}
+              value={option.value}
+              onClick={this.selectOption}
+            >
+              {option.label}
+            </option>
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
+
 class HomePage extends React.Component {
   state = {
     filter: "public",
@@ -10,26 +51,36 @@ class HomePage extends React.Component {
     value: "",
     content: "",
     sort: "retrax",
+    sortLabel: 'Most Shared',
     showMenu: false
   };
 
-  showMenu = this.showMenu.bind(this);
-  closeMenu = this.closeMenu.bind(this);
-
-  showMenu(event) {
+  showMenu = event => {
     event.preventDefault();
-    
-    this.setState({
-      showMenu: true,
-    });
-  }
 
+    this.setState({ showMenu: true }, () => {
+      document.addEventListener("click", this.closeMenu);
+    });
+  };
+
+  closeMenu = () => {
+    this.setState({ showMenu: false }, () => {
+      document.removeEventListener("click", this.closeMenu);
+    });
+  };
+
+  setSort = e => {
+    const sort = e.target.value;
+    const sortLabel = e.target.getAttribute('data-label');
+    console.log(e.target.name)
+    this.setState({ sort, sortLabel });
+  };
   sort = tracks => {
-    return tracks.sort(this[`compare_${this.state.sort}`]);
+    return tracks ? tracks.sort(this[`compare_${this.state.sort}`]) : null;
   };
   a = {
-    name: 'bill'
-  }
+    name: "bill"
+  };
   compare_new = ({ _postedAt: a }, { _postedAt: b }) => {
     a = new Date(a).getTime();
     b = new Date(b).getTime();
@@ -114,11 +165,6 @@ class HomePage extends React.Component {
   };
 
   componentWillMount() {
-    this.getPublic();
-    this.getFollowing();
-  }
-
-  render() {
     if (!this.state.feed) {
       if (this.state.filter === "public") {
         this.getPublic();
@@ -126,7 +172,9 @@ class HomePage extends React.Component {
         this.getFollowing();
       }
     }
+  }
 
+  render() {
     return (
       <main
         className={`homepage-content${
@@ -160,25 +208,37 @@ class HomePage extends React.Component {
             </p>
           </div>
 
-          <div className="newsfeed-tabs">
-            <button onClick={this.showMenu} className="sort-by-btn">Sort By</button>
-            { this.state.showMenu ? (
-            <div className="sort-by-menu">
-              <button>Most Recent</button>
-              <button>Most Shared</button>
-            </div>
-            ) : ( 
-              null
-            ) }
-            <p onClick={this.getPublic}>Public</p>
+          <div
+            className={`newsfeed-tabs ${this.props.user ? "" : "logged-out"}`}
+          >
+            <p className="public-tab" onClick={this.getPublic}>
+              Public
+            </p>
             {this.props.user ? (
-              <p onClick={this.getFollowing}>Following</p>
+              <p className="following-tab" onClick={this.getFollowing}>
+                Following
+              </p>
             ) : (
               ""
             )}
+            <Dropdown
+              label="Sort"
+              options={[
+                {
+                  label: "Newest",
+                  value: "new"
+                },
+                {
+                  label: "Most Shared",
+                  value: "retrax"
+                }
+              ]}
+              handleChange={this.setSort}
+              selected={this.state.sortLabel}
+            />
           </div>
           <TrackList
-            feed={this.state.feed}
+            feed={this.sort(this.state.feed)}
             setRedirect={this.props.setRedirect}
             loggedIn={this.props.loggedIn}
           />

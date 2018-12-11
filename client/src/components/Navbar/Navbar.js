@@ -1,7 +1,6 @@
 import React from "react";
 
 import DrawerToggleButton from "../SideDrawer/DrawerToggleButton";
-import PostModal from "../Post/Post";
 
 const Navbar = props => (
   <header className="navbar">

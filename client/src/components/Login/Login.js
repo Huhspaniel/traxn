@@ -125,12 +125,13 @@ class LoginModal extends React.Component {
       .then(res => {
         if (res.data.error) {
           console.log(res.data.error);
-          localStorage.removeItem("id");
+          localStorage.clear();
           this.setState({ loggedIn: false });
           this.setRedirect();
         } else {
           console.log(res.data);
           localStorage.setItem("id", res.data.user_id);
+          localStorage.setItem("username", res.data.username);
           this.setState({ loggedIn: true });
           this.setRedirect();
         }

@@ -4,8 +4,7 @@ import SideProfile from "../SideProfile/SideProfile";
 import axios from 'axios';
 
 class HomePage extends React.Component {
-
-  state= {
+  state = {
     filter: 'public',
     feed: null
   }
@@ -61,15 +60,15 @@ class HomePage extends React.Component {
       }
     }
 
-    return(
+    return (
       <div className="homepage-content">
         <div className="homepage-profile">
           <SideProfile />
         </div>
         <div className="homepage-newsfeed">
-        <div className="newsfeed-tabs">
-        <p onClick={this.getPublic}>Public</p><p onClick={this.getFollowing}>Following</p>
-        </div>
+          <div className="newsfeed-tabs">
+            <p onClick={this.getPublic}>Public</p><p onClick={this.getFollowing}>Following</p>
+          </div>
           <TrackList feed={this.state.feed} />
         </div>
       </div>

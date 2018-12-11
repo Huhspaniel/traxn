@@ -1,13 +1,15 @@
 import React from "react";
 import TrackList from "../Tracklist/TrackList";
 import SideProfile from "../SideProfile/SideProfile";
-import axios from 'axios';
+import axios from "axios";
 
 class HomePage extends React.Component {
   state = {
-    filter: 'public',
-    feed: null
-  }
+    filter: "public",
+    feed: null,
+    value: "",
+    content: ""
+  };
 
   /*
     /api/tracks?period={unit},{quantity}&u={userid},{userid}...
@@ -26,13 +28,31 @@ class HomePage extends React.Component {
         The JWT token will automatically be stored in cookies upon login.
   */
 
+  handleChange = event => {
+    console.log(event.target.name);
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
+  handlePost = () => {
+    axios
+      .post("/api/tracks", {
+        content: this.state.content
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+  };
+
   getPublic = () => {
     axios
       .get(`/api/tracks`)
       .then(res => {
         this.setState({
           feed: res.data || [],
-          filter: 'public'
+          filter: "public"
         });
       })
       .catch(err => console.log(err));
@@ -43,11 +63,16 @@ class HomePage extends React.Component {
       .then(res => {
         this.setState({
           feed: res.data || [],
-          filter: 'following'
+          filter: "following"
         });
       })
       .catch(err => console.log(err));
   };
+
+  componentDidMount() {
+    this.getPublic();
+    this.getFollowing();
+  }
 
   render() {
     if (!this.state.feed) {
@@ -59,16 +84,51 @@ class HomePage extends React.Component {
     }
 
     return (
-      <main className={`homepage-content${this.props.loggedIn ? '' : ' logged-out'}`}>
-        {this.props.user ? <div className="homepage-profile">
-          <SideProfile user={this.props.user} />
-        </div> : ''}
+      <main
+        className={`homepage-content${
+          this.props.loggedIn ? "" : " logged-out"
+        }`}
+      >
+        {this.props.user ? (
+          <div className="homepage-profile">
+            <SideProfile user={this.props.user} />
+          </div>
+        ) : (
+          ""
+        )}
         <div className="homepage-newsfeed">
+          <div className="new-post">
+            <img
+              className="avatar-img"
+              src="https://www.gstatic.com/webp/gallery/1.jpg"
+            />
+
+            <textarea
+              className="textarea"
+              name="content"
+              type="text"
+              placeholder="What would you like to say?"
+              onChange={this.handleChange}
+              value={this.inputValue}
+            />
+            <p onClick={this.handlePost} className="post-track">
+              Post
+            </p>
+          </div>
+
           <div className="newsfeed-tabs">
             <p onClick={this.getPublic}>Public</p>
-            {this.props.user ? <p onClick={this.getFollowing}>Following</p> : ''}
+            {this.props.user ? (
+              <p onClick={this.getFollowing}>Following</p>
+            ) : (
+              ""
+            )}
           </div>
-          <TrackList feed={this.state.feed} setRedirect={this.props.setRedirect} loggedIn={this.props.loggedIn} />
+          <TrackList
+            feed={this.state.feed}
+            setRedirect={this.props.setRedirect}
+            loggedIn={this.props.loggedIn}
+          />
         </div>
       </main>
     );

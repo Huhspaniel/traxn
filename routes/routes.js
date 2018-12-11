@@ -166,7 +166,11 @@ module.exports = function (app) {
                 .then(track => {
                     return User.findByIdAndUpdate(req.body.user_id, {
                         $push: { tracks: track._id }
-                    }).then(() => res.json(track))
+                    }).then(user => {
+                        user.password = undefined;
+                        track.user = user;
+                        res.json(track);
+                    })
                 })
                 .catch(next);
         })

@@ -1,9 +1,9 @@
 const {
     User,
     Track,
-    ƒ: { getFeed }
-} = require('../models');
-const { loginUser, authJWT, authDev } = require('./route-functions.js');
+    _functions: { getFeed }
+} = require('../db');
+const { errObj, loginUser, authJWT } = require('./functions.js');
 
 module.exports = function (app) {
     app.get('/csrf', (req, res) => {
@@ -54,9 +54,13 @@ module.exports = function (app) {
             .catch(next);
     })
 
-    /* ----- JWT secure routes ----- */
+    app.delete('/api/users/:id', (req, res, next) => {
+        User.findByIdAndDelete(req.params.id)
+            .then(data => res.json(data))
+            .catch(next)
+    })
 
-    app.use(authJWT);
+    /* ----- JWT secure routes ----- */
 
     function getUserByJWT(req, res, next) {
         User.findOne({ _id: req.body.user_id })
@@ -102,7 +106,7 @@ module.exports = function (app) {
     }
 
     app.route('/api/users/me')
-        .all(getUserByJWT)
+        .all(authJWT, getUserByJWT)
         .get((req, res) => res.json(req.body.user))
         .put(updateUser)
 
@@ -121,6 +125,7 @@ module.exports = function (app) {
     }
 
     app.route('/api/users/:id')
+        .all(authJWT)
         .get((req, res, next) => {
             if (req.body.user_id === req.params.id) {
                 getUserByJWT(req, res, next);
@@ -146,49 +151,51 @@ module.exports = function (app) {
         }, updateUser)
 
     app.route('/api/tracks')
-        .post((req, res, next) => {
+        .post(authJWT, (req, res, next) => {
             req.body.user = req.body.user_id;
             Track.create(req.body)
                 .then(data => res.json(data))
                 .catch(next);
         })
 
-    app.get('/api/tracks', getUserByJWT, (req, res, next) => {
+    app.get('/api/tracks', authJWT, getUserByJWT, (req, res, next) => {
         getFeed(req.query.period, req.body.user.following)
             .then(tracks => res.json(tracks))
             .catch(next)
     })
 
     app.route('/api/tracks/:id')
+        .all(authJWT)
         .put((req, res, next) => {
             Track.findOne({ _id: req.params.id })
-                .then(doc => {
+                .then(track => {
                     const { action } = req.query;
+                    console.log(req.body);
                     if (action === 'repost') {
                         let update;
-                        if (track.repostedBy.find(user => user == req.body.user)) {
+                        if (track.repostedBy.find(user => user == req.body.user_id)) {
                             update = {
                                 $pull: {
-                                    repostedBy: req.body.user
+                                    repostedBy: req.body.user_id
                                 }
                             }
                         } else {
                             update = {
                                 $push: {
-                                    repostedBy: req.body.user
+                                    repostedBy: req.body.user_id
                                 }
                             }
                         }
                         return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
-                    } else if (req.body.user_id != doc.user) {
+                    } else if (req.body.user_id != track.user) {
                         next(new Error('Cannot edit other users\' posts'))
                     } else {
                         const update = {};
                         for (let prop in req.body) {
                             update[prop] = req.body[prop];
                         }
-                        doc.set(update);
-                        return doc.save()
+                        track.set(update);
+                        return track.save()
                     }
                 })
                 .then(data => res.json(data))

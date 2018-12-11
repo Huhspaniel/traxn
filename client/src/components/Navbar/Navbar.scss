@@ -6,10 +6,8 @@ $color-hover: rgb(238, 238, 238);
   position: sticky;
   -webkit-position: sticky;
   top: 0;
-  left: 0;
-  width: 100%;
+  width: 100vw;
   background-color: rgb(24, 24, 24);
-  height: 45px;
   z-index: 999;
 }
 
@@ -41,13 +39,19 @@ $color-hover: rgb(238, 238, 238);
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: auto 1fr;
- 
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
 
   ul.nav-right {
     display: grid;
     justify-self: right;
-    height: 100%;
-    align-items: center;
     justify-items: center;
    
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -55,7 +59,6 @@ $color-hover: rgb(238, 238, 238);
     .login {
       grid-column-start: 1;
     }
-
     .post {
       grid-column-start: 1;
     }
@@ -63,41 +66,27 @@ $color-hover: rgb(238, 238, 238);
       grid-column-start: 4;
     }
   }
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
   li {
-    padding: 0 0.5rem;
     font-size: 14px;
-    margin-right: 5px;
-    border-bottom: 0 $color-primary solid;
-    transition: border-bottom-width 0.2s linear;
-    &:hover,
-    &:active {
-      color: $color-primary;
-      border-bottom-width: 3px;
-    }
   }
   a:not(.avatar), .nav-link {
     cursor: pointer;
-    &:hover,
-    &:active {
+    border-bottom: 0 $color-primary solid;
+    transition: 0.1s linear;
+    margin: 10px 0;
+    padding: 5px;
+    &:hover, &.active {
       color: $color-primary;
+      border-bottom-width: 2px;
+      margin-bottom: 8px;
+      i {
+        color: $color-primary;
+      }
     }
     box-sizing: border-box;
-    height: 20px;
 
     color: white;
     text-decoration: none;
-  }
-  i {
-    &:hover {
-      color: $color-primary;
-    }
   }
 }
 

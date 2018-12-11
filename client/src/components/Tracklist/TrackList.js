@@ -1,6 +1,7 @@
 import React from "react";
 import Repost from "../Repost/Repost";
 import axios from "axios";
+// import { ClipLoader } from 'react-spinners';
 
 function formatTimestamp(date) {
   date = new Date(date);
@@ -15,7 +16,7 @@ class Track extends React.Component {
 
   handleRepost = track_id => {
     this.setState({
-      retrax: this.state.repostedByUser ? this.state.retrax-- : this.state.retrax++,
+      retrax: this.state.repostedByUser ? this.state.retrax - 1 : this.state.retrax + 1,
       repostedByUser: !this.state.repostedByUser
     })
     axios
@@ -33,14 +34,16 @@ class Track extends React.Component {
   render() {
     return (
       <div className="track-main" data-id={this.props.id}>
-        <img
-          className="track-img"
-          src={this.props.userPic}
-          alt={this.props.userName + " user picture"}
-        />
+        <a href={`/$${this.props.username}`}>
+          <img
+            className="track-img"
+            src={this.props.userPic}
+            alt={this.props.userName + " user picture"}
+          />
+        </a>
         <div className="track-header">
           <p className="track-screen-name">{this.props.displayName}</p>
-          <p className="track-handle">{this.props.username}</p>
+          <p className="track-handle">#{this.props.username}</p>
           <p className="track-timestamp">
             {" "}
             ⋅ {formatTimestamp(this.props._postedAt)}
@@ -82,7 +85,7 @@ const TrackList = props => (
               <Track
                 displayName={track.user.displayName}
                 userPic="https://www.gstatic.com/webp/gallery/1.jpg"
-                username={"#" + track.user.username}
+                username={track.user.username}
                 _postedAt={track._postedAt}
                 content={track.content}
                 key={track._id}
@@ -96,8 +99,8 @@ const TrackList = props => (
       ) : (
           <span style={{ color: "black", padding: "20px" }}>No posts :(</span>
         ) // <-- Whatever is here is what will be displayed if there are no posts to show
-    ) : (
-        ""
+    ) : (''
+        // <ClipLoader />
       ) /* <-- Whatever is here is what will be displayed when posts have not loaded yet */}
   </div>
 );

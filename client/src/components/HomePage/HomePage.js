@@ -97,10 +97,11 @@ class HomePage extends React.Component {
           ""
         )}
         <div className="homepage-newsfeed">
-          <div className="new-post">
+          {this.props.user ? <div className="new-post">
             <img
               className="avatar-img"
               src="https://www.gstatic.com/webp/gallery/1.jpg"
+              alt="avatar"
             />
 
             <textarea
@@ -114,7 +115,7 @@ class HomePage extends React.Component {
             <p onClick={this.handlePost} className="post-track">
               Post
             </p>
-          </div>
+          </div> : ''}
 
           <div className="newsfeed-tabs">
             <p onClick={this.getPublic}>Public</p>

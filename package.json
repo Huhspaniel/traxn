@@ -30,7 +30,8 @@
     "js-cookie": "^2.2.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.0.17",
-    "mongoose-unique-validator": "^2.0.2"
+    "mongoose-unique-validator": "^2.0.2",
+    "react-spinners": "^0.4.7"
   },
   "repository": {
     "type": "git",

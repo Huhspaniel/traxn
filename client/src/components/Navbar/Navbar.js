@@ -48,9 +48,6 @@ const Navbar = props => (
               props.setRedirect('/signin');
             }}>Sign out</div>
             : <a href="/signin">Sign in</a>}
-
-          <PostModal className="post" />
-
           {props.loggedIn || localStorage.getItem('id') ?
             <a className="avatar" href={`/$${props.user ? props.user.username : localStorage.getItem('username')}`}>
               <img

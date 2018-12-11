@@ -8,7 +8,47 @@ class HomePage extends React.Component {
     filter: "public",
     feed: null,
     value: "",
-    content: ""
+    content: "",
+    sort: "retrax",
+    showMenu: false
+  };
+
+  showMenu = this.showMenu.bind(this);
+  closeMenu = this.closeMenu.bind(this);
+
+  showMenu(event) {
+    event.preventDefault();
+    
+    this.setState({
+      showMenu: true,
+    });
+  }
+
+  sort = tracks => {
+    return tracks.sort(this[`compare_${this.state.sort}`]);
+  };
+  a = {
+    name: 'bill'
+  }
+  compare_new = ({ _postedAt: a }, { _postedAt: b }) => {
+    a = new Date(a).getTime();
+    b = new Date(b).getTime();
+    if (a > b) {
+      return -1;
+    } else if (a < b) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+  compare_retrax = (a, b) => {
+    if (a.repostedBy.length > b.repostedBy.length) {
+      return -1;
+    } else if (a.repostedBy.length < b.repostedBy.length) {
+      return 1;
+    } else {
+      return this.compare_new(a, b);
+    }
   };
 
   /*
@@ -36,12 +76,15 @@ class HomePage extends React.Component {
   };
 
   handlePost = () => {
+    const content = this.state.content;
+    this.setState({ content: "" });
     axios
-      .post("/api/tracks", {
-        content: this.state.content
-      })
+      .post("/api/tracks", { content })
       .then(res => {
         console.log(res);
+        this.setState({
+          filter: this.state.feed.unshift(res.data)
+        });
       })
       .catch(err => console.log(err));
   };
@@ -50,6 +93,7 @@ class HomePage extends React.Component {
     axios
       .get(`/api/tracks`)
       .then(res => {
+        res.data = this.sort(res.data);
         this.setState({
           feed: res.data || [],
           filter: "public"
@@ -69,7 +113,7 @@ class HomePage extends React.Component {
       .catch(err => console.log(err));
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.getPublic();
     this.getFollowing();
   }
@@ -109,7 +153,7 @@ class HomePage extends React.Component {
               type="text"
               placeholder="What would you like to say?"
               onChange={this.handleChange}
-              value={this.inputValue}
+              value={this.state.content}
             />
             <p onClick={this.handlePost} className="post-track">
               Post
@@ -117,6 +161,15 @@ class HomePage extends React.Component {
           </div>
 
           <div className="newsfeed-tabs">
+            <button onClick={this.showMenu} className="sort-by-btn">Sort By</button>
+            { this.state.showMenu ? (
+            <div className="sort-by-menu">
+              <button>Most Recent</button>
+              <button>Most Shared</button>
+            </div>
+            ) : ( 
+              null
+            ) }
             <p onClick={this.getPublic}>Public</p>
             {this.props.user ? (
               <p onClick={this.getFollowing}>Following</p>

@@ -46,13 +46,15 @@ body {
     grid-template-rows: 1fr;
     justify-items: center;
     align-items: center;
+    box-sizing: border-box;
+    height: min-content;
 
     .avatar-img {
       vertical-align: middle;
       align-self: start;
       box-sizing: border-box;
-      width: 39px;
-      height: 39px;
+      width: 40px;
+      height: 40px;
       border: 3px solid white;
       border-radius: 50%;
     }
@@ -61,6 +63,7 @@ body {
         resize: none;
         box-sizing: border-box;
         width: calc(100% - 30px);
+        height: 40px;
         padding: 5px;
         border-radius: 10px;
         border-color: palevioletred;
@@ -74,9 +77,11 @@ body {
     }
 
     .post-track {
+        align-self: start;
         color: black;
         border: solid thin palevioletred;
         justify-self: center;
+        box-sizing: border-box;
         padding: 10px;
         margin: 0;
         border-radius: 10px;

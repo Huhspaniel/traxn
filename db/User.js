@@ -57,7 +57,12 @@ const userSchema = new Schema({
     _privateKey: { // AES encrypted
         type: String,
         immutable: true
-    }
+    },
+    tracks: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Track',
+        immutable: true
+    }]
 })
 userSchema.plugin(uniqueValidator);
 userSchema.pre(`save`, function (next) {

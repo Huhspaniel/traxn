@@ -3,9 +3,9 @@ import React from "react";
 import "./Scoreboard.scss";
 
 const Scoreboard = props => (
-  <div className="homepage-content">
+  <main className="homepage-content">
     Scoreboard Page
-  </div>
+  </main>
 );
 
 export default Scoreboard;

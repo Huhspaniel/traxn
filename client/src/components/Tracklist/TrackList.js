@@ -62,6 +62,7 @@ class Track extends React.Component {
             <i className="far fa-envelope" />
           </p>
         </div>
+        <hr/>
       </div>
     );
   }
@@ -74,16 +75,16 @@ const TrackList = props => (
         props.feed.map(
           track =>
             console.log(track) || (
-              <Track
-                displayName={track.user.displayName}
-                userPic="https://www.gstatic.com/webp/gallery/1.jpg"
-                username={"#" + track.user.username}
-                _postedAt={track._postedAt}
-                content={track.content}
-                key={track._id}
-                id={track._id}
-                repostedBy={track.repostedBy}
-              />
+                <Track
+                  displayName={track.user.displayName}
+                  userPic="https://www.gstatic.com/webp/gallery/1.jpg"
+                  username={"#" + track.user.username}
+                  _postedAt={track._postedAt}
+                  content={track.content}
+                  key={track._id}
+                  id={track._id}
+                  repostedBy={track.repostedBy}
+                />
             )
         )
       ) : (

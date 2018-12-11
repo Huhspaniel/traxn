@@ -30,7 +30,6 @@ class HomePage extends React.Component {
     axios
       .get(`/api/tracks`)
       .then(res => {
-        console.log(res);
         this.setState({
           feed: res.data || [],
           filter: 'public'
@@ -42,7 +41,6 @@ class HomePage extends React.Component {
     axios
       .get(`/api/tracks/following`)
       .then(res => {
-        console.log(res);
         this.setState({
           feed: res.data || [],
           filter: 'following'
@@ -61,17 +59,18 @@ class HomePage extends React.Component {
     }
 
     return (
-      <div className="homepage-content">
-        <div className="homepage-profile">
-          <SideProfile />
-        </div>
+      <main className={`homepage-content${this.props.loggedIn ? '' : ' logged-out'}`}>
+        {this.props.user ? <div className="homepage-profile">
+          <SideProfile user={this.props.user} />
+        </div> : ''}
         <div className="homepage-newsfeed">
           <div className="newsfeed-tabs">
-            <p onClick={this.getPublic}>Public</p><p onClick={this.getFollowing}>Following</p>
+            <p onClick={this.getPublic}>Public</p>
+            {this.props.user ? <p onClick={this.getFollowing}>Following</p> : ''}
           </div>
-          <TrackList feed={this.state.feed} />
+          <TrackList feed={this.state.feed} setRedirect={this.props.setRedirect} loggedIn={this.props.loggedIn} />
         </div>
-      </div>
+      </main>
     );
   }
 }

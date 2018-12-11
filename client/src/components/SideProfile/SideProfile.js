@@ -1,34 +1,11 @@
 import React from "react";
-import axios from "axios";
 
-class SideProfile extends React.Component {
-  state = {
-    username: '',
-    displayName: ''
-  }
-
-  getUserInfo = () => {
-    axios.get('/api/users/me')
-    .then((res) => {
-      console.log(res);
-      this.setState({
-        username: res.data.username,
-        displayName: res.data.displayName
-      })
-    })
-  }
-
-  componentWillMount () {
-    this.getUserInfo();
-  }
-
-  render() {
-    return (
-      <div className="side-profile">
+const SideProfile = props => (
+  <div className="side-profile">
     <h1 className="profile-top">Traxn</h1>
-    <img className="avatar" src="https://www.gstatic.com/webp/gallery/1.jpg" />
-    <p id="screen-name">{this.state.displayName}</p>
-    <p id="handle">#{this.state.username}</p>
+    <img className="avatar" src="https://www.gstatic.com/webp/gallery/1.jpg" alt="profile img" />
+    <p id="screen-name">{props.user.displayName}</p>
+    <p id="handle">#{props.user.username}</p>
     <div className="record">
       <div className="trackrecord">
         <p className="profile-list">Record</p>
@@ -44,9 +21,7 @@ class SideProfile extends React.Component {
       </div>
     </div>
   </div>
-    )
-  }
-}
+)
 
 
 

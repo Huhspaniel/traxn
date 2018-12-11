@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
 import './App.scss';
 import Main from './components/Main/Main';
 import axios from 'axios';
@@ -12,7 +13,8 @@ class App extends Component {
   state = {
     sideDrawerOpen: false,
     loggedIn: null,
-    user: null
+    user: null,
+    redirect: null
   };
 
   drawerToggleClickHandler = () => {
@@ -25,41 +27,96 @@ class App extends Component {
     this.setState({ sideDrawerOpen: false });
   };
 
-  loginJWT() {
+  setRedirect = path => {
+    this.setState({
+      redirect: path
+    })
+  };
+
+  renderRedirect = () => {
+    if (this.state.redirect && this.state.redirect !== window.location.pathname) {
+      const path = this.state.redirect;
+      return <Redirect to={path} />
+    }
+  };
+
+  getCSRF = () => {
+    axios
+      .get("/csrf")
+      .then(res => {
+        axios.defaults.headers.common["csrf-token"] = res.data.csrfToken;
+        console.log(axios.defaults.headers);
+        this.setState({ accessGranted: true });
+      })
+      .catch(err => console.log(err));
+  };
+
+  authJWT = () => {
     return axios
       .get('/api/users/me')
       .then(res => {
         if (res.error) {
-          localStorage.clear();
-          cookie.remove('jwt');
+          console.log(res.error);
+          this.logout();
         } else {
-          localStorage.setItem('id', res.data._id);
-          localStorage.setItem('username', res.data.username);
-          this.setState({
-            user: res.data
-          })
+          this.login(res.data);
         }
       })
+      .catch(err => {
+        console.error(err.response);
+      });
+  }
+
+  logout = () => {
+    localStorage.clear();
+    cookie.remove('jwt');
+    this.setState({
+      user: null,
+      loggedIn: false
+    })
+  }
+  login = user => {
+    localStorage.setItem('id', user._id);
+    localStorage.setItem('username', user.username);
+    this.setState({
+      user: user,
+      loggedIn: true
+    })
   }
 
   componentWillMount() {
-    this.loginJWT();
+    this.getCSRF();
+    if (cookie.get('jwt')) {
+      this.authJWT();
+    }
   }
 
   render() {
     let backdrop;
+    console.log('Rendering app...')
 
     if (this.state.sideDrawerOpen) {
       backdrop = <Backdrop click={this.backdropClickHandler} />;
     }
     return (
-      <div style={{ height: "100%" }}>
-        <Navbar drawerClickHandler={this.drawerToggleClickHandler} user={this.state.user} />
+      <div className="global-page">
+        <Navbar
+          drawerClickHandler={this.drawerToggleClickHandler}
+          user={this.state.user}
+          loggedIn={this.state.loggedIn}
+          logout={this.logout}
+          axios={axios}
+          setRedirect={this.setRedirect}
+        />
         <SideDrawer show={this.state.sideDrawerOpen} />
+        {this.renderRedirect()}
         {backdrop}
-        <main style={{ marginTop: "64px" }}>
-          <Main user={this.state.user} loggedIn={this.state.loggedIn} />
-        </main>
+        <Main
+          user={this.state.user} axios={axios}
+          loggedIn={this.state.loggedIn}
+          login={this.login} logout={this.logout}
+          setRedirect={this.setRedirect}
+        />
       </div>
     );
   }

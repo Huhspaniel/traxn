@@ -11,9 +11,10 @@ function loginUser(req, res, next) {
                 if (valid) {
                     const token = jwt.sign({ user_id: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
                     res.cookie('jwt', token);
+                    user.password = undefined;
                     res.json({
                         success: true,
-                        user_id: user._id
+                        user: user
                     });
                 } else {
                     res.status(401);

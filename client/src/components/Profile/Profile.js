@@ -10,7 +10,7 @@ const Stat = props => (
 );
 
 const Profile = props => (props.user ?
-  <div className="profile-page">
+  <main className="profile-page">
     <div className="profile-header">
       <div className="profile-pic">
         <img className="pic" src="https://www.gstatic.com/webp/gallery/1.jpg" />
@@ -61,7 +61,7 @@ const Profile = props => (props.user ?
         <Tracklist />
       </div>
     </div>
-  </div>
+  </main>
   : '');
 
 class classProfile extends React.Component {
@@ -72,7 +72,7 @@ class classProfile extends React.Component {
 
   }
 
-  render() {
+  componentWillMount() {
     if (this.props.user) {
       if (this.props.user.username !== this.props.match.params.username) {
         axios
@@ -104,6 +104,9 @@ class classProfile extends React.Component {
         })
         .catch(err => console.error(err))
     }
+  }
+
+  render() {
     return (
       this.props.user ?
         this.props.user.username === this.props.match.params.username ?

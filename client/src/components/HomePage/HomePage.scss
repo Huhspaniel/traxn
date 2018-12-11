@@ -13,26 +13,28 @@ body {
 }
 
 .homepage-content {
-  margin: 100px auto;
-  max-width: 900px;
-  display: grid;
-  grid-template-columns: min-content 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: "profile newsfeed";
-  grid-column-gap: 1em;
-  grid-row-gap: 1em;
-  color: white;
+    margin: 100px 0;
+    width: 100vw;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+    color: white;
+
+    &.logged-out {
+        grid-template-columns: 1fr;
+    }
 }
 
 .homepage-profile {
-  height: 250px;
-  width: 250px;
-  grid-area: profile;
+    height: 250px;
+    width: 250px;
 }
 
 .homepage-newsfeed {
-  grid-area: newsfeed;
-  width: 100%;
+    width: 100%;
 
   .new-post {
     background-color: rgb(255, 225, 235);

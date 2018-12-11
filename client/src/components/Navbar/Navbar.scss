@@ -3,7 +3,8 @@ $color-gray: rgb(106, 105, 105);
 $color-hover: rgb(238, 238, 238);
 
 .navbar {
-  position: fixed;
+  position: sticky;
+  -webkit-position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -81,7 +82,8 @@ $color-hover: rgb(238, 238, 238);
       border-bottom-width: 3px;
     }
   }
-  a:not(.avatar) {
+  a:not(.avatar), .nav-link {
+    cursor: pointer;
     &:hover,
     &:active {
       color: $color-primary;

@@ -42,20 +42,28 @@ const Navbar = props => (
         </ul>
 
         <ul className="nav-right">
-          <a href="/signin">Sign in</a>
+          {props.loggedIn || localStorage.getItem('id') ?
+            <div className='nav-link' onClick={e => {
+              props.logout();
+              props.setRedirect('/signin');
+            }}>Sign out</div>
+            : <a href="/signin">Sign in</a>}
 
           <PostModal className="post" />
 
-          <a className="avatar" href="/profile">
-            <img
-              className="profile-settings"
-              src="https://www.gstatic.com/webp/gallery/1.jpg"
-            />
-          </a>
+          {props.loggedIn || localStorage.getItem('id') ?
+            <a className="avatar" href={`/$${props.user ? props.user.username : localStorage.getItem('username')}`}>
+              <img
+                className="profile-settings"
+                src="https://www.gstatic.com/webp/gallery/1.jpg"
+                alt="profile img"
+              />
+            </a>
+            : ''}
         </ul>
       </div>
     </nav>
   </header>
-);
+)
 
 export default Navbar;

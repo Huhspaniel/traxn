@@ -111,7 +111,7 @@ module.exports = function (app) {
         .put(updateUser)
 
     function getUserPublic(req, res, next) {
-        User.findOne({ _id: req.params.id })
+        User.findById(req.params.id)
             .then(user => {
                 if (user) {
                     user.password = user.email = user.following = undefined;
@@ -121,7 +121,16 @@ module.exports = function (app) {
                     next(new Error('User not found'));
                 }
             })
-            .catch(next);
+            .catch(err => {
+                if (err.name === 'CastError') {
+                    User.findOne({ username: req.params.id })
+                        .then(user => {
+                            user.password = user.email = user.following = undefined;
+                            res.json(user);
+                        })
+                        .catch(next)
+                }
+            });
     }
 
     app.route('/api/users/:id')
@@ -154,7 +163,11 @@ module.exports = function (app) {
         .post(authJWT, (req, res, next) => {
             req.body.user = req.body.user_id;
             Track.create(req.body)
-                .then(data => res.json(data))
+                .then(track => {
+                    return User.findByIdAndUpdate(req.body.user_id, {
+                        $push: { tracks: track._id }
+                    }).then(() => res.json(track))
+                })
                 .catch(next);
         })
 

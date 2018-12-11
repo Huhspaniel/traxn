@@ -14,7 +14,7 @@ body {
 
 .profile-page {
   display: grid;
-  grid-template-rows: 200px 70px 1fr;
+  grid-template-rows: 200px min-content 1fr;
   grid-template-columns: 1fr;
   grid-template-areas:
     "header"
@@ -29,16 +29,13 @@ body {
     box-sizing: border-box;
     grid-area: header;
     background-color: $color-primary;
-    grid-template-areas: "profile-pic";
 
     .profile-pic {
-      grid-area: profile-pic;
       grid-column-start: 2;
       grid-row-start: 2;
 
       .pic {
         border: 5px solid white;
-        grid-column-start: 2;
         width: 200px;
         height: 200px;
         max-height: 100%;
@@ -52,8 +49,7 @@ body {
     grid-area: profile-bar;
     display: grid;
     grid-template-columns: 40% 40% 20%;
-    height: 60px;
-    
+    height: max-content;
 
     .stats {
       grid-column-start: 2;
@@ -64,7 +60,6 @@ body {
 
       p {
         margin: 0;
-        
       }
 
       .stat {
@@ -76,7 +71,16 @@ body {
           "stat-name"
           "stat-value"
           ".";
-          
+        margin: 10px 0;
+        border-bottom: 0 $color-primary solid;
+        transition: 0.16s linear;
+        &:hover {
+          border-bottom-width: 2px;
+          margin-bottom: 8px;
+          .stat-name, .stat-value {
+            color: $color-primary;
+          }
+        }
       }
 
       .stat-name {
@@ -85,25 +89,8 @@ body {
         font-weight: bold;
         font-size: 13px;
         text-align: center;
-        
       }
       .stat-value {
-        display: inline-block;
-        height: 30px;
-        box-sizing: border-box;
-        border-bottom: 0 $color-primary solid;
-        transition: border-bottom-width .2s linear;
-        
-        &:hover{
-            border-bottom-width: 3px;
-            color: $color-primary;
-        }
-        &:active{
-            border-bottom-width: 3px;
-            color: $color-primary;
-        }
-        
-
         grid-area: stat-value;
         color: $color-gray;
         font-weight: bold;
@@ -115,8 +102,10 @@ body {
     .edit-profile {
       justify-self: right;
       p {
+        box-sizing: border-box;
         color: $color-gray;
         font-weight: bold;
+        box-sizing: border-box;
         border: solid thin $color-gray;
         padding: 10px;
         font-size: 13px;
@@ -138,45 +127,35 @@ body {
     margin: 50px 0;
     max-width: 1000px;
     display: grid;
-    grid-template-rows: 1fr;
     grid-template-columns: min-content 1fr;
     grid-template-areas: "profile newsfeed";
-    grid-column-gap: 1em;
-    grid-row-gap: 1em;
+    grid-gap: 1em;
     color: white;
 
     .profile-profile {
-      display: grid;
-      grid-template-columns: 1 100%;
-      grid-template-rows: 10% 10% 70%;
+      grid-area: profile;
+      padding: 0 20px;
       box-sizing: border-box;
       height: 250px;
       width: 250px;
-      grid-area: profile;
       color: $color-hover;
 
       .profile-names {
-        grid-row-start: 1;
-        display: grid;
-        grid-template-rows: 90% 40%;
-
+        p {
+          margin: 0;
+        }
         .screen-name {
           font-weight: bold;
-          grid-row-start: 1;
         }
         .handle {
           font-size: 13.5px;
-          grid-row-start: 2;
         }
       }
       .profile-info {
-        grid-row-start: 3;
-
         i {
           margin: 2px;
           margin-right: 7px;
         }
-
         .website {
           color: rgb(137, 200, 255);
 
@@ -194,7 +173,6 @@ body {
 
   .profile-newsfeed {
     box-sizing: border-box;
-    height: 500px;
     width: 100%;
     grid-area: newsfeed;
   }
@@ -220,7 +198,6 @@ body {
   }
 
   .profile-bar {
-    
     background-color: white;
     grid-area: profile-bar;
     display: grid;

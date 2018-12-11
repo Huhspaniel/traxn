@@ -1,7 +1,7 @@
 import React from "react";
 
 const Alerts = props => (
-  <div className="alerts-content">
+  <main className="alerts-content">
     <div className="alerts">
 
       <div className="from-alert">
@@ -11,7 +11,7 @@ const Alerts = props => (
       </div>
 
     </div>
-  </div>
+  </main>
 );
 
 // class Alerts extends React.Component {

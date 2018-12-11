@@ -51,7 +51,12 @@ class Track extends React.Component {
           <Repost
             track_id={this.props.id}
             retraxCount={this.state.retrax}
-            handleRepost={this.handleRepost}
+            handleRepost={track_id => {
+              if (this.props.loggedIn)
+                this.handleRepost(track_id)
+              else
+                this.props.setRedirect('/signin')
+            }}
             active={this.state.repostedByUser}
           />
 
@@ -74,25 +79,27 @@ const TrackList = props => (
       props.feed[0] ? (
         props.feed.map(
           track =>
-            console.log(track) || (
-                <Track
-                  displayName={track.user.displayName}
-                  userPic="https://www.gstatic.com/webp/gallery/1.jpg"
-                  username={"#" + track.user.username}
-                  _postedAt={track._postedAt}
-                  content={track.content}
-                  key={track._id}
-                  id={track._id}
-                  repostedBy={track.repostedBy}
-                />
+            (
+              <Track
+                displayName={track.user.displayName}
+                userPic="https://www.gstatic.com/webp/gallery/1.jpg"
+                username={"#" + track.user.username}
+                _postedAt={track._postedAt}
+                content={track.content}
+                key={track._id}
+                id={track._id}
+                repostedBy={track.repostedBy}
+                setRedirect={props.setRedirect}
+                loggedIn={props.loggedIn}
+              />
             )
         )
       ) : (
-        <span style={{ color: "black", padding: "20px" }}>No posts :(</span>
-      ) // <-- Whatever is here is what will be displayed if there are no posts to show
+          <span style={{ color: "black", padding: "20px" }}>No posts :(</span>
+        ) // <-- Whatever is here is what will be displayed if there are no posts to show
     ) : (
-      ""
-    ) /* <-- Whatever is here is what will be displayed when posts have not loaded yet */}
+        ""
+      ) /* <-- Whatever is here is what will be displayed when posts have not loaded yet */}
   </div>
 );
 

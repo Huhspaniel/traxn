@@ -1,3 +1,19 @@
+// html, body, #root, #root > div {
+//     min-height: 100vh;
+// }
+// main {
+//     height: 100vh;
+// }
+.global-page {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    justify-items: center;
+    main {
+        width: 100%;
+    }
+}
 @import './components/Backdrop/Backdrop.scss';
 @import './components/Navbar/Navbar.scss';
 @import './components/SideDrawer/DrawerToggleButton.scss';

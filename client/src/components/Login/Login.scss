@@ -1,20 +1,111 @@
-.login-modal {
-    padding: 0;
-    margin: 0;
-    p {
-        padding: 0;
-        margin: 0;
-        color: white;
-        font-size: 13px;
-        cursor: pointer;
+.login-signup {
+    // position: fixed;
+    height: 100%;
+    display: grid;
+    background: $color-primary;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto 1fr 1fr;
 
-        &:hover {
-            color: palevioletred//$color-primary
+    .menu {
+        justify-self: center;
+        grid-row-start: 2;
+        background-color: white;
+        border-radius: 2px;
+        box-sizing: border-box;
+        width: 100vw;
+        max-width: 450px;
+        padding: 20px;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+
+        .menu-title {
+            color: black;
+            font-size: 19px;
+            margin: 0;
+        }
+
+        .inputs {
+            padding: 20px 0;
+        }
+
+        input {
+            border-width: 0 0 1px 0;
+            border-color: #303030;
+            margin: 5px 0;
+            padding: 10px;
+            box-sizing: border-box;
+            width: 100%;
+            border-radius: 2px;
+            transition: .25s;
+
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 5px $color-primary;
+            }
+        }
+
+        .submit-btn {
+            border-radius: 2px;
+            cursor: pointer;
+            transition: .16s;
+            overflow: hidden;
+            width: 100vw;
+            max-width: 150px;
+            justify-self: center;
+            padding: 10px 0;
+            &:active {
+                color: '';
+            }
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 5px $color-primary;
+            }
+            &:before {
+                content: '';
+                
+                opacity: .5s;
+                filter: blur(30px);
+                transform: translateX(-130px) skewX(-15deg);
+            }
+            &:after {
+                content: '';
+                
+                opacity: 0;
+                filter: blur(30px);
+                transform: translate(-100px) scaleX(-15deg);
+            }
+            &:hover {
+                color: white;
+                background: rgb(255, 190, 213);
+                &:before {
+                    transform: translateX(300px) skewX(-15deg);
+                    opacity: .6;
+                    transition: .7s;
+                }
+                &:after {
+                    transform: translateX(300px) skewX(-15deg);
+                    opacity: 1;
+                    transition: .7s;
+                }
+            }
+        }
+
+        .signup-toggle {
+            color: $color-primary;
+            justify-self: center;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 0;
+            padding-top: 20px;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
-}
-
-.login-popup {
-   background-color: aqua;
 }
 

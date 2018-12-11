@@ -51,9 +51,9 @@ class Track extends React.Component {
           <Repost
             track_id={this.props.id}
             retraxCount={this.state.retrax}
-            handleRepost={e => {
+            handleRepost={track_id => {
               if (this.props.loggedIn)
-                this.handleRepost()
+                this.handleRepost(track_id)
               else
                 this.props.setRedirect('/signin')
             }}

@@ -40,6 +40,9 @@
     }
 
     .track-content {
+        box-sizing: border-box;
+        width: 100%;
+        word-break: break-all;
         display: flex;
         flex-direction: column;
         grid-area: content;

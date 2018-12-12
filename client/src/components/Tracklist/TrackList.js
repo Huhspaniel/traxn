@@ -97,7 +97,7 @@ const TrackList = props => (
             )
         )
       ) : (
-          <span style={{ color: "black", padding: "20px" }}>No posts :(</span>
+          <span style={{ color: "black", padding: "20px" }}>No posts here :(</span>
         ) // <-- Whatever is here is what will be displayed if there are no posts to show
     ) : (''
         // <ClipLoader />

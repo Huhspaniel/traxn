@@ -1,0 +1,53 @@
+.alerts-wrapper {
+   
+    background-color: white;
+    height: min-content;
+    width: 500px;
+    border-radius: 1px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.alert-content {
+    display: grid;
+    background-color: white;
+    box-sizing: border-box;
+    width: 100%;
+    height: min-content;
+    padding: 20px;
+    grid-gap: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(238, 238, 238);
+    }
+
+    display: grid;
+    grid-template-rows: 50px auto min-content;
+    grid-template-columns: 50px auto;
+    
+        .message {
+            grid-column-start: 2;
+            display: flex;
+            padding: 11px;
+            color: gray;
+            font-weight: thin;
+
+            .from-user {
+                .username {
+                    color: black;
+                }
+            }
+        }
+    
+    
+
+    img {
+        width: 50px;
+        height: 50px;
+        border: thick;
+        border-radius: 50%;
+        border-color: white;
+    }
+}

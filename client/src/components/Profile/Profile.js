@@ -27,7 +27,7 @@ const Profile = props => (props.user ?
       </div>
 
       <div className="edit-profile">
-        <p>Edit Profile</p>
+        <a href="/editprofile"><p>Edit Profile</p></a>
       </div>
     </div>
 
@@ -67,9 +67,6 @@ const Profile = props => (props.user ?
 class classProfile extends React.Component {
   state = {
     user: null
-  }
-  getUserInfo() {
-
   }
 
   componentWillMount() {

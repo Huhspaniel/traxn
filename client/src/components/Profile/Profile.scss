@@ -101,6 +101,9 @@ body {
 
     .edit-profile {
       justify-self: right;
+      a {
+        text-decoration: none;
+      }
       p {
         box-sizing: border-box;
         color: $color-gray;

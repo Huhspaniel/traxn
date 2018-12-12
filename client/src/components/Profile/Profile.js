@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import Tracklist from "../Tracklist/TrackList";
 import axios from "axios";
+import { format } from "url";
+
+function formatTime(date) {
+  date = new Date(date);
+  return date.toLocaleDateString();
+}
 
 const Stat = props => (
   <div className={props.className + " stat"}>
@@ -39,22 +45,22 @@ const Profile = props => (props.user ?
         </div>
 
         <div className="profile-info">
-          <p>
+          {props.user.location ? <p>
             <i className="fas fa-map-marker-alt" />
-            Los Angeles, CA
-          </p>
-          <p className="website">
+            {props.user.location}
+          </p> : ''}
+          {props.user.website ? <p className="website">
             <i className="fas fa-link" />
-            website.johnco
-          </p>
+            {props.user.website}
+          </p> : ''}
           <p>
             <i className="far fa-calendar-alt" />
-            Joined June 2020
+            Joined {formatTime(props.user._joinedAt)}
           </p>
-          <p>
+          {props.user.birthday ? <p>
             <i className="fas fa-birthday-cake" />
-            Born December 25, 2002
-          </p>
+            Born {formatTime(props.user.birthday)}
+          </p> : ''}
         </div>
       </div>
       <div className="profile-newsfeed">

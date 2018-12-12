@@ -3,9 +3,9 @@ import Repost from "../Repost/Repost";
 import axios from "axios";
 // import { ClipLoader } from 'react-spinners';
 
-function formatTimestamp(date) {
+function formatTime(date) {
   date = new Date(date);
-  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  return date.toLocaleDateString();
 }
 
 class Track extends React.Component {
@@ -46,7 +46,7 @@ class Track extends React.Component {
           <p className="track-handle">#{this.props.username}</p>
           <p className="track-timestamp">
             {" "}
-            ⋅ {formatTimestamp(this.props._postedAt)}
+            ⋅ {formatTime(this.props._postedAt)}
           </p>
         </div>
         <div className="track-content">{this.props.content}</div>

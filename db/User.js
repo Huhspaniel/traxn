@@ -77,9 +77,9 @@ const userSchema = new Schema({
         trim: true
     },
     birthday: {
-        type: Date,
+        type: Number
     },
-    _joinDate: {
+    _joinedAt: {
         type: Number,
         immutable: true,
         default: Date.now

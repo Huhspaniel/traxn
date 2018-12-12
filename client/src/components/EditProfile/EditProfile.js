@@ -11,6 +11,7 @@ const EditProfilePage = props => (
         maxLength={props.max_chars} required
         type="text"
         name="username"
+        maxLength="18"
         value={props.username}
         placeholder={props.user ? props.user.username : ""}
       />

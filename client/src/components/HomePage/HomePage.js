@@ -208,6 +208,7 @@ class HomePage extends React.Component {
               className="textarea"
               name="content"
               type="text"
+              maxLength="140"
               placeholder="What would you like to say?"
               onChange={this.handleChange}
               value={this.state.content}

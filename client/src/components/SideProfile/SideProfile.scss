@@ -1,7 +1,6 @@
 .side-profile {
   background-color: white;
   position: relative;
-  height: 200px;
 
   h1 {
     margin: 0;
@@ -9,24 +8,21 @@
   
   .profile-top {
     background-color: $color-primary;
-    top: 0%;
-    padding-top: 50px;
-    color: $color-primary;
+    padding: 30px;
   }
 
-  #screen-name {
-    color: black;
+  .profile-name {
     position: absolute;
-    top: 38%;
-    left: 35%;
-    font-size: 16px;
-  }
-  #handle {
-    color: $color-gray;
-    position: absolute;
-    top: 50%;
-    left: 35%;
-    font-size: 12px;
+    top: 45%;
+    left: 30%;
+    .display-name {
+      color: black;
+      font-size: 16px;
+    }
+    .username {
+      color: $color-gray;
+      font-size: 12px;
+    }
   }
 
   img {
@@ -40,20 +36,29 @@
     left: 4%;
   }
 
+  .profile-bottom {
+    padding: 40px;
+  }
+
   .record {
-    color: $color-primary;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
     display: flex;
-    justify-content: space-around;
-    margin-top: 60px;
-    font-weight: bold;
+    justify-content: flex-end;
+    .tracks, .traction {
+      text-align: center;
+      padding: 5px;
+    }
   }
 
   .profile-list {
-      font-size: 12px;
+      font-size: 13px;
       color: $color-gray;
   }
   .profile-stats {
-      position: absolute;
       top: 80%;
+      font-size: 18px;
+      color: $color-primary;
   }
 }

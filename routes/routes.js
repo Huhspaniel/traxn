@@ -23,7 +23,7 @@ module.exports = function (app) {
         });
 
     app.post(`/login`, function getUserByUsername(req, res, next) {
-        User.findOne({ username: req.body.username })
+        User.findOne({ username: req.body.username }).populate('tracks')
             .then(user => {
                 if (!user) return next(new Error('User not found'))
                 req.body.user = user;
@@ -63,7 +63,7 @@ module.exports = function (app) {
     /* ----- JWT secure routes ----- */
 
     function getUserByJWT(req, res, next) {
-        User.findOne({ _id: req.body.user_id })
+        User.findOne({ _id: req.body.user_id }).populate('tracks')
             .then(user => {
                 if (!user) {
                     res.status(404);
@@ -121,7 +121,7 @@ module.exports = function (app) {
         })
 
     function getUserPublic(req, res, next) {
-        User.findById(req.params.id)
+        User.findById(req.params.id).populate('tracks')
             .then(user => {
                 if (user) {
                     user.password = user.email = user.following = undefined;
@@ -133,7 +133,7 @@ module.exports = function (app) {
             })
             .catch(err => {
                 if (err.name === 'CastError') {
-                    User.findOne({ username: req.params.id })
+                    User.findOne({ username: req.params.id }).populate('tracks')
                         .then(user => {
                             user.password = user.email = user.following = undefined;
                             res.json(user);
@@ -197,32 +197,53 @@ module.exports = function (app) {
             Track.findOne({ _id: req.params.id })
                 .then(track => {
                     const { action } = req.query;
-                    console.log(req.body);
-                    if (action === 'repost') {
-                        let update;
-                        if (track.repostedBy.find(user => user == req.body.user_id)) {
-                            update = {
-                                $pull: {
-                                    repostedBy: req.body.user_id
+                    switch (action) {
+                        case 'repost': {
+                            let update;
+                            if (track.repostedBy.find(user_id => user_id == req.body.user_id)) {
+                                update = {
+                                    $pull: {
+                                        repostedBy: req.body.user_id
+                                    }
+                                }
+                            } else {
+                                update = {
+                                    $push: {
+                                        repostedBy: req.body.user_id
+                                    }
                                 }
                             }
-                        } else {
-                            update = {
-                                $push: {
-                                    repostedBy: req.body.user_id
+                            return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
+                        }
+                        case 'dislike': {
+                            let update;
+                            if (track.dislikedBy.find(user => user == req.body.user_id)) {
+                                update = {
+                                    $pull: {
+                                        dislikedBy: req.body.user_id
+                                    }
+                                }
+                            } else {
+                                update = {
+                                    $push: {
+                                        dislikedBy: req.body.user_id
+                                    }
                                 }
                             }
+                            return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
                         }
-                        return Track.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
-                    } else if (req.body.user_id != track.user) {
-                        next(new Error('Cannot edit other users\' posts'))
-                    } else {
-                        const update = {};
-                        for (let prop in req.body) {
-                            update[prop] = req.body[prop];
+                        default: {
+                            if (req.body.user_id != track.user) {
+                                next(new Error('Cannot edit other users\' posts'))
+                            } else {
+                                const update = {};
+                                for (let prop in req.body) {
+                                    update[prop] = req.body[prop];
+                                }
+                                track.set(update);
+                                return track.save()
+                            }
                         }
-                        track.set(update);
-                        return track.save()
                     }
                 })
                 .then(data => res.json(data))
@@ -239,22 +260,22 @@ module.exports = function (app) {
                 .catch(next);
         })
 
-        app.delete('/api/users', authDev, (req, res, next) => {
-            User.deleteMany({})
-                .then(data => {
-                    return Track.deleteMany({})
+    app.delete('/api/users', authDev, (req, res, next) => {
+        User.deleteMany({})
+            .then(data => {
+                return Track.deleteMany({})
+            })
+            .then(data => res.json(data))
+            .catch(next)
+    })
+    app.delete('/api/tracks', authDev, (req, res, next) => {
+        Track.deleteMany({})
+            .then(data => {
+                return User.updateMany({}, {
+                    tracks: null
                 })
-                .then(data => res.json(data))
-                .catch(next)
-        })
-        app.delete('/api/tracks', authDev, (req, res, next) => {
-            Track.deleteMany({})
-                .then(data => {
-                    return User.updateMany({}, {
-                        tracks: null
-                    })
-                })
-                .then(data => res.json(data))
-                .catch(next);
-        })
+            })
+            .then(data => res.json(data))
+            .catch(next);
+    })
 }

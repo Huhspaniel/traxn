@@ -5,7 +5,7 @@
 //     height: 100vh;
 // }
 .global-page {
-    height: 100vh;
+    min-height: 100vh;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 60px 1fr min-content;
@@ -74,15 +74,15 @@
 @import './components/Tracklist/Tracklist.scss';
 @import './components/DirectMessage/inbox.css';
 @import './components/Login/Login.scss';
-@import './components/Repost/Repost.scss';
 @import './components/EditProfile/EditProfile.scss';
 footer {
-    height: 200px;
+    height: 100px;
+    font-size: 12px;
     color: white;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: $color-primary;
+    background: black;
     box-shadow: 0 0 5px black;
 }

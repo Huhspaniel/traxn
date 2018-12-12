@@ -37,6 +37,10 @@ const trackSchema = new Schema({
     repostedBy: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
+    }],
+    dislikedBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }]
 });
 trackSchema.pre('save', function () {

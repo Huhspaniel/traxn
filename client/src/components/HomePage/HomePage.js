@@ -179,6 +179,7 @@ class HomePage extends React.Component {
         {this.props.user ? (
           <div className="homepage-profile">
             <SideProfile user={this.props.user} />
+            <div className="sidebar-list"></div>
           </div>
         ) : (
           ""

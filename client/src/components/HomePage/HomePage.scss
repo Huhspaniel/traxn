@@ -30,8 +30,15 @@ body {
 }
 
 .homepage-profile {
-  height: 250px;
+  height: 100%;
   width: 250px;
+  box-shadow: 0 0 5px black;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.sidebar-list {
+    height: 100%;
+    background: linear-gradient(#00000000, $color-primary)
 }
 
 .homepage-newsfeed {

@@ -16,12 +16,17 @@ const Main = (props) => (
             user={props.user}
             loggedIn={props.loggedIn}
             setRedirect={props.setRedirect}
-        />}/>
+        />} />
         <Route path="/scoreboard" component={Scoreboard} />
         <Route path="/alerts" component={Alerts} />
         <Route path="/messages" component={Messages} />
         <Route path="/settings" component={Settings} />
-        <Route path="/$:username" render={(_props) => <Profile {..._props} user={props.user} loggedIn={props.loggedIn} />} />
+        <Route path="/$:username" render={(_props) =>
+            <Profile {..._props}
+                user={props.user}
+                loggedIn={props.loggedIn}
+                setRedirect={props.setRedirect}
+            />} />
         <Route path="/signin" render={(_props) =>
             <Login {..._props}
                 axios={props.axios}

@@ -111,7 +111,6 @@ class App extends Component {
         />
         <SideDrawer show={this.state.sideDrawerOpen} />
         {this.renderRedirect()}
-        {backdrop}
         <Main
           user={this.state.user} axios={axios}
           loggedIn={this.state.loggedIn}
@@ -121,6 +120,7 @@ class App extends Component {
         {window.location.pathname !== '/signin' ? <footer>
           Copyright ©
         </footer> : ''}
+        {backdrop}
       </div>
     );
   }

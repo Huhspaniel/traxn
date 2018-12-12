@@ -118,6 +118,9 @@ class App extends Component {
           login={this.login} logout={this.logout}
           setRedirect={this.setRedirect}
         />
+        {window.location.pathname !== '/signin' ? <footer>
+          Copyright ©
+        </footer> : ''}
       </div>
     );
   }

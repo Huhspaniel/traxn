@@ -25,6 +25,7 @@ body {
 
   &.logged-out {
     grid-template-columns: 1fr;
+    max-width: 700px;
   }
 }
 
@@ -78,36 +79,43 @@ body {
     }
 
     .post-track {
+        @include button;
         color: black;
-        border: solid thin palevioletred;
-        justify-self: center;
-        align-self: start;
-        padding: 10px;
         margin: 0;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: .16s;
-        overflow: hidden;
-        font-size: 15px;
-        
-        &:active {
-            color: '';
-        }
-        &:focus {
-            outline: none;
-            box-shadow: 0 0 5px $color-primary;
-        }
-        &:before {
-          transform: translateX(300px) skewX(-15deg);
-          opacity: 0.6;
-          transition: 0.7s;
-        }
-        &:after {
-          transform: translateX(300px) skewX(-15deg);
-          opacity: 1;
-          transition: 0.7s;
-        }
-      }
+        text-align: center;
+        border: solid thin palevioletred;
+        background: white;
+        align-self: start;
+    }
+    // .post-track {
+    //     color: black;
+    //     border: solid thin palevioletred;
+    //     justify-self: center;
+    //     align-self: start;
+    //     padding: 10px;
+    //     margin: 0;
+    //     border-radius: 10px;
+    //     cursor: pointer;
+    //     transition: .16s;
+    //     overflow: hidden;
+    //     font-size: 15px;
+
+    //     background: white;
+    //     &:focus {
+    //         outline: none;
+    //         box-shadow: 0 0 5px $color-primary;
+    //     }
+    //     &:before {
+    //       transform: translateX(300px) skewX(-15deg);
+    //       opacity: 0.6;
+    //       transition: 0.7s;
+    //     }
+    //     &:after {
+    //       transform: translateX(300px) skewX(-15deg);
+    //       opacity: 1;
+    //       transition: 0.7s;
+    //     }
+    //   }
     }
   }
 
@@ -116,19 +124,12 @@ body {
     color: black;
     display: grid;
     width: 100%;
-    grid-template-columns: auto auto 1fr auto;
+    grid-template-columns: min-content min-content 1fr min-content;
+    border-bottom: 1px solid $color-primary;
     &.logged-out {
-      grid-template-columns: 10% 1fr auto;
+      grid-template-columns: min-content 1fr min-content;
     }
 
-    // .sort-by-btn {
-    //     grid-column-start: 4;
-    // }
-    // .sort-by-menu {
-    //     grid-row-start: 2;
-    //     grid-column-start: 4;
-    //     background-color: pink;
-    // }
     .custom-dropdown {
       -webkit-user-select: none; /* Chrome all / Safari all */
       -moz-user-select: none; /* Firefox all */
@@ -178,8 +179,8 @@ body {
     }
 
     p {
-        margin-left: 10px;
-        padding: 10px;
+        margin: 0;
+        padding: 20px;
         cursor: pointer;
 
         &:hover {

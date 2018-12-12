@@ -27,7 +27,7 @@ const EditProfilePage = props => (
         value={props.email}
         placeholder={props.user ? props.user.email : ''}
       />
-      <input
+      {/* <input
         onChange={props.handleChange}
         type="text"
         name="website"
@@ -40,9 +40,10 @@ const EditProfilePage = props => (
         name="location"
         value={props.location}
         placeholder={props.user ? props.user.location : ''}
-      />
+      /> */}
     </div>
-    <button className="save-changes">Save Changes</button>
+    <p>{props.errorMsg}</p>
+    <button onClick={props.saveBtn} className="save-changes">Save Changes</button>
   </div>
 );
 
@@ -55,7 +56,8 @@ class EditProfile extends React.Component {
     birthday: "",
     currentUsername: "",
     currentDisplayName: "",
-    currentEmail: ""
+    currentEmail: "",
+    errorMsg: ""
   };
 
   saveChanges = () => {
@@ -64,8 +66,15 @@ class EditProfile extends React.Component {
           username: this.state.username,
           displayName: this.state.displayName,
           email: this.state.email
-      }).then({
-          
+      }).then((res) => {
+          if (res.data.error) {
+            this.setState({ errorMsg: "You didn't change anything."})
+            console.log(res.data.error);
+            
+          } else {
+            console.log(res.data);
+            this.props.setRedirect('/');
+          }
       })
   }
 
@@ -79,8 +88,9 @@ class EditProfile extends React.Component {
     return (
       <div className="edit-profile">
         <EditProfilePage
-            handleChange={this.changeHandler}
-            user={this.props.user}
+            saveBtn = {this.saveChanges}
+            handleChange = {this.changeHandler}
+            user = {this.props.user}
         />
       </div>
     );

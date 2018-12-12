@@ -6,11 +6,11 @@ import axios from "axios";
 const sort = (array, compare) => {
   array.sort(compare);
   return array;
-}
+};
 const unshift = (array, val) => {
   array.unshift(val);
   return array;
-}
+};
 
 class Dropdown extends React.Component {
   state = {
@@ -35,7 +35,8 @@ class Dropdown extends React.Component {
     return (
       <div className={`custom-dropdown ${this.props.className || ""}`}>
         <div className={"button"} onClick={this.showMenu}>
-          {this.props.label ? this.props.label + ': ' : ''}{this.props.selected}
+          {this.props.label ? this.props.label + ": " : ""}
+          {this.props.selected}
         </div>
         <div className={`options${this.state.showMenu ? "" : " hide-menu"}`}>
           {this.props.options.map(option => (
@@ -61,7 +62,7 @@ class HomePage extends React.Component {
     value: "",
     content: "",
     sort: "retrax",
-    sortLabel: 'Most Shared',
+    sortLabel: "Most Shared",
     showMenu: false,
     doSortFeed: true
   };
@@ -81,21 +82,22 @@ class HomePage extends React.Component {
 
   handleSort = e => {
     const sort = e.target.value;
-    const sortLabel = e.target.getAttribute('data-label');
+    const sortLabel = e.target.getAttribute("data-label");
     this.setState({
-      sort, sortLabel, doSortFeed: true
+      sort,
+      sortLabel,
+      doSortFeed: true
     });
   };
   refreshFeed = () => {
-    this[`get_${this.state.filter}`]()
-      .then(res => {
-        res.data = sort(res.data, this[`compare_${this.state.sort}`]);
-        this.setState({
-          feed: res.data,
-          doSortFeed: false
-        })
-      })
-  }
+    this[`get_${this.state.filter}`]().then(res => {
+      res.data = sort(res.data, this[`compare_${this.state.sort}`]);
+      this.setState({
+        feed: res.data,
+        doSortFeed: false
+      });
+    });
+  };
   compare_new = ({ _postedAt: a }, { _postedAt: b }) => {
     a = new Date(a).getTime();
     b = new Date(b).getTime();
@@ -117,23 +119,6 @@ class HomePage extends React.Component {
     }
   };
 
-  /*
-    /api/tracks?period={unit},{quantity}&u={userid},{userid}...
-        Gets all tracks, filtering based on time period, and
-        specific users. If {period} is not defined, gets tracks for
-        all time. If {u} is not defined, gets tracks for all users.
-        
-        For example, if {period} = 'week,3', will only get tracks 
-        from past 3 weeks. If {u} = 'user1_id,user2_id,user3_id'
-        will only get tracks posted by user1, user2, user3.
-
-
-    /api/tracks/following?period={unit},{quantity}
-        Only gets tracks posted by those a user is following.
-        Only accessible when user is logged in using JWT authentication.
-        The JWT token will automatically be stored in cookies upon login.
-  */
-
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -146,16 +131,20 @@ class HomePage extends React.Component {
     axios
       .post("/api/tracks", { content })
       .then(res => {
-        this.setState({
-          feed: unshift(this.state.feed, res.data),
-          doSortFeed: false
-        });
+        if (res.data.error) {
+          console.error(res.data.error);
+        } else {
+          this.setState({
+            feed: unshift(this.state.feed, res.data),
+            doSortFeed: false
+          });
+        }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err.response));
   };
   handleFilter = e => {
     e.preventDefault();
-    const filter = e.target.getAttribute('data-filter');
+    const filter = e.target.getAttribute("data-filter");
     this[`get_${filter}`]()
       .then(res => {
         res.data = sort(res.data, this[`compare_${this.state.sort}`]);
@@ -166,15 +155,13 @@ class HomePage extends React.Component {
         });
       })
       .catch(err => console.log(err));
-  }
+  };
 
   get_public = () => {
-    return axios
-      .get(`/api/tracks`);
+    return axios.get(`/api/tracks`);
   };
   get_following = () => {
-    return axios
-      .get(`/api/tracks?filter=following`);
+    return axios.get(`/api/tracks?filter=following`);
   };
 
   render() {
@@ -187,49 +174,66 @@ class HomePage extends React.Component {
       <main
         className={`homepage-content${
           this.props.loggedIn ? "" : " logged-out"
-          }`}
+        }`}
       >
         {this.props.user ? (
           <div className="homepage-profile">
             <SideProfile user={this.props.user} />
+            <div className="sidebar-list"></div>
           </div>
         ) : (
+          ""
+        )}
+        <div className="homepage-newsfeed">
+          {this.props.user ? (
+            <div className="new-post">
+              <img
+                className="avatar-img"
+                src={this.props.user.imageUrl}
+                alt="avatar"
+              />
+
+              <textarea
+                className="textarea"
+                name="content"
+                type="text"
+                placeholder="What would you like to say?"
+                onChange={this.handleChange}
+                value={this.state.content}
+              />
+              <p onClick={this.handlePost} className="post-track">
+                Post
+              </p>
+            </div>
+          ) : (
             ""
           )}
-        <div className="homepage-newsfeed">
-          {this.props.user ? <div className="new-post">
-            <img
-              className="avatar-img"
-              src="https://www.gstatic.com/webp/gallery/1.jpg"
-              alt="avatar"
-            />
-
-            <textarea
-              className="textarea"
-              name="content"
-              type="text"
-              placeholder="What would you like to say?"
-              onChange={this.handleChange}
-              value={this.state.content}
-            />
-            <p onClick={this.handlePost} className="post-track">
-              Post
-            </p>
-          </div> : ''}
 
           <div
             className={`newsfeed-tabs ${this.props.user ? "" : "logged-out"}`}
           >
-            <p className={`public-tab${this.state.filter === 'public' ? ' active-filter' : ''}`} data-filter="public" onClick={this.handleFilter}>
+            <p
+              className={`public-tab${
+                this.state.filter === "public" ? " active-filter" : ""
+              }`}
+              data-filter="public"
+              onClick={this.handleFilter}
+            >
               Public
             </p>
             {this.props.user ? (
-              <p className={`following-tab${this.state.filter === 'following' ? ' active-filter' : ''}`} data-filter="following" onClick={this.handleFilter}>
+              <p
+                className={`following-tab${
+                  this.state.filter === "following" ? " active-filter" : ""
+                }`}
+                data-filter="following"
+                onClick={this.handleFilter}
+              >
                 Following
               </p>
             ) : (
-                ""
-              )}
+              ""
+            )}
             <Dropdown
               label="Sort"
               options={[

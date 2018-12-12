@@ -6,8 +6,8 @@ const Login = props => (
     <div className="menu">
       <p className="menu-title">{
         props.showLogin
-          ? 'Login'
-          : 'Signup'
+          ? 'Sign In'
+          : 'Create an Account'
       }</p>
       {props.showLogin
         ? (

@@ -5,13 +5,59 @@
 //     height: 100vh;
 // }
 .global-page {
-    height: 100vh;
+    min-height: 100vh;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 60px 1fr;
+    grid-template-rows: 60px 1fr min-content;
     justify-items: center;
     main {
         width: 100%;
+    }
+}
+
+@mixin button {
+    border-radius: 2px;
+    cursor: pointer;
+    transition: .16s;
+    overflow: hidden;
+    width: 100vw;
+    max-width: 150px;
+    justify-self: center;
+    padding: 10px 0;
+    &:active {
+        color: '';
+    }
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 5px $color-primary;
+    }
+    &:before {
+        content: '';
+        
+        opacity: .5s;
+        filter: blur(30px);
+        transform: translateX(-130px) skewX(-15deg);
+    }
+    &:after {
+        content: '';
+        
+        opacity: 0;
+        filter: blur(30px);
+        transform: translate(-100px) scaleX(-15deg);
+    }
+    &:hover {
+        color: white;
+        background: rgb(255, 190, 213);
+        &:before {
+            transform: translateX(300px) skewX(-15deg);
+            opacity: .6;
+            transition: .7s;
+        }
+        &:after {
+            transform: translateX(300px) skewX(-15deg);
+            opacity: 1;
+            transition: .7s;
+        }
     }
 }
 @import './components/Backdrop/Backdrop.scss';
@@ -28,5 +74,15 @@
 @import './components/Tracklist/Tracklist.scss';
 @import './components/DirectMessage/inbox.css';
 @import './components/Login/Login.scss';
-@import './components/Repost/Repost.scss';
 @import './components/EditProfile/EditProfile.scss';
+footer {
+    height: 100px;
+    font-size: 12px;
+    color: white;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    box-shadow: 0 0 5px black;
+}

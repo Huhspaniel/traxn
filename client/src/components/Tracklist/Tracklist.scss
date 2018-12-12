@@ -40,6 +40,9 @@
     }
 
     .track-content {
+        box-sizing: border-box;
+        width: 100%;
+        word-break: break-all;
         display: flex;
         flex-direction: column;
         grid-area: content;
@@ -67,6 +70,21 @@
             font-size: 15px;
             margin-left: 5px;
         }
+        .direct-message {
+            margin: 0;
+            padding: 0 6px;
+            align-self: center;
+            .fa-envelope {
+                cursor: pointer;
+                padding: 5px;
+                margin: 0;
+                color: gray;
+
+                &:hover {
+                    color: rgb(0, 136, 255);
+                }
+            }
+        }
     }
 
     .track-message {
@@ -80,46 +98,71 @@
 
     .track-buttons {
         grid-area: buttons;
-        display: flex;
-        padding-left: 20px;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: auto auto 1fr;
         p {
             margin: 0;
         }
-        // .repost-wrapper {
-        //     justify-items: center;
-        //     align-items: center;
-        //     .fa-retweet {
-        //         cursor: pointer;
-        //         color: gray;
-        //         font-weight: thin;
-        //         margin: 0;
 
-        //         &:hover {
-        //             color: rgb(0, 128, 115);
-        //         }
-        //     }
-        //     &.active {
-        //         color: rgb(0, 128, 115);
-        //     }
-        // }
-
-        .dislike {
-            .fa-thumbs-down {
+        .repost-wrapper {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            
+            .fa-retweet {
+                margin: 0;
+                padding: 5px;
                 color: gray;
+                cursor: pointer;
+                font-weight: thin;
+
+                &:hover {
+                    color: rgb(0, 128, 115);
+                }
+            }
+            
+            p {
+                font-size: 11px;
+                margin: 0;
+                padding: 0;
+                color: gray;
+            }
+        
+            &.active {
+                .fa-retweet, p {
+                    color: rgb(0, 128, 115);
+                }
+            }
+        }
+
+        .dislike-wrapper {
+            display: flex;
+            padding: 20px;
+            align-items: center;
+            
+            p {
+                font-size: 11px;
+                margin: 0;
+                padding: 0;
+                color: gray;
+            }
+            
+            .fa-thumbs-down {
+                padding: 5px;
+                margin: 0;
+                color: gray;
+                cursor: pointer;
+                font-weight: thin;
                 
                 &:hover {
                     color: rgb(172, 0, 0);
                 }
             }
-        }
-
-        .direct-message {
-            .fa-envelope {
-                color: gray;
-                margin-left: 50px;
-
-                &:hover {
-                    color: rgb(0, 136, 255);
+        
+            &.active {
+                .fa-thumbs-down, p {
+                    color: rgb(172, 0, 0);
                 }
             }
         }

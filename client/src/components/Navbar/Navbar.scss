@@ -2,13 +2,17 @@ $color-primary: palevioletred;
 $color-gray: rgb(106, 105, 105);
 $color-hover: rgb(238, 238, 238);
 
-.navbar {
+header {
   position: sticky;
   -webkit-position: sticky;
   top: 0;
+}
+
+.navbar {
   width: 100vw;
   background-color: rgb(24, 24, 24);
   z-index: 999;
+  box-shadow: 0 0 5px black;
 }
 
 .navbar__navigation {

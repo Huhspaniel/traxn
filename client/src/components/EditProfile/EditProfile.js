@@ -7,7 +7,8 @@ const EditProfilePage = props => (
 
     <div className="inputs">
       <input
-        onChange={props.handleChange}
+        onChange={ props.handleChange }
+        maxLength={props.max_chars} required
         type="text"
         name="username"
         value={props.username}
@@ -17,6 +18,7 @@ const EditProfilePage = props => (
         onChange={props.handleChange}
         type="text"
         name="displayName"
+        maxLength="18"
         value={props.displayName}
         placeholder={props.user ? props.user.displayName : ""}
       />
@@ -59,7 +61,7 @@ class EditProfile extends React.Component {
     currentUsername: "",
     currentDisplayName: "",
     currentEmail: "",
-    errorMsg: ""
+    errorMsg: "",
   };
 
   saveChanges = () => {

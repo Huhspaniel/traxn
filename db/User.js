@@ -68,6 +68,22 @@ const userSchema = new Schema({
         type: String,
         default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/1920px-Anonymous_emblem.svg.png'
     },
+    location: {
+        type: String,
+        trim: true
+    },
+    website: {
+        type: String,
+        trim: true
+    },
+    birthday: {
+        type: Date,
+    },
+    _joinDate: {
+        type: Number,
+        immutable: true,
+        default: Date.now
+    },
     tracks: [{
         type: Schema.Types.ObjectId,
         ref: 'Track',

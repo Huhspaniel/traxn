@@ -1,73 +1,84 @@
 import React from "react";
 import Modal from "react-modal";
-import axios from "axios";
-import { Redirect } from "react-router-dom";
-// import cookie from 'react-cookies';
 
 const Login = props => (
-  <div className="login-div">
-    <p onClick={props.toggleHandler}>Login/Sign Up</p>
-    <Modal isOpen={props.isActive}>
-      <h3>Login</h3>
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="username"
-        value={props.userValue}
-        placeholder="username"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="password"
-        value={props.passValue}
-        placeholder="password"
-      />
-      <button className="send-login" onClick={props.loginHandler}>
-        Login
+  <div className="login-signup">
+    <div className="menu">
+      <p className="menu-title">{
+        props.showLogin
+          ? 'Login'
+          : 'Signup'
+      }</p>
+      {props.showLogin
+        ? (
+          <div className="inputs">
+            <input
+              onChange={props.handleChange}
+              type="text"
+              name="username"
+              value={props.inputs.username}
+              placeholder="Username"
+            />
+            <input
+              onChange={props.handleChange}
+              type="password"
+              name="password"
+              value={props.inputs.password}
+              placeholder="Password"
+            />
+          </div>
+        ) : (
+          <div className="inputs">
+            <input
+              onChange={props.handleChange}
+              type="text"
+              name="username"
+              value={props.inputs.username}
+              placeholder="Username"
+            />
+            <input
+              onChange={props.handleChange}
+              type="password"
+              name="password"
+              value={props.inputs.password}
+              placeholder="Password"
+            />
+            <input
+              onChange={props.handleChange}
+              type="password"
+              name="confirmPassword"
+              value={props.inputs.confirmPassword}
+              placeholder="Confirm Password"
+            />
+            <input
+              onChange={props.handleChange}
+              type="text"
+              name="email"
+              value={props.inputs.email}
+              placeholder="Email"
+            />
+            <input
+              onChange={props.handleChange}
+              type="text"
+              name="displayName"
+              value={props.inputs.displayName}
+              placeholder="Display Name"
+            />
+          </div>
+        )}
+      <button className="submit-btn"
+        onClick={props.showLogin
+          ? props.handleLogin
+          : props.handleSignup}
+      >
+        {props.showLogin ? 'Sign in' : 'Sign up'}
       </button>
-
-      <br />
-      <h4>Or</h4>
-      <br />
-
-      <h3>Sign Up</h3>
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="username"
-        value={props.value}
-        placeholder="username"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="password"
-        value={props.value}
-        placeholder="password"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="email"
-        value={props.value}
-        placeholder="email"
-      />
-      <input
-        onChange={props.changeHandler}
-        type="text"
-        name="displayName"
-        value={props.value}
-        placeholder="display name"
-      />
-      <button className="signup-btn" onClick={props.signupHandler}>
-        Sign Up
-      </button>
-
-      <p className="login-btn" onClick={props.toggleHandler}>
-        Close
+      <p className="signup-toggle" onClick={props.toggleMenu}>
+        {props.showLogin
+          ? 'Don\'t have an account? Sign up!'
+          : 'Already have an account? Sign in!'}
       </p>
-    </Modal>
+    </div>
   </div>
 );
 
@@ -78,71 +89,72 @@ const FailedLogIn = props => (
   </div>
 );
 
-class LoginModal extends React.Component {
+class LoginPage extends React.Component {
   state = {
-    isActive: false,
-    value: "",
-    loggedIn: false,
-    accessGranted: false,
-    redirect: "",
-
+    showLogin: true,
     username: "",
     password: "",
-
+    confirmPassword: "",
     email: "",
     displayName: ""
   };
 
-  setRedirect = event => {
-    // event.preventDefault();
-    if (!this.state.loggedIn) {
-      this.setState({
-        redirect: "invalidLogin"
-      });
-    } else if (this.state.loggedIn) {
-      this.setState({
-        redirect: "homePage",
-        isActive: false
-      });
-    }
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
   };
 
-  renderRedirect = () => {
-    if (this.state.redirect === "homePage") {
-      return <Redirect to="/" />;
-    }
+  toggleMenu = () => {
+    this.setState({
+      showLogin: !this.state.showLogin
+    });
   };
 
-  sendLogin = event => {
-    // event.preventDefault();
+  handleLogin = e => {
+    e.preventDefault();
+
     let loginCredentials = {
       username: this.state.username,
       password: this.state.password
     };
+    this.sendLogin(loginCredentials)
+  };
+  handleSignup = e => {
+    e.preventDefault();
+    if (this.state.password === this.state.confirmPassword) {
+      let signupCredentials = {
+        username: this.state.username,
+        password: this.state.password,
+        email: this.state.email,
+        displayName: this.state.displayName
+      }
+      this.sendSignup(signupCredentials);
+    } else {
+      console.error(new Error('Password fields must match'));
+    }
+  }
 
-    axios
-      .post(`/login`, loginCredentials)
+  sendLogin = () => {
+    return this.props.axios
+      .post(`/login`, {
+        username: this.state.username,
+        password: this.state.password
+      })
       .then(res => {
         if (res.data.error) {
           console.log(res.data.error);
-          localStorage.removeItem("id");
-          this.setState({ loggedIn: false });
-          this.setRedirect();
+          this.props.logout();
         } else {
           console.log(res.data);
-          localStorage.setItem("id", res.data.user_id);
-          this.setState({ loggedIn: true });
-          this.setRedirect();
+          this.props.login(res.data.user);
+          this.props.setRedirect('/');
         }
       })
       .catch(err => console.log(err));
-  };
-
-  createUser = () => {
-    const token = localStorage.getItem("csrf-token");
-
-    console.log(axios.defaults.headers);
-    axios
+  }
+  sendSignup = () => {
+    return this.props.axios
       .post(`/api/users`, {
         username: this.state.username,
         password: this.state.password,
@@ -150,56 +162,36 @@ class LoginModal extends React.Component {
         displayName: this.state.displayName
       })
       .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
-  };
-
-  getToken = () => {
-    axios
-      .get("/csrf")
-      .then(res => {
-        axios.defaults.headers.common["csrf-token"] = res.data.csrfToken;
-        console.log(axios.defaults.headers);
-        this.setState({ accessGranted: true });
+        this.sendLogin();
       })
       .catch(err => console.log(err));
   };
 
   componentWillMount() {
     Modal.setAppElement("body");
-    this.getToken();
   }
-
-  handleToggle = () => {
-    this.setState({
-      isActive: !this.state.isActive,
-      redirect: ""
-    });
-  };
-
-  handleChange = event => {
-    console.log(event.target.name);
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
 
   render() {
     return (
-      <div className="login-modal">
-        {this.renderRedirect()}
+      <main className="signin-page">
         <Login
-          signupHandler={this.createUser}
-          loginHandler={this.sendLogin}
-          isActive={this.state.isActive}
-          toggleHandler={this.handleToggle}
-          changeHandler={this.handleChange}
+          toggleMenu={this.toggleMenu}
+          handleSignup={this.handleSignup}
+          handleLogin={this.handleLogin}
+          handleChange={this.handleChange}
+          showLogin={this.state.showLogin}
+          inputs={{
+            username: this.state.username,
+            password: this.state.password,
+            confirmPassword: this.state.confirmPassword,
+            email: this.state.email,
+            displayName: this.state.displayName
+          }}
         />
         {this.state.redirect === "invalidLogin" && <FailedLogIn />}
-      </div>
+      </main>
     );
   }
 }
 
-export default LoginModal;
+export default LoginPage;

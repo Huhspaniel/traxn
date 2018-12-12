@@ -60,8 +60,14 @@ const userSchema = new Schema({
     },
 
     imageUrl: {
-        type: String,
-    }
+        type: String
+    },
+
+    tracks: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Track',
+        immutable: true
+    }]
 })
 userSchema.plugin(uniqueValidator);
 userSchema.pre(`save`, function (next) {

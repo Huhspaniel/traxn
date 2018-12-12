@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Tracklist from "../Tracklist/TrackList";
 import axios from "axios";
 
@@ -9,20 +9,20 @@ const Stat = props => (
   </div>
 );
 
-const Profile = props => (
-  <div className="profile-page">
+const Profile = props => (props.user ?
+  <main className="profile-page">
     <div className="profile-header">
-    <div className="profile-pic">
-      <img className="pic" src="https://www.gstatic.com/webp/gallery/1.jpg" />
-    </div>
+      <div className="profile-pic">
+        <img className="pic" src={props.user.imageUrl} alt="user avatar"/>
+      </div>
     </div>
 
     <div className="profile-bar">
       <div className="stats">
-        <Stat className="trax" display="Trax" stat={props.numberOfTrax} />
+        <Stat className="trax" display="Trax" stat={props.user.tracks.length || 0} />
         <Stat className="record" display="Record" stat="1.4m" />
         <Stat className="rank" display="Rank" stat="33" />
-        <Stat className="retrax" display="Retrax" stat="33" />
+        <Stat className="retrax" display="Retrax" stat={5} />
         <Stat className="dislikes" display="Dislikes" stat="16" />
       </div>
 
@@ -34,25 +34,25 @@ const Profile = props => (
     <div className="profile-content">
       <div className="profile-profile">
         <div className="profile-names">
-          <p className="screen-name">{props.displayName}</p>
-          <p className="handle">#{props.username}</p>
+          <p className="screen-name">{props.user.displayName}</p>
+          <p className="handle">#{props.user.username}</p>
         </div>
 
         <div className="profile-info">
           <p>
-            <i class="fas fa-map-marker-alt" />
+            <i className="fas fa-map-marker-alt" />
             Los Angeles, CA
           </p>
           <p className="website">
-            <i class="fas fa-link" />
+            <i className="fas fa-link" />
             website.johnco
           </p>
           <p>
-            <i class="far fa-calendar-alt" />
+            <i className="far fa-calendar-alt" />
             Joined June 2020
           </p>
           <p>
-            <i class="fas fa-birthday-cake" />
+            <i className="fas fa-birthday-cake" />
             Born December 25, 2002
           </p>
         </div>
@@ -61,39 +61,58 @@ const Profile = props => (
         <Tracklist />
       </div>
     </div>
-  </div>
-);
+  </main>
+  : '');
 
 class classProfile extends React.Component {
   state = {
-    displayName: '',
-    username: '',
-    numberOfTrax: 0
-    
+    user: null
   }
+  getUserInfo() {
 
-  getUserInfo = () => {
-    axios.get('/api/users/me')
-    .then((res) => {
-      console.log(res);
-      this.setState({
-        username: res.data.username,
-        displayName: res.data.displayName
-      })
-    })
   }
 
   componentWillMount() {
-    this.getUserInfo();
+    if (this.props.user) {
+      if (this.props.user.username !== this.props.match.params.username) {
+        axios
+          .get(`/api/users/${this.props.match.params.username}`)
+          .then(res => {
+            console.log(res);
+            if (res.data.error) {
+              // window.location.pathname = '/';
+            } else {
+              this.setState({
+                user: res.data
+              })
+            }
+          })
+          .catch(err => console.error(err))
+      }
+    } else if (!this.props.loggedIn) {
+      axios
+        .get(`/api/users/${this.props.match.params.username}`)
+        .then(res => {
+          console.log(res);
+          if (res.data.error) {
+            // window.location.pathname = '/';
+          } else {
+            this.setState({
+              user: res.data
+            })
+          }
+        })
+        .catch(err => console.error(err))
+    }
   }
-
 
   render() {
     return (
-      <Profile
-      displayName = {this.state.displayName}
-      username = {this.state.username}
-      />
+      this.props.user ?
+        this.props.user.username === this.props.match.params.username ?
+          <Profile user={this.props.user} />
+          : <Profile user={this.state.user} />
+        : <Profile user={this.state.user} />
     )
   }
 }

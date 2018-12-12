@@ -11,28 +11,28 @@ const UploadImageForm = props => (
 class AccountSettings extends React.Component {
   state = {};
 
-
+  updateUser = data => {
+    axios
+      .put("api/users/me", {
+        imageUrl: data[0].url
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   uploadWidget(event) {
     event.preventDefault();
     window.cloudinary.openUploadWidget(
       { cloud_name: "traxn-inc", upload_preset: "userphoto" },
-      function(error, result) {
-        console.log(result[0].url);
-        axios.put("api/users/me", {
-            imageUrl: result[0].url
-        }).then(data => {
-            console.log(data)
-        }).catch(error => {
-            console.log(error)
-        });
-           
-    
+      (error, result) => {
+        console.log(result);
+        this.updateUser(result);
       }
     );
-    
-    
-    
   }
 
   render() {

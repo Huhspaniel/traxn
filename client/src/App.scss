@@ -1,3 +1,19 @@
+// html, body, #root, #root > div {
+//     min-height: 100vh;
+// }
+// main {
+//     height: 100vh;
+// }
+.global-page {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 1fr;
+    justify-items: center;
+    main {
+        width: 100%;
+    }
+}
 @import './components/Backdrop/Backdrop.scss';
 @import './components/Navbar/Navbar.scss';
 @import './components/SideDrawer/DrawerToggleButton.scss';
@@ -8,7 +24,6 @@
 @import './components/Scoreboard/Scoreboard.scss';
 @import './components/Settings/Settings.scss';
 @import './components/Profile/Profile.scss';
-@import './components/Post/Post.scss';
 @import './components/SideProfile/SideProfile.scss';
 @import './components/Tracklist/Tracklist.scss';
 @import './components/DirectMessage/inbox.css';

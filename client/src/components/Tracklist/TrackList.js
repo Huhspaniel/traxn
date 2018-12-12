@@ -84,7 +84,7 @@ const TrackList = props => (
             (
               <Track
                 displayName={track.user.displayName}
-                userPic="https://www.gstatic.com/webp/gallery/1.jpg"
+                userPic={track.user.imageUrl}
                 username={track.user.username}
                 _postedAt={track._postedAt}
                 content={track.content}

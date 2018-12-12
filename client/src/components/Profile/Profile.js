@@ -13,7 +13,7 @@ const Profile = props => (props.user ?
   <main className="profile-page">
     <div className="profile-header">
       <div className="profile-pic">
-        <img className="pic" src="https://www.gstatic.com/webp/gallery/1.jpg" />
+        <img className="pic" src={props.user.imageUrl} alt="user avatar"/>
       </div>
     </div>
 
@@ -27,7 +27,7 @@ const Profile = props => (props.user ?
       </div>
 
       <div className="edit-profile">
-        <p>Edit Profile</p>
+        <a href="/settings"><p>Edit Profile</p></a>
       </div>
     </div>
 

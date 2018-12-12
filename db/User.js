@@ -58,6 +58,11 @@ const userSchema = new Schema({
         type: String,
         immutable: true
     },
+
+    imageUrl: {
+        type: String
+    },
+
     tracks: [{
         type: Schema.Types.ObjectId,
         ref: 'Track',

@@ -50,11 +50,11 @@ const Navbar = props => {
               }}>Sign out</div>
               : <a href="/signin" className={path === '/signin' ? 'active' : ''}>Sign in</a>}
   
-            {props.loggedIn || localStorage.getItem('id') ?
+            {props.user ?
               <a className="avatar" href={`/$${props.user ? props.user.username : localStorage.getItem('username')}`}>
                 <img
                   className="profile-settings"
-                  src="https://www.gstatic.com/webp/gallery/1.jpg"
+                  src={props.user.imageUrl}
                   alt="profile img"
                 />
               </a>

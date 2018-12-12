@@ -97,6 +97,8 @@ module.exports = function (app) {
                 for (let prop in req.body) {
                     update[prop] = req.body[prop];
                 }
+                console.log('Update:')
+                console.log(update);
                 user.set(update);
             }
         }

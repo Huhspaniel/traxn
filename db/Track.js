@@ -9,12 +9,12 @@ const trackSchema = new Schema({
         minlength: 2
     },
     _postedAt: {
-        type: Date,
+        type: Number,
         immutable: true,
-        default: new Date
+        default: Date.now
     },
     _updatedAt: { // Allow updates? TBD
-        type: Date,
+        type: Number,
         immutable: true
     },
     taggedUsers: [{
@@ -43,7 +43,7 @@ trackSchema.pre('save', function () {
     if (this.isNew) {
         this._updatedAt = undefined;
     } else if (this.isModified()) {
-        this._updatedAt = new Date();
+        this._updatedAt = Date.now();
     }
 
     if (this.isModified('content')) {

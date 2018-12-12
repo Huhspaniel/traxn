@@ -117,6 +117,7 @@ class App extends Component {
           loggedIn={this.state.loggedIn}
           login={this.login} logout={this.logout}
           setRedirect={this.setRedirect}
+          authJWT={this.authJWT}
         />
       </div>
     );

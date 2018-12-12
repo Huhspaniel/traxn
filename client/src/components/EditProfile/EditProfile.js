@@ -11,21 +11,21 @@ const EditProfilePage = props => (
         type="text"
         name="username"
         value={props.username}
-        placeholder={props.user ? props.user.username : ''}
+        placeholder={props.user ? props.user.username : ""}
       />
       <input
         onChange={props.handleChange}
         type="text"
         name="displayName"
         value={props.displayName}
-        placeholder={props.user ? props.user.displayName : ''}
+        placeholder={props.user ? props.user.displayName : ""}
       />
       <input
         onChange={props.handleChange}
         type="text"
         name="email"
         value={props.email}
-        placeholder={props.user ? props.user.email : ''}
+        placeholder={props.user ? props.user.email : ""}
       />
       {/* <input
         onChange={props.handleChange}
@@ -43,7 +43,9 @@ const EditProfilePage = props => (
       /> */}
     </div>
     <p>{props.errorMsg}</p>
-    <button onClick={props.saveBtn} className="save-changes">Save Changes</button>
+    <button onClick={props.saveBtn} className="save-changes">
+      Save Changes
+    </button>
   </div>
 );
 
@@ -61,22 +63,27 @@ class EditProfile extends React.Component {
   };
 
   saveChanges = () => {
-      this.props.axios
-      .put('api/users/me', {
-          username: this.state.username,
-          displayName: this.state.displayName,
-          email: this.state.email
-      }).then((res) => {
-          if (res.data.error) {
-            this.setState({ errorMsg: "You didn't change anything."})
-            console.log(res.data.error);
-            
-          } else {
-            console.log(res.data);
-            this.props.setRedirect('/');
-          }
-      })
-  }
+    const { username, displayName, email } = this.state;
+    const fields = { username, displayName, email };
+    const update = {};
+    for (let prop in fields) {
+      if (fields[prop]) {
+        update[prop] = fields[prop];
+      }
+    }
+    this.props.axios
+      .put("api/users/me", update)
+      .then(res => {
+        if (res.data.error) {
+          this.setState({ errorMsg: "You didn't change anything." });
+          console.log(res.data.error);
+        } else {
+          console.log(res.data);
+          this.props.authJWT();
+          this.props.setRedirect("/");
+        }
+      });
+  };
 
   changeHandler = event => {
     this.setState({
@@ -88,9 +95,9 @@ class EditProfile extends React.Component {
     return (
       <div className="edit-profile">
         <EditProfilePage
-            saveBtn = {this.saveChanges}
-            handleChange = {this.changeHandler}
-            user = {this.props.user}
+          saveBtn={this.saveChanges}
+          handleChange={this.changeHandler}
+          user={this.props.user}
         />
       </div>
     );

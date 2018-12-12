@@ -9,6 +9,16 @@ import Navbar from "./components/Navbar/Navbar";
 import SideDrawer from "./components/SideDrawer/SideDrawer";
 import Backdrop from "./components/Backdrop/Backdrop";
 
+function toggleArrayVal(array, value) {
+  const index = array.indexOf(value);
+  if (index > -1) {
+    array.splice(index, 1);
+  } else {
+    array.push(value);
+  }
+  return array;
+}
+
 class App extends Component {
   state = {
     sideDrawerOpen: false,
@@ -79,10 +89,25 @@ class App extends Component {
   login = user => {
     localStorage.setItem('id', user._id);
     localStorage.setItem('username', user.username);
+    console.log(user.following);
     this.setState({
       user: user,
       loggedIn: true
     })
+  }
+  handleFollow = user_id => {
+    const user = this.state.user;
+    user.following = toggleArrayVal(user.following, user_id)
+    this.setState({ user });
+    axios
+      .put(`/api/users/me?action=follow&id=${user_id}`)
+      .then(res => {
+        if (res.data.error) {
+          console.log(res.data.error)
+        } else {
+          this.authJWT();
+        }
+      })
   }
 
   componentWillMount() {
@@ -116,6 +141,13 @@ class App extends Component {
           loggedIn={this.state.loggedIn}
           login={this.login} logout={this.logout}
           setRedirect={this.setRedirect}
+          handleFollow={user_id => {
+            if (this.state.user) {
+              this.handleFollow(user_id);
+            } else {
+              this.setRedirect('/signin');
+            }
+          }}
         />
         {window.location.pathname !== '/signin' ? <footer>
           Copyright ©

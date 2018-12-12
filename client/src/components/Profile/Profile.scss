@@ -51,6 +51,8 @@ body {
     grid-template-columns: 40% 40% 20%;
     height: max-content;
 
+    
+
     .stats {
       grid-column-start: 2;
       display: grid;
@@ -98,8 +100,34 @@ body {
       }
     }
 
+    .follow {
+      cursor: pointer;
+      margin: 10px;
+      width: 50px;
+      border-radius: 5px;
+      justify-self: right;
+      border: 2px outset darken(white, 2%);
+      &:hover {
+        color: $color-primary;
+      }
+      &:active {
+        border-style: inset;
+        background: darken(white, 5%);
+      }
+      &:focus {
+        outline: none;
+      }
+      &.active {
+        color: $color-primary;
+        border-style: inset;
+      }
+    }
+
     .edit-profile {
       justify-self: right;
+      a {
+        text-decoration: none;
+      }
       p {
         box-sizing: border-box;
         color: $color-gray;

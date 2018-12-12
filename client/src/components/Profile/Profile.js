@@ -18,14 +18,18 @@ const Stat = props => (
 const Profile = props => {
   if (props.user) {
     const tracks = props.user.tracks ? props.user.tracks.length : 0;
-    const reposts = props.user.tracks ? props.user.tracks.reduce((traction, { repostedBy }) => {
-      traction += repostedBy ? repostedBy.length : 0;
-      return traction;
-    }, 0) : 0;
-    const dislikes = props.user.tracks ? props.user.tracks.reduce((dislikes, { dislikedBy }) => {
-      dislikes += dislikedBy ? dislikedBy.length : 0;
-      return dislikes;
-    }, 0) : 0;
+    const reposts = props.user.tracks
+      ? props.user.tracks.reduce((traction, { repostedBy }) => {
+          traction += repostedBy ? repostedBy.length : 0;
+          return traction;
+        }, 0)
+      : 0;
+    const dislikes = props.user.tracks
+      ? props.user.tracks.reduce((dislikes, { dislikedBy }) => {
+          dislikes += dislikedBy ? dislikedBy.length : 0;
+          return dislikes;
+        }, 0)
+      : 0;
     const traction = reposts - dislikes;
     return (
       <main className="profile-page">
@@ -44,9 +48,28 @@ const Profile = props => {
             {/* <Stat className="rank" display="Rank" stat="33" /> */}
           </div>
 
-          <div className="edit-profile">
-            <a href="/settings"><p>Edit Profile</p></a>
-          </div>
+          {props.isUser ? (
+            <div className="edit-profile">
+              <a href="/editprofile">
+                <p>Edit Profile</p>
+              </a>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                props.handleFollow(props.user._id);
+              }}
+              className={`follow${
+                props.loggedUser
+                  ? props.loggedUser.following.includes(props.user._id)
+                    ? " active"
+                    : ""
+                  : ""
+              }`}
+            >
+              <i className="fas fa-user-plus" />
+            </button>
+          )}
         </div>
 
         <div className="profile-content">
@@ -57,22 +80,34 @@ const Profile = props => {
             </div>
 
             <div className="profile-info">
-              {props.user.location ? <p>
-                <i className="fas fa-map-marker-alt" />
-                {props.user.location}
-              </p> : ''}
-              {props.user.website ? <p className="website">
-                <i className="fas fa-link" />
-                {props.user.website}
-              </p> : ''}
+              {props.user.location ? (
+                <p>
+                  <i className="fas fa-map-marker-alt" />
+                  {props.user.location}
+                </p>
+              ) : (
+                ""
+              )}
+              {props.user.website ? (
+                <p className="website">
+                  <i className="fas fa-link" />
+                  {props.user.website}
+                </p>
+              ) : (
+                ""
+              )}
               <p>
                 <i className="far fa-calendar-alt" />
                 Joined {formatTime(props.user._joinedAt)}
               </p>
-              {props.user.birthday ? <p>
-                <i className="fas fa-birthday-cake" />
-                Born {formatTime(props.user.birthday)}
-              </p> : ''}
+              {props.user.birthday ? (
+                <p>
+                  <i className="fas fa-birthday-cake" />
+                  Born {formatTime(props.user.birthday)}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className="profile-newsfeed">
@@ -84,7 +119,7 @@ const Profile = props => {
           </div>
         </div>
       </main>
-    )
+    );
   } else {
     return null;
   }
@@ -93,10 +128,7 @@ const Profile = props => {
 class classProfile extends React.Component {
   state = {
     user: null
-  }
-  getUserInfo() {
-
-  }
+  };
 
   componentWillMount() {
     if (this.props.user) {
@@ -110,10 +142,10 @@ class classProfile extends React.Component {
             } else {
               this.setState({
                 user: res.data
-              })
+              });
             }
           })
-          .catch(err => console.error(err))
+          .catch(err => console.error(err));
       }
     } else if (!this.props.loggedIn) {
       axios
@@ -125,23 +157,40 @@ class classProfile extends React.Component {
           } else {
             this.setState({
               user: res.data
-            })
+            });
           }
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
     }
   }
 
   render() {
-    return (
-      this.props.user ?
-        this.props.user.username === this.props.match.params.username ?
-          <Profile user={this.props.user} loggedIn={this.props.loggedIn} setRedirect={this.props.setRedirect} />
-          : <Profile user={this.state.user} loggedIn={this.props.loggedIn} setRedirect={this.props.setRedirect} />
-        : <Profile user={this.state.user} loggedIn={this.props.loggedIn} setRedirect={this.props.setRedirect} />
-    )
+    return this.props.user ? (
+      this.props.user.username === this.props.match.params.username ? (
+        <Profile
+          user={this.props.user}
+          isUser={true}
+          loggedIn={this.props.loggedIn}
+          setRedirect={this.props.setRedirect}
+        />
+      ) : (
+        <Profile
+          user={this.state.user}
+          loggedUser={this.props.user}
+          handleFollow={this.props.handleFollow}
+          loggedIn={this.props.loggedIn}
+          setRedirect={this.props.setRedirect}
+        />
+      )
+    ) : (
+      <Profile
+        user={this.state.user}
+        handleFollow={this.props.handleFollow}
+        loggedIn={this.props.loggedIn}
+        setRedirect={this.props.setRedirect}
+      />
+    );
   }
 }
-
 
 export default classProfile;

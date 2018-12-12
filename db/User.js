@@ -12,7 +12,9 @@ const userSchema = new Schema({
         match: [
             /^[a-z0-9_-]+$/i,
             'Username can only contain letters, numbers, _, and -'
-        ]
+        ],
+        minlength: [3, 'Username must be between 3 and 18 characters'],
+        maxlength: [15, 'Username must be between 3 and 18 characters']
     },
     email: {
         type: String,
@@ -34,7 +36,9 @@ const userSchema = new Schema({
         ],
         immutable: {
             allowOnNew: true
-        }
+        },
+        minlength: [6, 'Password must be between 6 and 20 characters'],
+        maxlength: [20, 'Password must be between 6 and 20 characters']
     },
     displayName: {
         type: String,
@@ -43,7 +47,9 @@ const userSchema = new Schema({
             /^[a-z'-\s]+$/i,
             'Display name can only include letters, spaces, \', and -'
         ],
-        required: true
+        required: true,
+        minlength: [3, 'Display name must be between 3 and 18 characters'],
+        maxlength: [18, 'Display name must be between 3 and 18 characters']
     },
     following: [{
         type: Schema.Types.ObjectId,
@@ -58,12 +64,10 @@ const userSchema = new Schema({
         type: String,
         immutable: true
     },
-
     imageUrl: {
         type: String,
         default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/1920px-Anonymous_emblem.svg.png'
     },
-
     tracks: [{
         type: Schema.Types.ObjectId,
         ref: 'Track',

@@ -60,7 +60,8 @@ const userSchema = new Schema({
     },
 
     imageUrl: {
-        type: String
+        type: String,
+        default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/1920px-Anonymous_emblem.svg.png'
     },
 
     tracks: [{

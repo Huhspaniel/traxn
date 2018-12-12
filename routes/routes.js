@@ -3,7 +3,7 @@ const {
     Track,
     _functions: { getFeed }
 } = require('../db');
-const { errObj, loginUser, authJWT } = require('./functions.js');
+const { authDev, loginUser, authJWT } = require('./functions.js');
 
 module.exports = function (app) {
     app.get('/csrf', (req, res) => {
@@ -111,6 +111,14 @@ module.exports = function (app) {
         .all(authJWT, getUserByJWT)
         .get((req, res) => res.json(req.body.user))
         .put(updateUser)
+        .delete((req, res, next) => {
+            Track.deleteMany({ user: req.body.user_id })
+                .then(data => {
+                    return User.deleteOne({ _id: req.body.user_id })
+                })
+                .then(data => res.json(data))
+                .catch(next)
+        })
 
     function getUserPublic(req, res, next) {
         User.findById(req.params.id)
@@ -222,6 +230,30 @@ module.exports = function (app) {
         })
         .delete((req, res) => {
             Track.findOneAndDelete({ _id: req.params.id, user: req.body.user_id })
+                .then(track => {
+                    User.updateOne({ _id: data.user }, {
+                        $pull: { tracks: track._id }
+                    })
+                        .then(user => res.json(track))
+                })
+                .catch(next);
+        })
+
+        app.delete('/api/users', authDev, (req, res, next) => {
+            User.deleteMany({})
+                .then(data => {
+                    return Track.deleteMany({})
+                })
+                .then(data => res.json(data))
+                .catch(next)
+        })
+        app.delete('/api/tracks', authDev, (req, res, next) => {
+            Track.deleteMany({})
+                .then(data => {
+                    return User.updateMany({}, {
+                        tracks: null
+                    })
+                })
                 .then(data => res.json(data))
                 .catch(next);
         })

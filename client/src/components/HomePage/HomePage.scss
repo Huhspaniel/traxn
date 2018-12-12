@@ -60,16 +60,17 @@ body {
     }
 
     .textarea {
-      resize: none;
-      box-sizing: border-box;
-      width: calc(100% - 30px);
-      height: 40px;
-      padding: 5px;
-      border-radius: 10px;
-      border-color: palevioletred;
-      border-width: 3px;
-      outline: none;
-      font-size: 15px;
+        resize: none;
+        box-sizing: border-box;
+        width: calc(100% - 30px);
+        padding: 5px;
+        border-radius: 10px;
+        border-color: palevioletred;
+        border-width: 3px;
+        outline: none;
+        font-size: 15px;
+        transition: .2s ease-out;
+        height: 40px;
 
       &:focus {
         height: 100px;
@@ -77,43 +78,25 @@ body {
     }
 
     .post-track {
-      align-self: start;
-      color: black;
-      border: solid thin palevioletred;
-      justify-self: center;
-      box-sizing: border-box;
-      padding: 10px;
-      margin: 0;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.16s;
-      overflow: hidden;
-      font-size: 15px;
-
-      &:active {
-        color: "";
-      }
-      &:focus {
-        outline: none;
-        box-shadow: 0 0 5px $color-primary;
-      }
-      &:before {
-        content: "";
-
-        opacity: 0.5s;
-        filter: blur(30px);
-        transform: translateX(-130px) skewX(-15deg);
-      }
-      &:after {
-        content: "";
-
-        opacity: 0;
-        filter: blur(30px);
-        transform: translate(-100px) scaleX(-15deg);
-      }
-      &:hover {
-        color: white;
-        background: rgb(255, 190, 213);
+        color: black;
+        border: solid thin palevioletred;
+        justify-self: center;
+        align-self: start;
+        padding: 10px;
+        margin: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: .16s;
+        overflow: hidden;
+        font-size: 15px;
+        
+        &:active {
+            color: '';
+        }
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 5px $color-primary;
+        }
         &:before {
           transform: translateX(300px) skewX(-15deg);
           opacity: 0.6;
@@ -133,7 +116,7 @@ body {
     color: black;
     display: grid;
     width: 100%;
-    grid-template-columns: 10% 10% 1fr auto;
+    grid-template-columns: auto auto 1fr auto;
     &.logged-out {
       grid-template-columns: 10% 1fr auto;
     }
@@ -195,16 +178,19 @@ body {
     }
 
     p {
-      margin-left: 10px;
-      padding: 10px;
-      cursor: pointer;
+        margin-left: 10px;
+        padding: 10px;
+        cursor: pointer;
 
-      &:hover {
-        background-color: $color-hover;
-      }
+        &:hover {
+            background-color: $color-hover;
+        }
+        &.active-filter {
+            background: rgb(255, 190, 213);
+        }
     }
-  }
 }
+
 
 @media only screen and (max-width: 700px) {
   .homepage-profile {

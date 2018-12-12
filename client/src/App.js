@@ -63,6 +63,7 @@ class App extends Component {
         }
       })
       .catch(err => {
+        this.logout();
         console.error(err.response);
       });
   }

@@ -21,6 +21,7 @@ const Main = props => (
           user={props.user}
           loggedIn={props.loggedIn}
           setRedirect={props.setRedirect}
+          handleFollow={props.handleFollow}
         />
       )}
     />
@@ -42,7 +43,11 @@ const Main = props => (
     <Route
       path="/$:username"
       render={_props => (
-        <Profile {..._props} user={props.user} loggedIn={props.loggedIn} />
+        <Profile {..._props}
+          user={props.user}
+          loggedIn={props.loggedIn}
+          handleFollow={props.handleFollow}
+        />
       )}
     />
     <Route

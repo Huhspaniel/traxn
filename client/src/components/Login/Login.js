@@ -131,13 +131,16 @@ class LoginPage extends React.Component {
       }
       this.sendSignup(signupCredentials);
     } else {
-      throw new Error('Password fields must match');
+      console.error(new Error('Password fields must match'));
     }
   }
 
-  sendLogin = credentials => {
-    this.props.axios
-      .post(`/login`, credentials)
+  sendLogin = () => {
+    return this.props.axios
+      .post(`/login`, {
+        username: this.state.username,
+        password: this.state.password
+      })
       .then(res => {
         if (res.data.error) {
           console.log(res.data.error);
@@ -151,7 +154,7 @@ class LoginPage extends React.Component {
       .catch(err => console.log(err));
   }
   sendSignup = () => {
-    this.props.axios
+    return this.props.axios
       .post(`/api/users`, {
         username: this.state.username,
         password: this.state.password,
@@ -159,7 +162,7 @@ class LoginPage extends React.Component {
         displayName: this.state.displayName
       })
       .then(res => {
-        this.sendLogin(res.data);
+        this.sendLogin();
       })
       .catch(err => console.log(err));
   };

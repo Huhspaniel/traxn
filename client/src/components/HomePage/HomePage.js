@@ -177,15 +177,12 @@ class HomePage extends React.Component {
       .get(`/api/tracks?filter=following`);
   };
 
-  componentDidUpdate() {
+  render() {
     if (!this.state.feed) {
       this.refreshFeed();
     } else if (this.state.doSortFeed) {
       this.refreshFeed();
     }
-  }
-
-  render() {
     return (
       <main
         className={`homepage-content${

@@ -99,9 +99,27 @@ const TrackList = props => (
       ) : (
           <span style={{ color: "black", padding: "20px" }}>No posts here :(</span>
         ) // <-- Whatever is here is what will be displayed if there are no posts to show
-    ) : (''
-        // <ClipLoader />
-      ) /* <-- Whatever is here is what will be displayed when posts have not loaded yet */}
+    ) : props.user ? (
+      props.user.tracks.map(
+        track =>
+          (
+            <Track
+              displayName={props.user.displayName}
+              userPic={props.user.imageUrl}
+              username={props.user.username}
+              _postedAt={track._postedAt}
+              content={track.content}
+              key={track._id}
+              id={track._id}
+              repostedBy={track.repostedBy}
+              setRedirect={props.setRedirect}
+              loggedIn={props.loggedIn}
+            />
+          )
+      )
+    ) : (
+          ''
+        ) /* <-- Whatever is here is what will be displayed when posts have not loaded yet */}
   </div>
 );
 

@@ -23,7 +23,7 @@ module.exports = function (app) {
         });
 
     app.post(`/login`, function getUserByUsername(req, res, next) {
-        User.findOne({ username: req.body.username })
+        User.findOne({ username: req.body.username }).populate('tracks')
             .then(user => {
                 if (!user) return next(new Error('User not found'))
                 req.body.user = user;
@@ -63,7 +63,7 @@ module.exports = function (app) {
     /* ----- JWT secure routes ----- */
 
     function getUserByJWT(req, res, next) {
-        User.findOne({ _id: req.body.user_id })
+        User.findOne({ _id: req.body.user_id }).populate('tracks')
             .then(user => {
                 if (!user) {
                     res.status(404);
@@ -121,7 +121,7 @@ module.exports = function (app) {
         })
 
     function getUserPublic(req, res, next) {
-        User.findById(req.params.id)
+        User.findById(req.params.id).populate('tracks')
             .then(user => {
                 if (user) {
                     user.password = user.email = user.following = undefined;
@@ -133,7 +133,7 @@ module.exports = function (app) {
             })
             .catch(err => {
                 if (err.name === 'CastError') {
-                    User.findOne({ username: req.params.id })
+                    User.findOne({ username: req.params.id }).populate('tracks')
                         .then(user => {
                             user.password = user.email = user.following = undefined;
                             res.json(user);

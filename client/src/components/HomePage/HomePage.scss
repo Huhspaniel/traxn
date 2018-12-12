@@ -34,7 +34,7 @@ body {
   width: 250px;
   box-shadow: 0 0 5px black;
   display: grid;
-  grid-template-rows: min-content 1fr;
+  grid-template-rows: auto 1fr;
 }
 .sidebar-list {
     height: 100%;

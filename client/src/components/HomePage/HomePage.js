@@ -4,7 +4,12 @@ import SideProfile from "../SideProfile/SideProfile";
 import axios from "axios";
 
 const sort = (array, compare) => {
-  return array.sort(compare);
+  array.sort(compare);
+  return array;
+}
+const unshift = (array, val) => {
+  array.unshift(val);
+  return array;
 }
 
 class Dropdown extends React.Component {
@@ -38,6 +43,7 @@ class Dropdown extends React.Component {
               data-label={option.label}
               value={option.value}
               onClick={this.selectOption}
+              key={option.value + option.label}
             >
               {option.label}
             </option>
@@ -83,7 +89,6 @@ class HomePage extends React.Component {
   refreshFeed = () => {
     this[`get_${this.state.filter}`]()
       .then(res => {
-        console.log(res);
         res.data = sort(res.data, this[`compare_${this.state.sort}`]);
         this.setState({
           feed: res.data,
@@ -130,7 +135,6 @@ class HomePage extends React.Component {
   */
 
   handleChange = event => {
-    console.log(event.target.name);
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -138,13 +142,12 @@ class HomePage extends React.Component {
   handlePost = e => {
     e.preventDefault();
     const content = this.state.content;
-    this.setState({ content: "", sort: "" });
+    this.setState({ content: "" });
     axios
       .post("/api/tracks", { content })
       .then(res => {
-        console.log(res);
         this.setState({
-          feed: this.state.feed.unshift(res.data),
+          feed: unshift(this.state.feed, res.data),
           doSortFeed: false
         });
       })
@@ -155,7 +158,6 @@ class HomePage extends React.Component {
     const filter = e.target.getAttribute('data-filter');
     this[`get_${filter}`]()
       .then(res => {
-        console.log(res.data);
         res.data = sort(res.data, this[`compare_${this.state.sort}`]);
         this.setState({
           feed: res.data || [],
@@ -176,7 +178,6 @@ class HomePage extends React.Component {
   };
 
   componentDidUpdate() {
-    console.log('hi');
     if (!this.state.feed) {
       this.refreshFeed();
     } else if (this.state.doSortFeed) {

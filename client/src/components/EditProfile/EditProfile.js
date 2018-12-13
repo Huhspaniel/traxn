@@ -4,7 +4,7 @@ import axios from "axios";
 
 const UploadImageForm = props => (
   <form>
-    <input type="submit" value="Upload" onClick={props.openWidget} />
+    <input type="submit" value="Update Profile Image" onClick={props.openWidget} />
   </form>
 );
 
@@ -50,43 +50,58 @@ const EditProfilePage = props => (
 
     <div className="inputs">
       <input
-        onChange={props.handleChange}
+        onChange={ props.handleChange }
+        maxLength={props.max_chars} required
         type="text"
         name="username"
+        maxLength="18"
         value={props.username}
-        placeholder={props.user ? props.user.username : ''}
+        placeholder="New Username"
       />
       <input
         onChange={props.handleChange}
         type="text"
         name="displayName"
+        maxLength="18"
         value={props.displayName}
-        placeholder={props.user ? props.user.displayName : ''}
+        placeholder="New Display Name"
       />
       <input
         onChange={props.handleChange}
         type="text"
         name="email"
         value={props.email}
-        placeholder={props.user ? props.user.email : ''}
+        placeholder="New Email"
       />
-      {/* <input
+      <input
         onChange={props.handleChange}
         type="text"
         name="website"
         value={props.website}
-        placeholder={props.user ? props.user.website : ''}
+        placeholder="Website"
+        maxLength="20"
       />
       <input
         onChange={props.handleChange}
         type="text"
         name="location"
         value={props.location}
-        placeholder={props.user ? props.user.location : ''}
-      /> */}
+        placeholder="Location"
+        maxLength="20"
+      />
+      <input
+        onChange={props.handleChange}
+        type="date"
+        name="birthday"
+        value={props.location}
+        placeholder="Birthday"
+        maxLength="20"
+      />
     </div>
     <p>{props.errorMsg}</p>
-    <button onClick={props.saveBtn} className="save-changes">Save Changes</button>
+    <button onClick={props.saveBtn} className="save-changes">
+      Save Changes
+    </button>
   </div>
 );
 
@@ -96,30 +111,36 @@ class EditProfile extends React.Component {
     displayName: "",
     email: "",
     website: "",
+    location: "",
     birthday: "",
     currentUsername: "",
     currentDisplayName: "",
     currentEmail: "",
-    errorMsg: ""
+    errorMsg: "",
   };
 
   saveChanges = () => {
-      this.props.axios
-      .put('api/users/me', {
-          username: this.state.username,
-          displayName: this.state.displayName,
-          email: this.state.email
-      }).then((res) => {
-          if (res.data.error) {
-            this.setState({ errorMsg: "You didn't change anything."})
-            console.log(res.data.error);
-            
-          } else {
-            console.log(res.data);
-            this.props.setRedirect('/');
-          }
-      })
-  }
+    const { username, displayName, email, website, location, birthday  } = this.state;
+    const fields = { username, displayName, email, website, location, birthday };
+    const update = {};
+    for (let prop in fields) {
+      if (fields[prop]) {
+        update[prop] = fields[prop];
+      }
+    }
+    this.props.axios
+      .put("api/users/me", update)
+      .then(res => {
+        if (res.data.error) {
+          this.setState({ errorMsg: "You didn't change anything." });
+          console.log(res.data.error);
+        } else {
+          console.log(res.data);
+          this.props.authJWT();
+          this.props.setRedirect("/");
+        }
+      });
+  };
 
   changeHandler = event => {
     this.setState({
@@ -131,9 +152,9 @@ class EditProfile extends React.Component {
     return (
       <div className="edit-profile">
         <EditProfilePage
-            saveBtn = {this.saveChanges}
-            handleChange = {this.changeHandler}
-            user = {this.props.user}
+          saveBtn={this.saveChanges}
+          handleChange={this.changeHandler}
+          user={this.props.user}
         />
         <AccountSettings />
       </div>

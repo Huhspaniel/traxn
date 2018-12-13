@@ -143,6 +143,7 @@ class App extends Component {
           loggedIn={this.state.loggedIn}
           login={this.login} logout={this.logout}
           setRedirect={this.setRedirect}
+          authJWT={this.authJWT}
           handleFollow={user_id => {
             if (this.state.user) {
               this.handleFollow(user_id);

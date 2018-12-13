@@ -79,7 +79,7 @@ const userSchema = new Schema({
     trim: true
   },
   birthday: {
-    type: Number
+    type: Date
   },
   _joinedAt: {
     type: Number,

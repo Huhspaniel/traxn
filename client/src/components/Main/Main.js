@@ -48,11 +48,21 @@ const Main = (props) => (
           axios={props.axios}
           setRedirect={props.setRedirect}
           user={props.user}
+          authJWT={props.authJWT}
         />
       )}
     />
     <Route path="/scoreboard" component={Scoreboard} />
-    <Route path="/alerts" component={Alerts} />
+    <Route path="/alerts" 
+    render={_props => (
+      <Alerts 
+      {...props}
+      axios = {props.axios}
+      user={props.user}
+
+      />
+    )}
+    />
     <Route path="/messages" component={Messages} />
     <Route path="/settings" component={Settings} />
     <Route

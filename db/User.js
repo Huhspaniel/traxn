@@ -14,7 +14,7 @@ const userSchema = new Schema({
       "Username can only contain letters, numbers, _, and -"
     ],
     minlength: [3, "Username must be between 3 and 18 characters"],
-    maxlength: [15, "Username must be between 3 and 18 characters"]
+    maxlength: [18, "Username must be between 3 and 18 characters"]
   },
   email: {
     type: String,

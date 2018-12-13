@@ -1,25 +1,43 @@
 import React from "react";
 
-const Alerts = props => (
-  <main className="alerts-content">
-    <div className="alerts">
+const Alert = props => (
+  <div className="alert-content">
+   
 
-      <div className="from-alert">
+     
       <img src={props.userPic} />
-      <p className="from-user">Gaining traxn from {props.fromUser}</p>
-      <p className="timestamp">⋅ {props.timeStamp}</p>
+      <div className="message">
+      <p className="from-user">Gaining traxn from <span className="username">username{props.fromUser}</span></p>
+      <p className="timestamp">⋅ timestamp{props.timeStamp}</p>
       </div>
-
-    </div>
-  </main>
+      
+  
+  </div>
 );
 
-// class Alerts extends React.Component {
-//   state = {
+class Alerts extends React.Component {
+  state = {
+    timeStamp: '',
+    userPic: '',
+    fromUser: ''
+  }
 
-//   }
-// }
+  getRepostedBy = () => {
+    
+  }
 
+  componentWillMount () {
+    this.getRepostedBy();
+  }
+
+  render () {
+    return (
+      <div className="alerts-wrapper">
+        <Alert />
+      </div>
+    );
+  };
+}
 
 export default Alerts;
 

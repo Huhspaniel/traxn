@@ -114,6 +114,8 @@ class App extends Component {
     this.getCSRF();
     if (cookie.get('jwt')) {
       this.authJWT();
+    } else {
+      this.logout();
     }
   }
 

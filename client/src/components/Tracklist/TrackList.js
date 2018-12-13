@@ -8,8 +8,8 @@ function formatTime(date) {
 }
 
 const TrackStat = props => (
-  <div className={`track-stat ${props.name}-wrapper${props.active ? ' active' : ''}`} onClick={props.handleClick}>
-      <i className={props.fa} />
+  <div className={`track-stat ${props.name}-wrapper${props.active ? ' active' : ''}`}>
+      <i className={props.fa} onClick={props.handleClick} />
       <p className={`${props.name}-count`}>{props.count}</p>
   </div>
 )
@@ -126,6 +126,7 @@ const TrackList = props => (
                 key={track._id}
                 id={track._id}
                 repostedBy={track.repostedBy}
+                dislikedBy={track.dislikedBy}
                 setRedirect={props.setRedirect}
                 loggedIn={props.loggedIn}
               />

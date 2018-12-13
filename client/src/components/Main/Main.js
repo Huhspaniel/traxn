@@ -28,6 +28,7 @@ const Main = (props) => (
                 user={props.user}
                 loggedIn={props.loggedIn}
                 setRedirect={props.setRedirect}
+                handleFollow={props.handleFollow}
             />} />
         <Route path="/signin" render={(_props) =>
             <Login {..._props}

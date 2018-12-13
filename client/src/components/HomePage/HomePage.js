@@ -61,8 +61,8 @@ class HomePage extends React.Component {
     feed: null,
     value: "",
     content: "",
-    sort: "retrax",
-    sortLabel: "Most Shared",
+    sort: "traction",
+    sortLabel: "Traction",
     showMenu: false,
     doSortFeed: true
   };
@@ -109,10 +109,21 @@ class HomePage extends React.Component {
       return 0;
     }
   };
-  compare_retrax = (a, b) => {
+  compare_repost = (a, b) => {
     if (a.repostedBy.length > b.repostedBy.length) {
       return -1;
     } else if (a.repostedBy.length < b.repostedBy.length) {
+      return 1;
+    } else {
+      return this.compare_new(a, b);
+    }
+  };
+  compare_traction = (a, b) => {
+    const a_traction = a.repostedBy.length - a.dislikedBy.length;
+    const b_traction = b.repostedBy.length - b.dislikedBy.length;
+    if (a_traction > b_traction) {
+      return -1;
+    } else if (a_traction < b_traction) {
       return 1;
     } else {
       return this.compare_new(a, b);
@@ -238,12 +249,16 @@ class HomePage extends React.Component {
               label="Sort"
               options={[
                 {
+                  label: "Traction",
+                  value: "traction"
+                },
+                {
                   label: "Newest",
                   value: "new"
                 },
                 {
-                  label: "Most Shared",
-                  value: "retrax"
+                  label: "Shares",
+                  value: "repost"
                 }
               ]}
               handleChange={this.handleSort}

@@ -102,7 +102,7 @@ userSchema.pre(`save`, function(next) {
 
   console.log(this.isModified("password"));
   if (this.isModified("password")) {
-    if (this.password.length < 6 || this.password.length > 20) {
+    if (this.password.length >= 6 && this.password.length <= 20) {
       bcrypt
         .hash(this.password, 10)
         .then(hashed => {
@@ -116,6 +116,7 @@ userSchema.pre(`save`, function(next) {
         });
     } else {
         this.invalidate("password", new Error('Password must be between 6 and 20 characters'))
+        next();
     }
   } else {
     next();

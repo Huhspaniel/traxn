@@ -18,7 +18,9 @@ module.exports = function (app) {
         })
         .post((req, res, next) => {
             User.create(req.body)
-                .then(data => res.json(data))
+                .then(data => {
+                    res.json(data)
+                })
                 .catch(next);
         });
 

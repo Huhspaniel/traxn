@@ -4,7 +4,7 @@ import axios from "axios";
 
 const UploadImageForm = props => (
   <form>
-    <input type="submit" value="Upload" onClick={props.openWidget} />
+    <input type="submit" value="Update Profile Image" onClick={props.openWidget} />
   </form>
 );
 
@@ -56,7 +56,7 @@ const EditProfilePage = props => (
         name="username"
         maxLength="18"
         value={props.username}
-        placeholder={props.user ? props.user.username : ""}
+        placeholder="New Username"
       />
       <input
         onChange={props.handleChange}
@@ -64,29 +64,39 @@ const EditProfilePage = props => (
         name="displayName"
         maxLength="18"
         value={props.displayName}
-        placeholder={props.user ? props.user.displayName : ""}
+        placeholder="New Display Name"
       />
       <input
         onChange={props.handleChange}
         type="text"
         name="email"
         value={props.email}
-        placeholder={props.user ? props.user.email : ""}
+        placeholder="New Email"
       />
-      {/* <input
+      <input
         onChange={props.handleChange}
         type="text"
         name="website"
         value={props.website}
-        placeholder={props.user ? props.user.website : ''}
+        placeholder="Website"
+        maxLength="20"
       />
       <input
         onChange={props.handleChange}
         type="text"
         name="location"
         value={props.location}
-        placeholder={props.user ? props.user.location : ''}
-      /> */}
+        placeholder="Location"
+        maxLength="20"
+      />
+      <input
+        onChange={props.handleChange}
+        type="date"
+        name="birthday"
+        value={props.location}
+        placeholder="Birthday"
+        maxLength="20"
+      />
     </div>
     <p>{props.errorMsg}</p>
     <button onClick={props.saveBtn} className="save-changes">
@@ -101,6 +111,7 @@ class EditProfile extends React.Component {
     displayName: "",
     email: "",
     website: "",
+    location: "",
     birthday: "",
     currentUsername: "",
     currentDisplayName: "",
@@ -109,8 +120,8 @@ class EditProfile extends React.Component {
   };
 
   saveChanges = () => {
-    const { username, displayName, email } = this.state;
-    const fields = { username, displayName, email };
+    const { username, displayName, email, website, location, birthday  } = this.state;
+    const fields = { username, displayName, email, website, location, birthday };
     const update = {};
     for (let prop in fields) {
       if (fields[prop]) {

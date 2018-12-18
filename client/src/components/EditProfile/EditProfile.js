@@ -79,7 +79,7 @@ const EditProfilePage = props => (
         name="website"
         value={props.website}
         placeholder="Website"
-        maxLength="20"
+        maxLength="40"
       />
       <input
         onChange={props.handleChange}

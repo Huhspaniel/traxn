@@ -55,20 +55,10 @@ header {
 
   ul.nav-right {
     display: grid;
-    justify-self: right;
     justify-items: center;
+    width: 100%;
    
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    
-    .login {
-      grid-column-start: 1;
-    }
-    .post {
-      grid-column-start: 1;
-    }
-    .avatar {
-      grid-column-start: 4;
-    }
+    grid-template-columns: 1fr 1fr;
   }
   li {
     font-size: 14px;
@@ -119,13 +109,13 @@ header {
 @media (max-width: 700px) {
   .navbar_navigation-items {
     display: grid;
-    grid-template-columns: 70% 30%;
+    // grid-template-columns: 70% 30%;
 
     .fa {
       display: inline-block;
       font-size: initial;
     }
-    a {
+    .nav-left a {
       font-size: 0;
       
       width: 2em; /* set to same as icon */
@@ -133,12 +123,9 @@ header {
       overflow: hidden;
       text-align: center;
     }
-    .avatar {
-      display: none;
-    }
-    .nav-link {
-      
-    }
+    // .avatar {
+    //   display: none;
+    // }
   }
 }
 
@@ -146,7 +133,7 @@ header {
   .navbar__toggle-button {
     display: none;
   }
-  .navbar__logo {
-    margin-left: 0;
-  }
+  // .navbar__logo {
+  //   margin-left: 0;
+  // }
 }

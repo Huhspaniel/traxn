@@ -13,6 +13,7 @@ body {
 }
 
 .homepage-content {
+  box-sizing: border-box;
   margin: 100px 0;
   width: 100vw;
   max-width: 900px;
@@ -130,7 +131,7 @@ body {
     background-color: white;
     color: black;
     display: grid;
-    width: 100%;
+    width: 100vw;
     grid-template-columns: min-content min-content 1fr min-content;
     border-bottom: 1px solid $color-primary;
     &.logged-out {
@@ -138,6 +139,7 @@ body {
     }
 
     .custom-dropdown {
+      box-sizing: border-box;
       -webkit-user-select: none; /* Chrome all / Safari all */
       -moz-user-select: none; /* Firefox all */
       -ms-user-select: none; /* IE 10+ */
@@ -211,5 +213,29 @@ body {
     grid-template-areas:
       "profile"
       "newsfeed";
+  }
+  .homepage-newsfeed {
+    width: 100vw;
+  }
+  .homepage-newsfeed .new-post {
+    width: 100vw !important;
+    grid-template-columns: auto min-content !important;
+    textarea {
+      box-sizing: border-box;
+      width: 100% !important;
+    }
+    .post-track {
+      padding: 10px;
+      width: 50px;
+    }
+    img {
+      display: none;
+    }
+  }
+  .newsfeed-tabs {
+    grid-template-columns: auto auto auto !important;
+  }
+  .custom-dropdown {
+    width: max-content !important;
   }
 }

@@ -16,10 +16,11 @@
 }
 
 .coming-soon {
-  width: 100%;
-  text-align: center;
-  color: white;
-  padding: 30px;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 30px;
 }
 
 @mixin button {
@@ -40,14 +41,12 @@
     }
     &:before {
         content: '';
-        
         opacity: .5s;
         filter: blur(30px);
         transform: translateX(-130px) skewX(-15deg);
     }
     &:after {
         content: '';
-        
         opacity: 0;
         filter: blur(30px);
         transform: translate(-100px) scaleX(-15deg);
@@ -67,6 +66,7 @@
         }
     }
 }
+
 @import './components/Backdrop/Backdrop.scss';
 @import './components/Navbar/Navbar.scss';
 @import './components/SideDrawer/DrawerToggleButton.scss';

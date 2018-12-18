@@ -41,7 +41,7 @@ const Navbar = props => {
               </a>
             </li>
           </ul>
-  
+
           <ul className="nav-right">
             {props.loggedIn || localStorage.getItem('id') ?
               <div className='nav-link' onClick={e => {
@@ -49,7 +49,6 @@ const Navbar = props => {
                 props.setRedirect('/signin');
               }}>Sign out</div>
               : <a href="/signin" className={path === '/signin' ? 'active' : ''}>Sign in</a>}
-  
             {props.user ?
               <a className="avatar" href={`/$${props.user ? props.user.username : localStorage.getItem('username')}`}>
                 <img

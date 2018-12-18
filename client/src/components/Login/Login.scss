@@ -22,6 +22,15 @@
         grid-template-columns: 1fr;
         grid-template-rows: auto;
 
+        .signin-error {
+            padding-bottom: 20px;
+            font-size: 14px;
+            color: red;
+            &.none {
+                display: none;
+            }
+        }
+
         .menu-title {
             color: black;
             font-size: 19px;

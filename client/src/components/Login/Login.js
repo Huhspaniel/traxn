@@ -162,7 +162,11 @@ class LoginPage extends React.Component {
         displayName: this.state.displayName
       })
       .then(res => {
-        this.sendLogin();
+        if (res.data.error) {
+          console.error(res.data.error)
+        } else {
+          this.sendLogin();
+        }
       })
       .catch(err => console.log(err));
   };

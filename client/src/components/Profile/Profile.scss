@@ -271,4 +271,11 @@ body {
       display: none;
     }
   }
+  .profile-page .profile-content {
+    box-sizing: border-box;
+    padding: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: "profile" "newsfeed";
+  }
 }

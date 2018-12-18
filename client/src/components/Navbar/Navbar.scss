@@ -42,7 +42,7 @@ header {
   align-items: center;
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
 
   ul {
     list-style: none;
@@ -56,9 +56,11 @@ header {
   ul.nav-right {
     display: grid;
     justify-items: center;
+    grid-template-columns: auto auto;
+    grid-gap: 5px;
+
     width: 100%;
-   
-    grid-template-columns: 1fr 1fr;
+    grid-column-start: -1;
   }
   li {
     font-size: 14px;

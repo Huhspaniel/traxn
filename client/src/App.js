@@ -153,7 +153,7 @@ class App extends Component {
           }}
         />
         {window.location.pathname !== '/signin' ? <footer>
-          Copyright ©
+          Copyright © Traxn 2018
         </footer> : ''}
         {backdrop}
       </div>

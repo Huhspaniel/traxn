@@ -15,6 +15,13 @@
     }
 }
 
+.coming-soon {
+  width: 100%;
+  text-align: center;
+  color: white;
+  padding: 30px;
+}
+
 @mixin button {
     border-radius: 2px;
     cursor: pointer;

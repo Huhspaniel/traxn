@@ -85,6 +85,7 @@ body {
             border-radius: 5px;
             justify-self: right;
             border: 2px outset darken(white, 2%);
+            font-size: 14px;
             &:hover {
                 color: $color-primary;
             }
@@ -234,11 +235,18 @@ body {
             grid-row-start: -1;
             display: flex;
             justify-content: space-evenly;
-            width: 100%;
+            justify-self: center;
+            width: 100vw;
+            max-width: 400px;
         }
         .edit-profile-btn {
             grid-row-start: 1;
             justify-self: center;
+        }
+        .follow {
+            justify-self: center;
+            padding: 10px;
+            margin: 5px;
         }
     }
     .profile-page .profile-content {

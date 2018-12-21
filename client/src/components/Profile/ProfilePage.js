@@ -120,7 +120,9 @@ const ProfilePage = props => {
       </main>
     );
   } else {
-    return null;
+    return (
+      <main />
+    );
   }
 };
 

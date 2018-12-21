@@ -30,7 +30,8 @@ const Main = (props) => (
         setRedirect={props.setRedirect}
         handleFollow={props.handleFollow}
         axios={props.axios}
-      />} />
+      />
+    } />
     <Route
       path="/editprofile"
       render={_props => (

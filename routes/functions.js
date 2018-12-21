@@ -36,7 +36,6 @@ function authJWT(req, res, next) {
             res.status(401);
             next(new Error('Invalid token'));
         } else {
-            console.log(decoded);
             req.body.user_id = decoded.user_id;
             next();
         }

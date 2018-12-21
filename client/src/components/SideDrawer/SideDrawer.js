@@ -15,8 +15,8 @@ const sideDrawer = props => {
           <a href="/scoreboard">Scoreboard</a>
           <a href="/alerts">Alerts</a>
           <a href="/messages">Messages</a>
-          <a href="/profile">Profile</a>
-          <a href="/settings">Settings</a>
+          {props.loggedUser ? <a href={`/$${props.loggedUser.username}`}>Profile</a> : ''}
+          {props.loggedUser ? <a href="/editprofile">Settings</a> : ''}
         </li>
       </ul>
     </nav>

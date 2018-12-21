@@ -1,5 +1,5 @@
 import React from "react";
-import { CloudinaryContext, Transformation, Image } from "cloudinary-react";
+// import { CloudinaryContext, Transformation, Image } from "cloudinary-react";
 import axios from "axios";
 
 const UploadImageForm = props => (
@@ -37,7 +37,7 @@ class AccountSettings extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="upload-img-form">
         <UploadImageForm openWidget={this.uploadWidget.bind(this)} />
       </div>
     );
@@ -51,7 +51,6 @@ const EditProfilePage = props => (
     <div className="inputs">
       <input
         onChange={ props.handleChange }
-        maxLength={props.max_chars} required
         type="text"
         name="username"
         maxLength="18"

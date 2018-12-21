@@ -34,10 +34,10 @@ body {
 
 .sidebar-list {
     height: 100%;
-    background: linear-gradient(#00000000, $color-primary)
+    background: linear-gradient(black, $color-primary)
 }
 
-.homepage-newsfeed {
+.tracklist {
     width: 100%;
     .new-post {
         background-color: rgb(255, 225, 235);
@@ -107,7 +107,7 @@ body {
         /* IE 10+ */
         user-select: none;
         align-self: center;
-        justify-self: center;
+        justify-self: right;
         grid-column-start: -2;
         position: relative;
         width: 200px;
@@ -139,14 +139,14 @@ body {
             }
         }
     }
-    .public-tab {
-        grid-column-start: 1;
-        grid-row-start: 1;
-    }
-    .following-tab {
-        grid-column-start: 2;
-        grid-row-start: 1;
-    }
+    // .public-tab {
+    //     grid-column-start: 1;
+    //     grid-row-start: 1;
+    // }
+    // .following-tab {
+    //     grid-column-start: 2;
+    //     grid-row-start: 1;
+    // }
     p {
         margin: 0;
         padding: 20px;
@@ -164,16 +164,21 @@ body {
     .homepage-profile {
         height: auto;
         width: 100%;
+        display: none;
     }
     .homepage-content {
+        margin: 0;
+        grid-gap: 0;
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
         grid-template-areas: "profile" "newsfeed";
     }
-    .homepage-newsfeed {
+    .tracklist {
         width: 100vw;
+
     }
-    .homepage-newsfeed .new-post {
+    .tracklist .new-post {
+        margin: 0 !important;
         width: 100vw !important;
         grid-template-columns: auto min-content !important;
         textarea {
@@ -182,17 +187,24 @@ body {
         }
         .post-track {
             padding: 10px;
-            width: 50px;
+            margin-left: 20px;
+            width: 15vw !important;
         }
         img {
             display: none;
         }
     }
     .newsfeed-tabs {
-        grid-template-columns: auto auto auto !important;
+        grid-template-columns: min-content min-content auto auto !important;
         width: 100vw !important;
+        > p {
+            padding: 10px !important;
+            width: min-content !important;
+        }
     }
     .custom-dropdown {
-        width: max-content !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 40vw !important;
     }
 }

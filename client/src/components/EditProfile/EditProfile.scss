@@ -1,7 +1,20 @@
+.edit-profile {
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    grid-template-areas: "." "edit-menu" "upload-img";
+    justify-items: center;
+    background: $color-primary;
+    width: 100vw;
+    .upload-img-form {
+        grid-area: upload-img
+    }
+}
 .edit-profile-wrapper {
+    grid-area: edit-menu;
     background-color: white;
     height: 400px;
-    width: 350px;
+    width: 100vw;
+    max-width: 450px;
     display: grid;
     grid-template-rows: 10% 10% 65% 10% 5%;
 
@@ -85,5 +98,11 @@
                             transition: .7s;
                         }
                     }
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .upload-img-form {
+        display: none;
     }
 }

@@ -99,14 +99,11 @@ userSchema.pre(`save`, function(next) {
   if (this.isModified("name")) {
     this.name = this.name.replace(/(\s(?=\s))+/g, ""); // Remove extra white space
   }
-
-  console.log(this.isModified("password"));
   if (this.isModified("password")) {
     if (this.password.length >= 6 && this.password.length <= 20) {
       bcrypt
         .hash(this.password, 10)
         .then(hashed => {
-          console.log(hashed);
           this.password = hashed;
           next();
         })

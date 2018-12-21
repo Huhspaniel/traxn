@@ -88,7 +88,7 @@ header {
 
 .fa {
   color: white;
-  margin-right: 7px;
+  padding-right: 7px;
 }
 .avatar {
   box-sizing: border-box;
@@ -116,11 +116,12 @@ header {
     .fa {
       display: inline-block;
       font-size: initial;
+      padding: 0;
     }
     .nav-left a {
       font-size: 0;
       
-      width: 2em; /* set to same as icon */
+      // width: 2em; /* set to same as icon */
       color: white; /* set to same as background */
       overflow: hidden;
       text-align: center;

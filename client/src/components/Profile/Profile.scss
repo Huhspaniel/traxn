@@ -1,281 +1,251 @@
 body {
-  background: #232526; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #414345,
-    #232526
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #414345,
-    #232526
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #232526;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient( to right, #414345, #232526);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient( to right, #414345, #232526);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .profile-page {
-  display: grid;
-  grid-template-rows: 200px min-content 1fr;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "profile-bar"
-    "profile-content";
-
-  .profile-header {
     display: grid;
-    z-index: 1;
-    grid-template-columns: 10% 30% 60%;
-    grid-template-rows: 40% 100%;
-    box-sizing: border-box;
-    grid-area: header;
-    background-color: $color-primary;
-
-    .profile-pic {
-      grid-column-start: 2;
-      grid-row-start: 2;
-
-      .pic {
-        border: 5px solid white;
-        width: 200px;
-        height: 200px;
-        max-height: 100%;
-        border-radius: 50%;
-      }
-    }
-  }
-
-  .profile-bar {
-    background-color: white;
-    grid-area: profile-bar;
-    display: grid;
-    grid-template-columns: 40% 40% 20%;
-    height: max-content;
-
-    
-
-    .stats {
-      grid-column-start: 2;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-template-rows: 1fr;
-
-      p {
-        margin: 0;
-      }
-
-      .stat {
+    grid-template-rows: 200px min-content 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "profile-bar" "profile-content";
+    .profile-header {
         display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr min-content min-content 1fr;
-        grid-template-areas:
-          "."
-          "stat-name"
-          "stat-value"
-          ".";
-        margin: 10px 0;
-        border-bottom: 0 $color-primary solid;
-        transition: 0.16s linear;
-        &:hover {
-          border-bottom-width: 2px;
-          margin-bottom: 8px;
-          .stat-name, .stat-value {
-            color: $color-primary;
-          }
+        z-index: 1;
+        grid-template-columns: 10% 30% 60%;
+        grid-template-rows: 40% 100%;
+        box-sizing: border-box;
+        grid-area: header;
+        background-color: $color-primary;
+        .profile-pic {
+            grid-column-start: 2;
+            grid-row-start: 2;
+            .pic {
+                border: 5px solid white;
+                width: 200px;
+                height: 200px;
+                max-height: 100%;
+                border-radius: 50%;
+            }
         }
-      }
-
-      .stat-name {
-        grid-area: stat-name;
-        color: $color-gray;
-        font-weight: bold;
-        font-size: 13px;
-        text-align: center;
-      }
-      .stat-value {
-        grid-area: stat-value;
-        color: $color-gray;
-        font-weight: bold;
-        font-size: 16px;
-        text-align: center;
-      }
     }
-
-    .follow {
-      cursor: pointer;
-      margin: 10px;
-      width: 50px;
-      border-radius: 5px;
-      justify-self: right;
-      border: 2px outset darken(white, 2%);
-      &:hover {
-        color: $color-primary;
-      }
-      &:active {
-        border-style: inset;
-        background: darken(white, 5%);
-      }
-      &:focus {
-        outline: none;
-      }
-      &.active {
-        color: $color-primary;
-        border-style: inset;
-      }
-    }
-
-    .edit-profile {
-      justify-self: right;
-
-      cursor: pointer;
-      margin: 10px;
-      width: 80px;
-      padding-left: 10px;
-      border-radius: 5px;
-      justify-self: center;
-      border: 2px outset darken(white, 2%);
-      &:hover {
-        color: $color-primary;
-      }
-      &:active {
-        border-style: inset;
-        background: darken(white, 5%);
-      }
-      &:focus {
-        outline: none;
-      }
-      &.active {
-        color: $color-primary;
-        border-style: inset;
-      }
-      
-      a {
-        text-decoration: none;
-      }
-      p {
-       
-        color: $color-gray;
-        font-weight: bold;
-        
-      
-        font-size: 13px;
-        
-
-        &:hover {
-          color: $color-primary;
+    .profile-bar {
+        background-color: white;
+        grid-area: profile-bar;
+        display: grid;
+        grid-template-columns: 40% 40% 20%;
+        height: max-content;
+        .stats {
+            grid-column-start: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr;
+            p {
+                margin: 0;
+            }
+            .stat {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr min-content min-content 1fr;
+                grid-template-areas: "." "stat-name" "stat-value" ".";
+                margin: 10px 0;
+                border-bottom: 0 $color-primary solid;
+                transition: 0.16s linear;
+                &:hover {
+                    border-bottom-width: 2px;
+                    margin-bottom: 8px;
+                    .stat-name,
+                    .stat-value {
+                        color: $color-primary;
+                    }
+                }
+            }
+            .stat-name {
+                grid-area: stat-name;
+                color: $color-gray;
+                font-weight: bold;
+                font-size: 13px;
+                text-align: center;
+            }
+            .stat-value {
+                grid-area: stat-value;
+                color: $color-gray;
+                font-weight: bold;
+                font-size: 16px;
+                text-align: center;
+            }
         }
-      }
-    }
-  }
-
-  .profile-content {
-    grid-area: profile-content;
-    justify-self: center;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 50px;
-    max-width: 1000px;
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    grid-template-areas: "profile newsfeed";
-    grid-gap: 1em;
-    color: white;
-
-    .profile-profile {
-      grid-area: profile;
-      padding: 20px;
-      box-sizing: border-box;
-      height: 100%;
-      background: linear-gradient(#00000000, $color-primary);
-      box-shadow: 0 0 5px black;
-      width: 250px;
-      color: $color-hover;
-
-      .profile-names {
-        p {
-          margin: 0;
-        }
-        .screen-name {
-          font-weight: bold;
-        }
-        .handle {
-          font-size: 13.5px;
-        }
-      }
-      .profile-info {
-        i {
-          margin: 2px;
-          margin-right: 7px;
-        }
-        .website {
-          color: rgb(137, 200, 255);
-
-          &:hover {
-            text-decoration: underline;
+        .follow {
             cursor: pointer;
-          }
-          .fa-link {
-            color: $color-hover;
-          }
+            margin: 10px;
+            width: 50px;
+            border-radius: 5px;
+            justify-self: right;
+            border: 2px outset darken(white, 2%);
+            &:hover {
+                color: $color-primary;
+            }
+            &:active {
+                border-style: inset;
+                background: darken(white, 5%);
+            }
+            &:focus {
+                outline: none;
+            }
+            &.active {
+                color: $color-primary;
+                border-style: inset;
+            }
         }
-      }
+        a {
+            text-decoration: none;
+        }
+        .edit-profile-btn {
+            cursor: pointer;
+            justify-self: right;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px outset darken(white, 2%);
+            color: $color-gray;
+            font-weight: bold;
+            font-size: 13px;
+            &:hover {
+                color: $color-primary;
+            }
+            &:active {
+                border-style: inset;
+                background: darken(white, 5%);
+            }
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 5px black;
+            }
+        }
     }
-  }
-
-  .profile-newsfeed {
-    box-sizing: border-box;
-    width: 100%;
-    grid-area: newsfeed;
-    box-shadow: 0 0 5px black;
-  }
+    .profile-content {
+        grid-area: profile-content;
+        justify-self: center;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 50px;
+        max-width: 1000px;
+        display: grid;
+        grid-template-columns: min-content 1fr;
+        grid-template-areas: "profile newsfeed";
+        grid-gap: 1em;
+        color: white;
+        .profile-profile {
+            grid-area: profile;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100%;
+            background: linear-gradient(black, $color-primary);
+            box-shadow: 0 0 5px black;
+            width: 250px;
+            color: $color-hover;
+            .profile-names {
+                p {
+                    margin: 0;
+                }
+                .screen-name {
+                    font-weight: bold;
+                }
+                .handle {
+                    font-size: 13.5px;
+                }
+            }
+            .profile-info {
+                i {
+                    margin: 2px;
+                    margin-right: 7px;
+                }
+                .website {
+                    color: rgb(137, 200, 255);
+                    &:hover {
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                    .fa-link {
+                        color: $color-hover;
+                    }
+                }
+            }
+        }
+    }
+    .profile-newsfeed {
+        box-sizing: border-box;
+        width: 100%;
+        grid-area: newsfeed;
+        box-shadow: 0 0 5px black;
+    }
 }
 
 @media only screen and (max-width: 700px) {
-  .profile-profile {
-    display: none !important;
-  }
-  .pic {
-    width: 69px !important;
-    height: 69px !important;
-    border-width: 2px !important;
-  }
-  .profile-page {
-    display: grid;
-    grid-template-rows: 100px 70px 1fr;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "header"
-      "profile-bar"
-      "profile-content";
-    .profile-content {
-      grid-template-columns: 1fr;
-      grid-template-areas: 'newsfeed';
-      .profile-newsfeed {
+    .profile-page {
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        grid-template-columns: 1fr;
+        grid-template-areas: none;
+        grid-gap: 0;
+        .profile-header {
+            grid-template-columns: 1fr auto 1fr;
+            grid-template-rows: 45vw;
+            height: 100%;
+            .profile-pic {
+                box-sizing: border-box;
+                grid-row-start: 1;
+                .pic {
+                    margin-top: calc(.3 * 45vw);
+                    box-sizing: border-box;
+                    width: 45vw;
+                    height: 45vw;
+                }
+            }
+        }
+        .profile-content {
+            grid-template-columns: 1fr;
+            grid-template-areas: 'newsfeed';
+            grid-gap: 0;
+            .profile-newsfeed {
+                padding: 0;
+            }
+            .profile-profile {
+                width: 100vw;
+                background: #00000000;
+                box-shadow: none;
+            }
+        }
+    }
+    .profile-page .profile-bar {
+        padding-top: calc(.3 * 45vw);
+        background-color: white;
+        grid-area: profile-bar;
+        display: grid;
+        justify-items: center;
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+        height: auto;
+        .stats {
+            grid-column-start: 1;
+            grid-row-start: -1;
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+        }
+        .edit-profile-btn {
+            grid-row-start: 1;
+            justify-self: center;
+        }
+    }
+    .profile-page .profile-content {
+        box-sizing: border-box;
         padding: 0;
-      }
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        grid-template-areas: "profile" "newsfeed";
     }
-  }
-
-  .profile-bar {
-    background-color: white;
-    grid-area: profile-bar;
-    display: grid;
-    grid-template-columns: 100% !important;
-    height: 60px;
-    .stats {
-      grid-column-start: 1 !important;
-      display: grid !important;
-      grid-template-columns: repeat(5, 1fr) !important;
-      grid-template-rows: 1fr !important;
-    }
-    .edit-profile {
-      display: none;
-    }
-  }
-  .profile-page .profile-content {
-    box-sizing: border-box;
-    padding: 0;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    grid-template-areas: "profile" "newsfeed";
-  }
 }

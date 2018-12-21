@@ -37,7 +37,7 @@ class AccountSettings extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="upload-img-form">
         <UploadImageForm openWidget={this.uploadWidget.bind(this)} />
       </div>
     );

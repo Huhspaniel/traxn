@@ -64,7 +64,6 @@ class App extends Component {
       .get('/api/users/me')
       .then(res => {
         if (res.error) {
-          console.log(res.error);
           this.logout();
         } else {
           this.login(res.data);
@@ -72,7 +71,6 @@ class App extends Component {
       })
       .catch(err => {
         this.logout();
-        console.error(err.response);
       });
   }
 
@@ -130,7 +128,7 @@ class App extends Component {
           axios={axios}
           setRedirect={this.setRedirect}
         />
-        <SideDrawer show={this.state.sideDrawerOpen} />
+        <SideDrawer show={this.state.sideDrawerOpen} loggedUser={this.state.loggedUser} />
         {this.renderRedirect()}
         <Main
           loggedUser={this.state.loggedUser} axios={axios}
@@ -145,12 +143,13 @@ class App extends Component {
             }
           }}
         />
-        {window.location.pathname !== '/signin' ? <footer>
+        {/* {window.location.pathname !== '/signin' ?  : ''} */}
+        <footer>
           Copyright © Traxn 2018
-        </footer> : ''}
+        </footer>
         {backdrop}
       </div>
-    : '');
+      : '');
   }
 }
 

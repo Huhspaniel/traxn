@@ -1,5 +1,5 @@
 
-.tracklist {
+.feed {
     background-color: white;
     height: min-content;
     width: 100%;
@@ -30,13 +30,22 @@
         "content content"
         "buttons buttons";
 
+    .profile-link {
+        border-radius: 50%;
+        
+    }
+
     .track-img {
         width: 50px;
         height: 50px;
         border: thick;
         border-radius: 50%;
-        border-color: white;
+        border-color: blue;
         grid-area: img;
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 5px black;
+        }
     }
 
     .track-content {
@@ -53,6 +62,7 @@
     .track-header {
         grid-area: header;
         display: flex;
+        align-items: center;
 
         .track-screen-name {
             color: black;
@@ -106,13 +116,13 @@
         }
 
         .repost-wrapper {
-            padding: 20px;
+            padding: 0 20px;
             display: flex;
             align-items: center;
             
             .fa-retweet {
                 margin: 0;
-                padding: 5px;
+                padding-right: 5px;
                 color: gray;
                 cursor: pointer;
                 font-weight: thin;
@@ -138,7 +148,7 @@
 
         .dislike-wrapper {
             display: flex;
-            padding: 20px;
+            padding: 0 20px;
             align-items: center;
             
             p {
@@ -149,7 +159,7 @@
             }
             
             .fa-thumbs-down {
-                padding: 5px;
+                padding-right: 5px;
                 margin: 0;
                 color: gray;
                 cursor: pointer;
@@ -165,6 +175,38 @@
                     color: rgb(172, 0, 0);
                 }
             }
+        }
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .track-main {
+        .track-header {
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: auto min-content;
+            .track-screen-name {
+                width: auto;
+                margin: 0;
+            }
+            .track-handle {
+                width: auto;
+                margin: 0;
+                grid-row-start: -2;
+            }
+            .track-timestamp {
+                width: auto;
+                margin: 0;
+            }
+            .direct-message {
+                grid-column-start: -2;
+            }
+        }
+        .track-content {
+            padding: 20px 10px;
+        }
+        .track-buttons .track-stat {
+            padding: 0 10px;
         }
     }
 }

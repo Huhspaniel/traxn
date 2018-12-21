@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import './App.scss';
-import Main from './components/Main/Main';
+import Main from './Main';
 import axios from 'axios';
 import cookie from 'js-cookie';
 
-import Navbar from "./components/Navbar/Navbar";
-import SideDrawer from "./components/SideDrawer/SideDrawer";
-import Backdrop from "./components/Backdrop/Backdrop";
+import Navbar from "./components/Navbar";
+import SideDrawer from "./components/SideDrawer";
+import Backdrop from "./components/Backdrop";
 
 function toggleArrayVal(array, value) {
   const index = array.indexOf(value);
@@ -22,9 +22,9 @@ function toggleArrayVal(array, value) {
 class App extends Component {
   state = {
     sideDrawerOpen: false,
-    loggedIn: null,
-    user: null,
-    redirect: null
+    loggedUser: null,
+    redirect: null,
+    checkedLogin: false
   };
 
   drawerToggleClickHandler = () => {
@@ -55,8 +55,6 @@ class App extends Component {
       .get("/csrf")
       .then(res => {
         axios.defaults.headers.common["csrf-token"] = res.data.csrfToken;
-        console.log(axios.defaults.headers);
-        this.setState({ accessGranted: true });
       })
       .catch(err => console.log(err));
   };
@@ -82,23 +80,22 @@ class App extends Component {
     localStorage.clear();
     cookie.remove('jwt');
     this.setState({
-      user: null,
-      loggedIn: false
+      loggedUser: null,
+      checkedLogin: true
     })
   }
   login = user => {
     localStorage.setItem('id', user._id);
     localStorage.setItem('username', user.username);
-    console.log(user.following);
     this.setState({
-      user: user,
-      loggedIn: true
+      loggedUser: user,
+      checkedLogin: true
     })
   }
   handleFollow = user_id => {
-    const user = this.state.user;
+    const user = this.state.loggedUser;
     user.following = toggleArrayVal(user.following, user_id)
-    this.setState({ user });
+    this.setState({ loggedUser: user });
     axios
       .put(`/api/users/me?action=follow&id=${user_id}`)
       .then(res => {
@@ -121,17 +118,14 @@ class App extends Component {
 
   render() {
     let backdrop;
-    console.log('Rendering app...')
-
     if (this.state.sideDrawerOpen) {
       backdrop = <Backdrop click={this.backdropClickHandler} />;
     }
-    return (
+    return (this.state.checkedLogin ?
       <div className="global-page">
         <Navbar
           drawerClickHandler={this.drawerToggleClickHandler}
-          user={this.state.user}
-          loggedIn={this.state.loggedIn}
+          loggedUser={this.state.loggedUser}
           logout={this.logout}
           axios={axios}
           setRedirect={this.setRedirect}
@@ -139,13 +133,12 @@ class App extends Component {
         <SideDrawer show={this.state.sideDrawerOpen} />
         {this.renderRedirect()}
         <Main
-          user={this.state.user} axios={axios}
-          loggedIn={this.state.loggedIn}
+          loggedUser={this.state.loggedUser} axios={axios}
           login={this.login} logout={this.logout}
           setRedirect={this.setRedirect}
           authJWT={this.authJWT}
           handleFollow={user_id => {
-            if (this.state.user) {
+            if (this.state.loggedUser) {
               this.handleFollow(user_id);
             } else {
               this.setRedirect('/signin');
@@ -157,7 +150,7 @@ class App extends Component {
         </footer> : ''}
         {backdrop}
       </div>
-    );
+    : '');
   }
 }
 

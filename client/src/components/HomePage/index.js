@@ -1,7 +1,5 @@
 import React from "react";
-import TrackList from "../Tracklist/TrackList";
-import SideProfile from "../SideProfile/SideProfile";
-import axios from "axios";
+import { TrackList, SideProfile } from '..';
 
 const sort = (array, compare) => {
   array.sort(compare);
@@ -139,7 +137,7 @@ class HomePage extends React.Component {
     e.preventDefault();
     const content = this.state.content;
     this.setState({ content: "" });
-    axios
+    this.props.axios
       .post("/api/tracks", { content })
       .then(res => {
         if (res.data.error) {
@@ -169,10 +167,10 @@ class HomePage extends React.Component {
   };
 
   get_public = () => {
-    return axios.get(`/api/tracks`);
+    return this.props.axios.get(`/api/tracks`);
   };
   get_following = () => {
-    return axios.get(`/api/tracks?filter=following`);
+    return this.props.axios.get(`/api/tracks?filter=following`);
   };
 
   render() {
@@ -184,23 +182,23 @@ class HomePage extends React.Component {
     return (
       <main
         className={`homepage-content${
-          this.props.loggedIn ? "" : " logged-out"
+          this.props.loggedUser ? "" : " logged-out"
         }`}
       >
-        {this.props.user ? (
+        {this.props.loggedUser ? (
           <div className="homepage-profile">
-            <SideProfile user={this.props.user} />
+            <SideProfile loggedUser={this.props.loggedUser} />
             <div className="sidebar-list"></div>
           </div>
         ) : (
           ""
         )}
         <div className="homepage-newsfeed">
-          {this.props.user ? (
+          {this.props.loggedUser ? (
             <div className="new-post">
               <img
                 className="avatar-img"
-                src={this.props.user.imageUrl}
+                src={this.props.loggedUser.imageUrl}
                 alt="avatar"
               />
 
@@ -221,7 +219,7 @@ class HomePage extends React.Component {
           )}
 
           <div
-            className={`newsfeed-tabs ${this.props.user ? "" : "logged-out"}`}
+            className={`newsfeed-tabs ${this.props.loggedUser ? "" : "logged-out"}`}
           >
             <p
               className={`public-tab${
@@ -232,7 +230,7 @@ class HomePage extends React.Component {
             >
               Public
             </p>
-            {this.props.user ? (
+            {this.props.loggedUser ? (
               <p
                 className={`following-tab${
                   this.state.filter === "following" ? " active-filter" : ""
@@ -268,7 +266,7 @@ class HomePage extends React.Component {
           <TrackList
             feed={this.state.feed}
             setRedirect={this.props.setRedirect}
-            loggedIn={this.props.loggedIn}
+            loggedUser={this.props.loggedUser}
           />
         </div>
       </main>

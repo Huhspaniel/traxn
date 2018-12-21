@@ -10,9 +10,9 @@ const Navbar = props => {
         <div className="navbar__toggle-button">
           <DrawerToggleButton click={props.drawerClickHandler} />
         </div>
-        <div className="navbar__logo">
-          <a href="/" />
-        </div>
+        <a href="/">
+          <div className="navbar__logo" />
+        </a>
         <div className="spacer" />
         <div className="navbar_navigation-items">
           <ul className="nav-left">
@@ -43,17 +43,17 @@ const Navbar = props => {
           </ul>
 
           <ul className="nav-right">
-            {props.loggedIn || localStorage.getItem('id') ?
+            {props.loggedUser ?
               <div className='nav-link' onClick={e => {
                 props.logout();
                 props.setRedirect('/signin');
               }}>Sign out</div>
               : <a href="/signin" className={path === '/signin' ? 'active' : ''}>Sign in</a>}
-            {props.user ?
-              <a className="avatar" href={`/$${props.user ? props.user.username : localStorage.getItem('username')}`}>
+            {props.loggedUser ?
+              <a className="avatar" href={`/$${props.loggedUser.username}`}>
                 <img
                   className="profile-settings"
-                  src={props.user.imageUrl}
+                  src={props.loggedUser.imageUrl}
                   alt="profile img"
                 />
               </a>

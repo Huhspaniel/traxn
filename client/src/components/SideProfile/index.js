@@ -1,15 +1,15 @@
 import React from "react";
 
 const SideProfile = props => {
-  const tracks = props.user.tracks ? props.user.tracks.length : 0;
+  const tracks = props.loggedUser.tracks ? props.loggedUser.tracks.length : 0;
   const reposts = tracks
-    ? props.user.tracks.reduce((reposts, { repostedBy }) => {
+    ? props.loggedUser.tracks.reduce((reposts, { repostedBy }) => {
       reposts += repostedBy ? repostedBy.length : 0;
       return reposts;
     }, 0)
     : 0;
   const dislikes = tracks
-    ? props.user.tracks.reduce((dislikes, { dislikedBy }) => {
+    ? props.loggedUser.tracks.reduce((dislikes, { dislikedBy }) => {
       dislikes += dislikedBy ? dislikedBy.length : 0;
       return dislikes;
     }, 0)
@@ -18,10 +18,10 @@ const SideProfile = props => {
   return (
     <div className="side-profile">
       <div className="profile-top"></div>
-      <img className="avatar" src={props.user.imageUrl} alt="profile img" />
+      <img className="avatar" src={props.loggedUser.imageUrl} alt="profile img" />
       <div className='profile-name'>
-        <div className="display-name">{props.user.displayName}</div>
-        <div className="username">#{props.user.username}</div>
+        <div className="display-name">{props.loggedUser.displayName}</div>
+        <div className="username">#{props.loggedUser.username}</div>
       </div>
       <div className="profile-bottom"></div>
       <div className="record">

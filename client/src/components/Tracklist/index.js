@@ -128,7 +128,7 @@ const TrackList = props => (
                 repostedBy={track.repostedBy}
                 dislikedBy={track.dislikedBy}
                 setRedirect={props.setRedirect}
-                loggedIn={props.loggedIn}
+                loggedIn={!!props.loggedUser}
               />
             )
         )

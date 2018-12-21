@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Tracklist from "../Tracklist/TrackList";
-import axios from "axios";
-import { format } from "url";
+import { TrackList } from "..";
 
 function formatTime(date) {
   date = new Date(date);
@@ -111,7 +109,7 @@ const Profile = props => {
             </div>
           </div>
           <div className="profile-newsfeed">
-            <Tracklist
+            <TrackList
               user={props.user}
               loggedIn={props.loggedIn}
               setRedirect={props.setRedirect}
@@ -125,15 +123,15 @@ const Profile = props => {
   }
 };
 
-class classProfile extends React.Component {
+class classProfile extends Component {
   state = {
     user: null
   };
 
   componentWillMount() {
-    if (this.props.user) {
-      if (this.props.user.username !== this.props.match.params.username) {
-        axios
+    if (this.props.loggedUser) {
+      if (this.props.loggedUser.username !== this.props.match.params.username) {
+        this.props.axios
           .get(`/api/users/${this.props.match.params.username}`)
           .then(res => {
             console.log(res);
@@ -147,8 +145,8 @@ class classProfile extends React.Component {
           })
           .catch(err => console.error(err));
       }
-    } else if (!this.props.loggedIn) {
-      axios
+    } else {
+      this.props.axios
         .get(`/api/users/${this.props.match.params.username}`)
         .then(res => {
           console.log(res);
@@ -165,20 +163,20 @@ class classProfile extends React.Component {
   }
 
   render() {
-    return this.props.user ? (
-      this.props.user.username === this.props.match.params.username ? (
+    return this.props.loggedUser ? (
+      this.props.loggedUser.username === this.props.match.params.username ? (
         <Profile
-          user={this.props.user}
+          user={this.props.loggedUser}
           isUser={true}
-          loggedIn={this.props.loggedIn}
+          loggedIn={true}
           setRedirect={this.props.setRedirect}
         />
       ) : (
         <Profile
           user={this.state.user}
-          loggedUser={this.props.user}
+          loggedUser={this.props.loggedUser}
           handleFollow={this.props.handleFollow}
-          loggedIn={this.props.loggedIn}
+          loggedIn={true}
           setRedirect={this.props.setRedirect}
         />
       )
@@ -186,7 +184,7 @@ class classProfile extends React.Component {
       <Profile
         user={this.state.user}
         handleFollow={this.props.handleFollow}
-        loggedIn={this.props.loggedIn}
+        loggedIn={false}
         setRedirect={this.props.setRedirect}
       />
     );

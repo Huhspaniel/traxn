@@ -22,7 +22,7 @@ header {
   display: flex;
   height: 100%;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 15px;
 }
 
 .navbar__logo {
@@ -101,9 +101,12 @@ header {
   box-sizing: border-box;
   height: min-content;
   text-decoration: none;
-  width: 35px;
-  height: 35px;
-  &:hover {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover .profile-settings {
     width: 38px;
     height: 38px;
   }
@@ -115,9 +118,15 @@ header {
   border: 1px solid white;
   border-radius: 50%;
   transition: .2s;
+  width: 35px;
+  height: 35px;
 }
 
 @media (max-width: 700px) {
+  .avatar {
+    width: 38px;
+    height: 38px;
+  }
   .navbar_navigation-items {
     display: grid;
     grid-template-columns: auto auto;

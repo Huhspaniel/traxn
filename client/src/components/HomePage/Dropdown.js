@@ -35,6 +35,7 @@ class Dropdown extends Component {
                             data-label={option.label}
                             data-value={option.value}
                             onClick={this.selectOption}
+                            onTouchEnd={this.selectOption}
                             key={option.value + option.label}
                         >
                             {option.label}

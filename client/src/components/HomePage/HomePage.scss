@@ -108,7 +108,7 @@ body {
         user-select: none;
         align-self: center;
         justify-self: right;
-        grid-column-start: -2;
+        // grid-column-start: -2;
         position: relative;
         width: 200px;
         margin: 10px;
@@ -195,16 +195,25 @@ body {
         }
     }
     .newsfeed-tabs {
-        grid-template-columns: min-content min-content auto auto !important;
+        grid-template-columns: auto auto 1fr !important;
         width: 100vw !important;
         > p {
-            padding: 10px !important;
+            padding: 15px !important;
             width: min-content !important;
         }
     }
     .custom-dropdown {
+        box-sizing: border-box !important;
         margin: 0 !important;
+        height: 100% !important;
         width: 100% !important;
-        max-width: 40vw !important;
+        max-width: 250px !important;
+        justify-self: right;
+        .button {
+            padding: 15px !important;
+        }
+        .options option {
+            padding: 15px !important;
+        }
     }
 }

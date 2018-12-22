@@ -1,3 +1,20 @@
+body.hasHover {
+    .edit-profile-wrapper .save-changes:hover {
+        color: white;
+        background: rgb(255, 190, 213);
+        &:before {
+            transform: translateX(300px) skewX(-15deg);
+            opacity: .6;
+            transition: .7s;
+        }
+        &:after {
+            transform: translateX(300px) skewX(-15deg);
+            opacity: 1;
+            transition: .7s;
+        }
+    }
+}
+
 .edit-profile {
     display: grid;
     grid-template-rows: 2fr auto 1fr 2fr;
@@ -9,6 +26,7 @@
         grid-area: upload-img
     }
 }
+
 .edit-profile-wrapper {
     grid-area: edit-menu;
     background-color: white;
@@ -17,14 +35,12 @@
     max-width: 450px;
     display: grid;
     grid-template-rows: 10% 10% 65% 10% 5%;
-
     .title {
         grid-row-start: 1;
         justify-self: left;
         padding: 16px;
         font-weight: bolder;
     }
-    
     .inputs {
         display: flex;
         flex-direction: column;
@@ -33,71 +49,63 @@
         width: calc(100% - 20px);
         justify-self: center;
     }
-
     input {
-            border-width: 0 0 1px 0;
-            border-color: #303030;
-            margin: 5px 0;
-            padding: 5px;
-            box-sizing: border-box;
-            width: 100%;
-            border-radius: 2px;
-            transition: .25s;
-
-            &:focus {
-                outline: none;
-                box-shadow: 0 0 5px $color-primary;
-            }
+        border-width: 0 0 1px 0;
+        border-color: #303030;
+        margin: 5px 0;
+        padding: 5px;
+        box-sizing: border-box;
+        width: 100%;
+        border-radius: 2px;
+        transition: .25s;
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 5px $color-primary;
+        }
     }
-
     .save-changes {
         grid-row-start: 4;
         width: calc(100% - 200px);
         justify-self: center;
-
-
-            border-radius: 2px;
-                    cursor: pointer;
-                    transition: .16s;
-                    overflow: hidden;
-                    
-                    justify-self: center;
-                    padding:  0;
-                    &:active {
-                        color: '';
-                    }
-                    &:focus {
-                        outline: none;
-                        box-shadow: 0 0 5px $color-primary;
-                    }
-                    &:before {
-                        content: '';
-                        
-                        opacity: .5s;
-                        filter: blur(30px);
-                        transform: translateX(-130px) skewX(-15deg);
-                    }
-                    &:after {
-                        content: '';
-                        
-                        opacity: 0;
-                        filter: blur(30px);
-                        transform: translate(-100px) scaleX(-15deg);
-                    }
-                    &:hover {
-                        color: white;
-                        background: rgb(255, 190, 213);
-                        &:before {
-                            transform: translateX(300px) skewX(-15deg);
-                            opacity: .6;
-                            transition: .7s;
-                        }
-                        &:after {
-                            transform: translateX(300px) skewX(-15deg);
-                            opacity: 1;
-                            transition: .7s;
-                        }
-                    }
+        border-radius: 2px;
+        cursor: pointer;
+        transition: .16s;
+        overflow: hidden;
+        justify-self: center;
+        padding: 0;
+        &:active {
+            color: '';
+        }
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 5px $color-primary;
+        }
+        &:before {
+            content: '';
+            opacity: .5s;
+            filter: blur(30px);
+            transform: translateX(-130px) skewX(-15deg);
+        }
+        &:after {
+            content: '';
+            opacity: 0;
+            filter: blur(30px);
+            transform: translate(-100px) scaleX(-15deg);
+        }
+        // &:hover {
+        //     color: white;
+        //     background: rgb(255, 190, 213);
+        //     &:before {
+        //         transform: translateX(300px) skewX(-15deg);
+        //         opacity: .6;
+        //         transition: .7s;
+        //     }
+        //     &:after {
+        //         transform: translateX(300px) skewX(-15deg);
+        //         opacity: 1;
+        //         transition: .7s;
+        //     }
+        // }
     }
 }
 

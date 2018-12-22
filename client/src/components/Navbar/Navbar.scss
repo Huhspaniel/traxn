@@ -3,8 +3,11 @@ $color-gray: rgb(106, 105, 105);
 $color-hover: rgb(238, 238, 238);
 
 header {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
   position: sticky;
-  -webkit-position: sticky;
   top: 0;
 }
 

@@ -31,13 +31,18 @@ class Track extends React.Component {
         this.props.axios
             .put(`/api/tracks/${this.props.id}?action=repost`)
             .then(res => {
-                console.log(res);
                 this.setState({
                     retrax: res.data.repostedBy.length,
                     repostedByUser: res.data.repostedBy.includes(localStorage.getItem('id'))
                 });
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                if (err.message.include('401')) {
+                    this.props.logout();
+                    this.props.setRedirect('/');
+                }
+                console.error(err);
+            });
     };
     handleDislike = e => {
         this.setState({
@@ -53,7 +58,13 @@ class Track extends React.Component {
                     dislikedByUser: res.data.dislikedBy.includes(localStorage.getItem('id'))
                 });
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                if (err.message.includes('401')) {
+                    this.props.logout();
+                    this.props.setRedirect('/')
+                }
+                console.error(err);
+            });
     }
 
     render() {

@@ -11,6 +11,7 @@ const Feed = props => (
                         (
                             <Track
                                 {...props.user}
+                                {...props}
                                 displayName={(props.user || track.user).displayName}
                                 userPic={(props.user || track.user).imageUrl}
                                 username={(props.user || track.user).username}

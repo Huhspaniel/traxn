@@ -104,30 +104,13 @@ body.hasHover {
                 filter: blur(30px);
                 transform: translate(-100px) scaleX(-15deg);
             }
-            // &:hover {
-            //     color: white;
-            //     background: rgb(255, 190, 213);
-            //     &:before {
-            //         transform: translateX(300px) skewX(-15deg);
-            //         opacity: .6;
-            //         transition: .7s;
-            //     }
-            //     &:after {
-            //         transform: translateX(300px) skewX(-15deg);
-            //         opacity: 1;
-            //         transition: .7s;
-            //     }
-            // }
         }
         .signup-toggle {
             color: $color-primary;
             justify-self: center;
             cursor: pointer;
             font-size: 13px;
-            margin: 0;
-            padding-top: 20px; // &:hover {
-            //     text-decoration: underline;
-            // }
+            margin: 20px 0 0;
         }
     }
 }

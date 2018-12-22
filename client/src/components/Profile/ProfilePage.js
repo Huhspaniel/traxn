@@ -109,10 +109,7 @@ const ProfilePage = props => {
           </div>
           <div className="profile-newsfeed">
             <TrackList
-              user={props.user}
-              loggedUser={props.loggedUser}
-              setRedirect={props.setRedirect}
-              axios={props.axios}
+              {...props}
               hidePostMenu={!props.isUser}
             />
           </div>

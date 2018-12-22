@@ -102,7 +102,10 @@ class TrackList extends Component {
           });
         }
       })
-      .catch(err => console.error(err.response));
+      .catch(err => {
+        this.props.logout();
+        console.log(err);
+      });
   };
   handleFilter = e => {
     e.preventDefault();
@@ -116,7 +119,10 @@ class TrackList extends Component {
           doSortFeed: false
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.props.logout();
+        console.log(err);
+      });
   };
   render() {
     if (!this.state.feed) {

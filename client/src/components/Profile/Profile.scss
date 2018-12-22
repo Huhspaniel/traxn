@@ -205,7 +205,6 @@ body {
         display: grid;
         grid-template-rows: auto auto 1fr;
         grid-template-columns: 1fr;
-        grid-template-areas: none;
         grid-gap: 0;
         .profile-header {
             grid-template-columns: 1fr auto 1fr;

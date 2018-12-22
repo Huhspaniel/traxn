@@ -28,14 +28,14 @@ class Dropdown extends Component {
                 </div>
                 <div className={`options${this.state.showMenu ? "" : " hide-menu"}`}>
                     {this.props.options.map(option => (
-                        <option
+                        <div className="custom-option"
                             data-label={option.label}
-                            value={option.value}
+                            data-value={option.value}
                             onClick={this.selectOption}
                             key={option.value + option.label}
                         >
                             {option.label}
-                        </option>
+                        </div>
                     ))}
                 </div>
             </div>

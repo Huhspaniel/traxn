@@ -42,8 +42,8 @@ class TrackList extends Component {
     return this.props.axios.get(`/api/users/${this.props.user._id}`);
   };
   handleSort = e => {
-    const sort = e.target.value;
-    const sortLabel = e.target.getAttribute("data-label");
+    const sort = e.target.getAttribute('data-value');
+    const sortLabel = e.target.getAttribute('data-label');
     this.setState({
       sort,
       sortLabel,

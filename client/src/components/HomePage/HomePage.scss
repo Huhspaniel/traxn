@@ -130,7 +130,7 @@ body {
             position: absolute;
             top: 100%;
             transition: 0.1s;
-            option {
+            .custom-option {
                 padding: 10px;
                 cursor: pointer;
                 &:hover {

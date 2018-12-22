@@ -1,5 +1,17 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const cookieParser = require('cookie-parser');
+
+function signJWT(res, { sub, name }) {
+    const token = jwt.sign({
+        sub, name,
+        iss: 'Traxn ©'
+    }, process.env.JWT_KEY, { expiresIn: '2d' }).split('.');
+    for (let i = 0; i < token.length; i++) {
+        res.cookie(`jwt_${i}`, token[i], { signed: true })
+    }
+    return res;
+}
 
 function loginUser(req, res, next) {
     const { user, password } = req.body;
@@ -9,12 +21,10 @@ function loginUser(req, res, next) {
         bcrypt.compare(password, user.password)
             .then(function createJWT(valid) {
                 if (valid) {
-                    const token = jwt.sign({
+                    res = signJWT(res, {
                         sub: user._id,
-                        name: user.username,
-                        iss: 'Traxn ©'
-                    }, process.env.JWT_KEY, { expiresIn: `2d` });
-                    res.cookie('jwt', token);
+                        name: user.username
+                    });
                     user.password = undefined;
                     res.json({
                         success: true,
@@ -32,20 +42,22 @@ function loginUser(req, res, next) {
 // Frontend must include valid JWT token on the header
 // Control is passed to the next function(whichever route that included this)
 // The decoded user_id is also passed to next in the request body
+
 function authJWT(req, res, next) {
-    const token = req.cookies.jwt;
+    const { jwt_0, jwt_1, jwt_2 } = req.signedCookies;
+    const token = [jwt_0, jwt_1, jwt_2].map(cookie => {
+        return cookieParser.signedCookie(cookie, process.env.COOKIE_KEY)
+    }).join('.');
     jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
-        if (err) {
+        if (err || decoded.iss !== 'Traxn ©') {
             req.body.user_id = null;
             res.status(401);
             next(new Error('Invalid token'));
         } else {
-            const { sub, name, iss, exp } = decoded;
+            const { sub, name, exp } = decoded;
             req.body.user_id = sub;
-            if (exp - Date.now() < 4.324e7) { // if token will expire in less than 12 hours
-                res.cookie('jwt', jwt.sign({ // renew token
-                    sub, name, iss
-                }, process.env.JWT_KEY, { expiresIn: '2d' }));
+            if (exp * 1000 - Date.now() < 4.32e7) { // if token will expire in less than 12 hours
+                res = signJWT(res, { sub, name }); // refresh token
             }
             next();
         }

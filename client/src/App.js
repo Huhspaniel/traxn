@@ -76,7 +76,7 @@ class App extends Component {
 
   logout = () => {
     localStorage.clear();
-    cookie.remove('jwt');
+    [0, 1, 2].forEach(num => cookie.remove(`jwt_${num}`));
     this.setState({
       loggedUser: null,
       checkedLogin: true
@@ -111,7 +111,7 @@ class App extends Component {
 
   componentWillMount() {
     this.getCSRF();
-    if (cookie.get('jwt')) {
+    if (cookie.get('jwt_0')) {
       this.authJWT();
     } else {
       this.logout();

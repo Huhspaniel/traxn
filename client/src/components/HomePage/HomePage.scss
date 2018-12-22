@@ -7,6 +7,22 @@ body {
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+body.hasHover {
+    .newsfeed-tabs {
+        .custom-dropdown {
+            .button &:hover {
+                background-color: $color-hover;
+            }
+            .options .custom-option &:hover {
+                background-color: darken(rgb(255, 190, 213), 5%);
+            }
+        }
+        p:hover {
+            background-color: $color-hover;
+        }
+    }
+}
+
 .homepage-content {
     box-sizing: border-box;
     padding: 75px;
@@ -112,16 +128,13 @@ body {
         /* IE 10+ */
         user-select: none;
         align-self: center;
-        justify-self: right; // grid-column-start: -2;
+        justify-self: right;
         position: relative;
         width: 200px;
         margin: 10px;
         .button {
             padding: 10px;
             cursor: pointer;
-            &:hover {
-                background-color: $color-hover;
-            }
         }
         .options {
             box-sizing: border-box;
@@ -133,41 +146,22 @@ body {
             .custom-option {
                 padding: 10px;
                 cursor: pointer;
-                &:hover {
-                    background-color: darken(rgb(255, 190, 213), 5%);
-                }
             }
             &.hide-menu {
                 display: none;
                 height: 0;
             }
         }
-    } // .public-tab {
-    //     grid-column-start: 1;
-    //     grid-row-start: 1;
-    // }
-    // .following-tab {
-    //     grid-column-start: 2;
-    //     grid-row-start: 1;
-    // }
+    }
     p {
         margin: 0;
         padding: 20px;
         cursor: pointer;
-        &:hover {
-            background-color: $color-hover;
-        }
         &.active-filter {
             background: rgb(255, 190, 213);
         }
     }
 }
-
-// @media only screen and (max-width: 1000px) {
-//     .homepage-content {
-//         margin: 15px 0;
-//     }
-// }
 @media only screen and (max-width: 900px) {
     .homepage-content {
         padding: 0;

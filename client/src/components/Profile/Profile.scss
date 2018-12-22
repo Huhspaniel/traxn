@@ -7,6 +7,25 @@ body {
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+body.hasHover {
+    .profile-page .profile-bar {
+        .stats .stat &:hover {
+            border-bottom-width: 2px;
+            margin-bottom: 8px;
+            .stat-name,
+            .stat-value {
+                color: $color-primary;
+            }
+        }
+        .follow:hover {
+            color: $color-primary;
+        }
+        .edit-profile-btn:hover {
+            color: $color-primary;
+        }
+    }
+}
+
 .profile-page {
     display: grid;
     grid-template-rows: 200px min-content 1fr;
@@ -53,15 +72,14 @@ body {
                 grid-template-areas: "." "stat-name" "stat-value" ".";
                 margin: 10px 0;
                 border-bottom: 0 $color-primary solid;
-                transition: 0.16s linear;
-                &:hover {
-                    border-bottom-width: 2px;
-                    margin-bottom: 8px;
-                    .stat-name,
-                    .stat-value {
-                        color: $color-primary;
-                    }
-                }
+                transition: 0.16s linear; // &:hover {
+                //     border-bottom-width: 2px;
+                //     margin-bottom: 8px;
+                //     .stat-name,
+                //     .stat-value {
+                //         color: $color-primary;
+                //     }
+                // }
             }
             .stat-name {
                 grid-area: stat-name;
@@ -85,10 +103,9 @@ body {
             border-radius: 5px;
             justify-self: right;
             border: 2px outset darken(white, 2%);
-            font-size: 14px;
-            &:hover {
-                color: $color-primary;
-            }
+            font-size: 14px; // &:hover {
+            //     color: $color-primary;
+            // }
             &:active {
                 border-style: inset;
                 background: darken(white, 5%);
@@ -114,9 +131,9 @@ body {
             color: $color-gray;
             font-weight: bold;
             font-size: 13px;
-            &:hover {
-                color: $color-primary;
-            }
+            // &:hover {
+            //     color: $color-primary;
+            // }
             &:active {
                 border-style: inset;
                 background: darken(white, 5%);
@@ -166,10 +183,6 @@ body {
                 }
                 .website {
                     color: rgb(137, 200, 255);
-                    &:hover {
-                        text-decoration: underline;
-                        cursor: pointer;
-                    }
                     .fa-link {
                         color: $color-hover;
                     }
@@ -184,7 +197,7 @@ body {
         box-sizing: border-box;
         width: 100%;
         grid-area: newsfeed;
-        .tracklist > * {
+        .tracklist>* {
             box-shadow: 0 0 5px black;
         }
     }

@@ -9,7 +9,11 @@ function loginUser(req, res, next) {
         bcrypt.compare(password, user.password)
             .then(function createJWT(valid) {
                 if (valid) {
-                    const token = jwt.sign({ user_id: user._id, username: user.username }, process.env.JWT_KEY, { expiresIn: `1h` });
+                    const token = jwt.sign({
+                        sub: user._id,
+                        name: user.username,
+                        iss: 'Traxn ©'
+                    }, process.env.JWT_KEY, { expiresIn: `2d` });
                     res.cookie('jwt', token);
                     user.password = undefined;
                     res.json({
@@ -36,7 +40,13 @@ function authJWT(req, res, next) {
             res.status(401);
             next(new Error('Invalid token'));
         } else {
-            req.body.user_id = decoded.user_id;
+            const { sub, name, iss, exp } = decoded;
+            req.body.user_id = sub;
+            if (exp - Date.now() < 4.324e7) { // if token will expire in less than 12 hours
+                res.cookie('jwt', jwt.sign({ // renew token
+                    sub, name, iss
+                }, process.env.JWT_KEY, { expiresIn: '2d' }));
+            }
             next();
         }
     });

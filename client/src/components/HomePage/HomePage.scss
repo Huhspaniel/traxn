@@ -180,6 +180,9 @@ body {
         .tracklist *:not(.newsfeed-tabs) {
             box-shadow: none !important;
         }
+        &.logged-out {
+            padding: 50px;
+        }
     }
 }
 
@@ -195,6 +198,9 @@ body {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
         grid-template-areas: "profile" "newsfeed";
+        &.logged-out {
+            padding: 0;
+        }
     }
     .tracklist {
         width: 100vw;

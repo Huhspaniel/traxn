@@ -1,6 +1,6 @@
 .edit-profile {
     display: grid;
-    grid-template-rows: 1fr auto 1fr;
+    grid-template-rows: 2fr auto 1fr 2fr;
     grid-template-areas: "." "edit-menu" "upload-img";
     justify-items: center;
     background: $color-primary;

@@ -20,71 +20,78 @@ class Login extends Component {
 
     toggleMenu = () => {
         this.setState({
-            showLogin: !this.state.showLogin
+            showLogin: !this.state.showLogin,
+            error: ''
         });
     };
 
     handleLogin = e => {
         e.preventDefault();
-
-        let loginCredentials = {
+        const credentials = {
             username: this.state.username,
             password: this.state.password
         };
-        this.sendLogin(loginCredentials)
+        if (!credentials.username || !credentials.password) {
+            this.setState({
+                error: 'Please fill out all fields'
+            })
+        } else {
+            this.sendLogin(credentials)
+        }
     };
     handleSignup = e => {
         e.preventDefault();
+        const info = {
+            username: this.state.username,
+            password: this.state.password,
+            email: this.state.email,
+            displayName: this.state.displayName,
+            confirmPassword: this.state.confirmPassword
+        } 
         if (
-            !this.state.username
-            || !this.state.password
-            || !this.state.email
-            || !this.state.displayName
-            || !this.state.confirmPassword
+            !info.username
+            || !info.password
+            || !info.email
+            || !info.displayName
+            || !info.confirmPassword
         ) {
             this.setState({
                 error: 'Please fill out all fields'
             })
-        } else if (this.state.password !== this.state.confirmPassword) {
+        } else if (info.password !== info.confirmPassword) {
             this.setState({
                 error: 'Password fields must match'
             })
         } else if (
-            this.state.password.length < 6
-            || this.state.password.length > 20
-            || !this.state.password.match(/(?=.*[a-z])(?=.*[0-9]).*/i)
+            info.password.length < 6
+            || info.password.length > 20
+            || !info.password.match(/(?=.*[a-z])(?=.*[0-9]).*/i)
         ) {
             this.setState({
                 error: 'Password must contain at least one letter and number and be between 6 and 20 characters'
             })
-        } else if (!this.state.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+        } else if (!info.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
             this.setState({
                 error: 'Please enter a valid email'
             })
         } else if (
-            this.state.username.length < 3
-            || this.state.username.length > 18
-            || !this.state.username.match(/^[a-z0-9_-]+$/i)
+            info.username.length < 3
+            || info.username.length > 18
+            || !info.username.match(/^[a-z0-9_-]+$/i)
         ) {
             this.setState({
                 error: 'Username can only contain letters, _, and -, and must be between 3 and 18 characters'
             })
         } else if (
-            this.state.displayName.length < 3
-            || this.state.displayName.length > 18
-            || !this.state.displayName.match(/^[a-z'-\s]+$/i)
+            info.displayName.length < 3
+            || info.displayName.length > 18
+            || !info.displayName.match(/^[a-z'-\s]+$/i)
         ) {
             this.setState({
                 error: 'Display name can only include letters, spaces, \', and -, and must be between 3 and 18 characters'
             })
         } else {
-            let signupCredentials = {
-                username: this.state.username,
-                password: this.state.password,
-                email: this.state.email,
-                displayName: this.state.displayName
-            }
-            this.sendSignup(signupCredentials);
+            this.sendSignup(info);
         }
     }
 
@@ -96,18 +103,25 @@ class Login extends Component {
             })
             .then(res => {
                 if (res.data.error) {
-                    console.log(res.data.error);
                     this.setState({
-                        error: 'Incorrect username/password combination'
+                        error: 'Sorry, that username does not exist.'
                     })
                     this.props.logout();
                 } else {
-                    console.log(res.data);
                     this.props.login(res.data.user);
                     this.props.setRedirect('/');
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                let error;
+                if (err.message.includes('401')) {
+                    error = 'Incorrect username/password combination. Please try again.';
+                } else {
+                    error = 'Whoops! Something went wrong :('
+                }
+                this.setState({ error });
+            });
     }
     sendSignup = () => {
         return this.props.axios

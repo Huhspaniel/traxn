@@ -3,8 +3,6 @@ if (process.env.NODE_ENV !== 'production') {
     for (let v in envVars) {
         process.env[v] = envVars[v];
     }
-} else {
-    process.env.PROD = true;
 }
 
 const express = require('express');

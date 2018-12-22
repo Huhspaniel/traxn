@@ -65,7 +65,7 @@ const LoginMenu = props => (
             />
           </div>
         )}
-      <div className={`signin-error${props.error ? '' : ' none'}`}>{props.error ? '*' + props.error : ''}</div>
+      <div className={`signin-error${props.error ? '' : ' none'}`}>{props.error ? props.error : ''}</div>
       <button className="submit-btn"
         onClick={props.showLogin
           ? props.handleLogin

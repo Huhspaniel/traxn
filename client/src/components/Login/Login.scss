@@ -6,7 +6,7 @@
     height: 100%;
     width: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto 1fr;
+    grid-template-rows: 2fr auto 1fr 2fr;
 
     .menu {
         justify-self: center;
@@ -23,9 +23,15 @@
         grid-template-rows: auto;
 
         .signin-error {
-            padding-bottom: 20px;
+            padding: 10px;
+            margin-bottom: 20px;
             font-size: 14px;
+            background-color: lighten(red, 40%);
+            border-radius: 2px;
+            box-shadow: 0 0 5px -1px red;
             color: red;
+            display: flex;
+            align-items: center;
             &.none {
                 display: none;
             }

@@ -14,7 +14,7 @@ body {
     grid-template-areas: "header" "profile-bar" "profile-content";
     .profile-header {
         display: grid;
-        z-index: 1;
+        z-index: 5;
         grid-template-columns: 10% 30% 60%;
         grid-template-rows: 40% 100%;
         box-sizing: border-box;
@@ -181,7 +181,22 @@ body {
         box-sizing: border-box;
         width: 100%;
         grid-area: newsfeed;
-        box-shadow: 0 0 5px black;
+        .tracklist > * {
+            box-shadow: 0 0 5px black;
+        }
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .profile-page .profile-content {
+        grid-gap: 0;
+        padding: 0;
+        .new-post {
+            margin: 0;
+        }
+        * {
+            box-shadow: none !important;
+        }
     }
 }
 

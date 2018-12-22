@@ -1,3 +1,3 @@
 # Traxn
 
-Deployed app: https://gtbc-final-project.herokuapp.com/
+Deployed app: https://traxn-beta.herokuapp.com/

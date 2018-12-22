@@ -18,18 +18,13 @@ const Main = (props) => (
   <Switch>
     <Route exact path="/" render={_props => <HomePage
       {..._props}
-      loggedUser={props.loggedUser}
-      handleFollow={props.handleFollow}
-      setRedirect={props.setRedirect}
-      axios={props.axios}
+      {...props}
     />} />
     <Route path="/messages" component={Messages} />
     <Route path="/$:username" render={(_props) =>
-      <Profile {..._props}
-        loggedUser={props.loggedUser}
-        setRedirect={props.setRedirect}
-        handleFollow={props.handleFollow}
-        axios={props.axios}
+      <Profile
+        {..._props}
+        {...props}
       />
     } />
     <Route
@@ -37,10 +32,8 @@ const Main = (props) => (
       render={_props => (
         <EditProfile
           {..._props}
-          axios={props.axios}
-          setRedirect={props.setRedirect}
+          {...props}
           user={props.loggedUser}
-          authJWT={props.authJWT}
         />
       )}
     />
@@ -48,10 +41,8 @@ const Main = (props) => (
     <Route path="/alerts"
       render={_props => (
         <Alerts
+          {..._props}
           {...props}
-          axios={props.axios}
-          user={props.loggedUser}
-
         />
       )}
     />
@@ -60,11 +51,7 @@ const Main = (props) => (
       render={_props => (!props.loggedUser ?
         <Login
           {..._props}
-          loggedUser={props.loggedUser}
-          axios={props.axios}
-          login={props.login}
-          logout={props.logout}
-          setRedirect={props.setRedirect}
+          {...props}
         />
         : NotFound()
       )}

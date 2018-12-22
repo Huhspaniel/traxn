@@ -103,6 +103,10 @@ class App extends Component {
           this.authJWT();
         }
       })
+      .catch(err => {
+        this.logout();
+        console.log(err);
+      })
   }
 
   componentWillMount() {

@@ -41,28 +41,20 @@ class Profile extends Component {
         return this.props.loggedUser ? (
             this.props.loggedUser.username === this.props.match.params.username ? (
                 <ProfilePage
+                    {...this.props}
                     user={this.props.loggedUser}
                     isUser={true}
-                    loggedUser={this.props.loggedUser}
-                    setRedirect={this.props.setRedirect}
-                    axios={this.props.axios}
                 />
             ) : (
                     <ProfilePage
+                        {...this.props}
                         user={this.state.user}
-                        handleFollow={this.props.handleFollow}
-                        loggedUser={this.props.loggedUser}
-                        setRedirect={this.props.setRedirect}
-                        axios={this.props.axios}
                     />
                 )
         ) : (
                 <ProfilePage
+                    {...this.props}
                     user={this.state.user}
-                    handleFollow={this.props.handleFollow}
-                    loggedUser={this.props.loggedUser}
-                    setRedirect={this.props.setRedirect}
-                    axios={this.props.axios}
                 />
             );
     }

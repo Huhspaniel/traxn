@@ -106,9 +106,7 @@ class HomePage extends React.Component {
                 </div> */}
                 <TrackList
                     // feed={this.state.feed}
-                    setRedirect={this.props.setRedirect}
-                    loggedUser={this.props.loggedUser}
-                    axios={this.props.axios}
+                    {...this.props}
                 />
             </main>
         );

@@ -51,19 +51,23 @@ header {
     list-style: none;
     margin: 0;
     padding: 0;
+    align-items: center;
+  }
+
+  ul.nav-left {
     display: flex;
     height: 100%;
-    align-items: center;
+    justify-content: space-around;
+    width: 100%;
   }
 
   ul.nav-right {
     display: grid;
     justify-items: center;
     grid-template-columns: auto auto;
-    grid-gap: 5px;
 
     width: 100%;
-    grid-column-start: -1;
+    grid-column-start: -2;
   }
   li {
     font-size: 14px;
@@ -97,29 +101,31 @@ header {
   box-sizing: border-box;
   height: min-content;
   text-decoration: none;
+  width: 35px;
+  height: 35px;
+  &:hover {
+    width: 38px;
+    height: 38px;
+  }
 }
 .profile-settings {
   box-sizing: border-box;
-  width: 30px;
-  height: 30px;
+  width: 100%;
+  height: 100%;
   border: 1px solid white;
   border-radius: 50%;
   transition: .2s;
-  &:hover {
-    width: 32px;
-    height: 32px;
-  }
 }
 
 @media (max-width: 700px) {
   .navbar_navigation-items {
     display: grid;
-    // grid-template-columns: 70% 30%;
+    grid-template-columns: auto auto;
 
     .fa {
       display: inline-block;
       font-size: 20px;
-      padding: 0 4px;
+      padding: 0 1px;
     }
     .nav-left a {
       font-size: 0;

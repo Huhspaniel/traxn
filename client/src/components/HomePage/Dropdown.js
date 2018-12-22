@@ -8,11 +8,14 @@ class Dropdown extends Component {
         event.preventDefault();
         this.setState({ showMenu: true }, () => {
             document.addEventListener("click", this.closeMenu);
+            document.addEventListener("touchend", this.closeMenu);
         });
     };
-    closeMenu = () => {
+    closeMenu = e => {
+        e.preventDefault();
         this.setState({ showMenu: false }, () => {
             document.removeEventListener("click", this.closeMenu);
+            document.removeEventListener("touchend", this.closeMenu)
         });
     };
     selectOption = e => {

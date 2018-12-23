@@ -10,10 +10,10 @@ body {
 body.hasHover {
     .newsfeed-tabs {
         .custom-dropdown {
-            .button &:hover {
+            .button:hover {
                 background-color: $color-hover;
             }
-            .options .custom-option &:hover {
+            .options .custom-option:hover {
                 background-color: darken(rgb(255, 190, 213), 5%);
             }
         }

@@ -23,22 +23,25 @@ class TrackList extends Component {
     doSortFeed: true
   }
 
-  refreshFeed = () => {
-    this[`get_${this.state.filter}`]().then(res => {
+  refreshFeed = async () => {
+    try {
+      const res = await this[`get_${this.state.filter}`]();
       const tracks = sort(res.data.tracks || res.data, this[`compare_${this.state.sort}`]);
       this.setState({
         feed: tracks,
         doSortFeed: false
       });
-    });
+    } catch (err) {
+      console.log(err);
+    }
   };
-  get_public = () => {
+  get_public = async () => {
     return this.props.axios.get(`/api/tracks`);
   };
-  get_following = () => {
+  get_following = async () => {
     return this.props.axios.get(`/api/tracks?filter=following`);
   };
-  get_user = () => {
+  get_user = async () => {
     return this.props.axios.get(`/api/users/${this.props.user._id}`);
   };
   handleSort = e => {
@@ -86,50 +89,54 @@ class TrackList extends Component {
       [event.target.name]: event.target.value
     });
   };
-  handlePost = e => {
+  handlePost = async (e) => {
     e.preventDefault();
     const content = this.state.content;
     this.setState({ content: "" });
-    this.props.axios
-      .post("/api/tracks", { content })
-      .then(res => {
-        if (res.data.error) {
-          console.error(res.data.error);
-        } else {
-          this.setState({
-            feed: unshift(this.state.feed, res.data),
-            doSortFeed: false
-          });
-        }
-      })
-      .catch(err => {
-        this.props.logout();
-        console.log(err);
-      });
-  };
-  handleFilter = e => {
-    e.preventDefault();
-    const filter = e.target.getAttribute("data-filter");
-    this[`get_${filter}`]()
-      .then(res => {
-        res.data = sort(res.data, this[`compare_${this.state.sort}`]);
+
+    try {
+      const res = await this.props.axios.post("/api/tracks", { content });
+
+      if (res.data.error) {
+        console.log(res.data.error);
+      } else {
         this.setState({
-          feed: res.data || [],
-          filter,
+          feed: unshift(this.state.feed, res.data),
           doSortFeed: false
         });
-      })
-      .catch(err => {
-        this.props.logout();
-        console.log(err);
-      });
+      }
+    } catch (err) {
+      this.props.logout();
+      console.log(err);
+    }
   };
-  render() {
+  handleFilter = async (e) => {
+    e.preventDefault();
+    const filter = e.target.getAttribute("data-filter");
+    try {
+      const res = await this[`get_${filter}`]();
+
+      res.data = sort(res.data, this[`compare_${this.state.sort}`]);
+      this.setState({
+        feed: res.data || [],
+        filter,
+        doSortFeed: false
+      });
+    } catch (err) {
+      this.props.logout();
+      console.log(err);
+    }
+  };
+  checkRefresh() {
     if (!this.state.feed) {
       this.refreshFeed();
     } else if (this.state.doSortFeed) {
       this.refreshFeed();
     }
+  }
+  componentDidUpdate = this.checkRefresh;
+  componentDidMount = this.checkRefresh;
+  render() {
     return (
       <div className="tracklist">
         {this.props.loggedUser && !this.props.hidePostMenu ? (

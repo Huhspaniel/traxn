@@ -46,37 +46,40 @@ class App extends Component {
   renderRedirect = () => {
     if (this.state.redirect && this.state.redirect !== window.location.pathname) {
       const path = this.state.redirect;
+      this.setState({
+        redirect: null
+      });
       return <Redirect to={path} />
     }
   };
 
-  getCSRF = () => {
-    axios
-      .get("/csrf")
-      .then(res => {
-        axios.defaults.headers.common["csrf-token"] = res.data.csrfToken;
-      })
-      .catch(err => console.log(err));
+  getCSRF = async () => {
+    try {
+      const res = await axios.get("/csrf");
+      
+      axios.defaults.headers.common["csrf-token"] = res.data.csrfToken;
+    } catch (err) {
+      console.error(err)
+    }
   };
 
-  authJWT = () => {
-    return axios
-      .get('/api/users/me')
-      .then(res => {
-        if (res.error) {
-          this.logout();
-        } else {
-          this.login(res.data);
-        }
-      })
-      .catch(err => {
+  authJWT = async () => {
+    try {
+      const res = await axios.get('/api/users/me');
+
+      if (res.error) {
         this.logout();
-      });
+      } else {
+        this.login(res.data);
+      }
+    } catch (err) {
+      this.logout();
+    }
   }
 
   logout = () => {
     localStorage.clear();
-    [0, 1, 2].forEach(num => cookie.remove(`jwt_${num}`));
+    cookie.remove('jwt');
     this.setState({
       loggedUser: null,
       checkedLogin: true
@@ -90,28 +93,31 @@ class App extends Component {
       checkedLogin: true
     })
   }
-  handleFollow = user_id => {
+  handleFollow = async (user_id) => {
     const user = this.state.loggedUser;
     user.following = toggleArrayVal(user.following, user_id)
     this.setState({ loggedUser: user });
-    axios
-      .put(`/api/users/me?action=follow&id=${user_id}`)
-      .then(res => {
-        if (res.data.error) {
-          console.log(res.data.error)
-        } else {
-          this.authJWT();
-        }
-      })
-      .catch(err => {
-        this.logout();
-        console.log(err);
-      })
+
+    try {
+      const res = await axios
+        .put(`/api/users/me?action=follow&id=${user_id}`);
+
+      if (res.data.error) {
+        console.log(res.data.error)
+      } else {
+        this.authJWT();
+      }
+    } catch (err) {
+      this.logout();
+      console.error(err);
+    }
   }
 
   componentWillMount() {
-    this.getCSRF();
-    if (cookie.get('jwt_0')) {
+    if (!axios.defaults.headers.common["csrf-token"]) {
+      this.getCSRF();
+    }
+    if (cookie.get('jwt')) {
       this.authJWT();
     } else {
       this.logout();
@@ -132,7 +138,7 @@ class App extends Component {
           axios={axios}
           setRedirect={this.setRedirect}
         />
-        <SideDrawer show={this.state.sideDrawerOpen} loggedUser={this.state.loggedUser} />
+        <SideDrawer closeMenu={this.backdropClickHandler} isOpen={this.state.sideDrawerOpen} loggedUser={this.state.loggedUser} />
         {this.renderRedirect()}
         <Main
           loggedUser={this.state.loggedUser} axios={axios}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import DrawerToggleButton from "../SideDrawer/DrawerToggleButton";
 
@@ -8,37 +9,33 @@ const Navbar = props => {
     <header className="navbar">
       <nav className="navbar__navigation">
         <div className="navbar__toggle-button">
-          <DrawerToggleButton click={props.drawerClickHandler} />
+          <DrawerToggleButton onClick={props.drawerClickHandler} />
         </div>
-        <a href="/">
-          <div className="navbar__logo" />
-        </a>
-        <div className="spacer" />
         <div className="navbar_navigation-items">
           <ul className="nav-left">
             <li>
-              <a href="/" className={path === '/' ? 'active' : ''}>
+              <Link to="/" className={path === '/' ? 'active' : ''}>
                 <i className="fa fa-home" />
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/scoreboard" className={path === '/scoreboard' ? 'active' : ''}>
+              <Link to="/scoreboard" className={path === '/scoreboard' ? 'active' : ''}>
                 <i className="fa fa-star" />
                 Scoreboard
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/alerts" className={path === '/alerts' ? 'active' : ''}>
+              <Link to="/alerts" className={path === '/alerts' ? 'active' : ''}>
                 <i className="fa fa-bell" />
                 Alerts
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/messages" className={path === '/messages' ? 'active' : ''}>
+              <Link to="/messages" className={path === '/messages' ? 'active' : ''}>
                 <i className="fa fa-envelope" />
                 Messages
-              </a>
+              </Link>
             </li>
           </ul>
 
@@ -48,15 +45,15 @@ const Navbar = props => {
                 props.logout();
                 props.setRedirect('/signin');
               }}>Sign out</div>
-              : <a href="/signin" className={path === '/signin' ? 'active' : ''}>Sign up</a>}
+              : <Link to="/signin" className={path === '/signin' ? 'active' : ''}>Sign In | Sign Up</Link>}
             {props.loggedUser ?
-              <a className="avatar" href={`/$${props.loggedUser.username}`}>
+              <Link to={`/$${props.loggedUser.username}`} className="avatar">
                 <img
                   className="profile-settings"
                   src={props.loggedUser.imageUrl}
                   alt="profile img"
                 />
-              </a>
+              </Link>
               : ''}
           </ul>
         </div>

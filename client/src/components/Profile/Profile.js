@@ -6,7 +6,7 @@ class Profile extends Component {
         user: null
     };
 
-    render() {
+    componentDidMount() {
         if (!this.state.user) {
             if (this.props.loggedUser) {
                 if (this.props.loggedUser.username !== this.props.match.params.username) {
@@ -38,6 +38,9 @@ class Profile extends Component {
                     .catch(err => console.error(err));
             }
         }
+    }
+
+    render() {
         return this.props.loggedUser ? (
             this.props.loggedUser.username === this.props.match.params.username ? (
                 <ProfilePage

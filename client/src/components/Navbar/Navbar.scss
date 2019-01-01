@@ -103,6 +103,7 @@ header {
   text-decoration: none;
   width: 45px;
   height: 45px;
+  margin-left: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,24 +129,22 @@ header {
     height: 38px;
   }
   .navbar_navigation-items {
-    display: grid;
-    grid-template-columns: auto auto;
-
+    grid-template-columns: 1fr auto;
     .fa {
       display: inline-block;
       font-size: 20px;
       padding: 0 1px;
     }
-    .nav-left a {
-      font-size: 0;
-      
-      // width: 2em; /* set to same as icon */
-      color: white; /* set to same as background */
-      overflow: hidden;
-      text-align: center;
+    ul.nav-left {
+      display: none;
     }
-    // .avatar {
-    //   display: none;
+    // .nav-left a {
+    //   font-size: 0;
+      
+    //   // width: 2em; /* set to same as icon */
+    //   color: white; /* set to same as background */
+    //   overflow: hidden;
+    //   text-align: center;
     // }
   }
 }

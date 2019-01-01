@@ -1,6 +1,18 @@
+body.hasHover {
+    .side-drawer a {
+        &:hover {
+            background-color: lighten(rgb(24, 24, 24), 8%);
+            &,
+            i {
+                color: palevioletred;
+            }
+        }
+    }
+}
+
 .side-drawer {
-    height: 100%;
-    background: white;
+    height: max-content;
+    background: rgb(24, 24, 24);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
@@ -8,49 +20,37 @@
     width: max-content;
     max-width: 400px;
     z-index: 200;
-    transform: translateX(-105%);
-    transition: transform 0.3s ease-out;
-  }
-  
-  .side-drawer.open {
-    transform: translateX(0);
-  }
-  
-  .side-drawer ul {
-    height: 100vh;
+    transform: translateY(-105%);
+    transition: transform 0.15s ease-out;
+}
+
+.side-drawer.open {
+    transform: translateY(0);
+}
+
+.side-drawer ul {
     padding: 60px 0 0;
     margin: 0;
     list-style: none;
     display: flex;
     flex-direction: column;
-    // justify-content: flex-start;
-  }
-  
-  .side-drawer li {
+}
+
+.side-drawer li {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 5px 0;
-  }
-  
-  .side-drawer a {
-    color: rgb(21, 21, 21);
+}
+
+.side-drawer a {
+    color: white;
     text-decoration: none;
     font-size: 1.2rem;
-    padding: 5px 10px;
-    &:hover {
-      background-color: darken(white, 8%);
-    }
-  }
-  
-  .side-drawer a:hover,
-  .side-drawer a:active {
-    color: palevioletred;
-  }
-  
-  @media (min-width: 769px) {
+    padding: 10px 10px;
+}
+
+@media (min-width: 769px) {
     .side-drawer {
-      display: none;
+        display: none;
     }
-  }
-  
+}

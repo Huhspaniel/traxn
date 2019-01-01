@@ -23,48 +23,45 @@ class Track extends React.Component {
             : false
     };
 
-    handleRepost = e => {
+    handleRepost = async () => {
         this.setState({
             retrax: this.state.repostedByUser ? this.state.retrax - 1 : this.state.retrax + 1,
             repostedByUser: !this.state.repostedByUser
-        })
-        this.props.axios
-            .put(`/api/tracks/${this.props.id}?action=repost`)
-            .then(res => {
-                this.setState({
-                    retrax: res.data.repostedBy.length,
-                    repostedByUser: res.data.repostedBy.includes(localStorage.getItem('id'))
-                });
-            })
-            .catch(err => {
-                if (err.message.include('401')) {
-                    this.props.logout();
-                    this.props.setRedirect('/');
-                }
-                console.error(err);
+        });
+        try {
+            const res = await this.props.axios
+                .put(`/api/tracks/${this.props.id}?action=repost`);
+            this.setState({
+                retrax: res.data.repostedBy.length,
+                repostedByUser: res.data.repostedBy.includes(localStorage.getItem('id'))
             });
+        } catch (err) {
+            if (err.message.includes('401')) {
+                this.props.logout();
+                this.props.setRedirect('/');
+            }
+            console.error(err);
+        }
     };
-    handleDislike = e => {
+    handleDislike = async () => {
         this.setState({
             dislikes: this.state.dislikedByUser ? this.state.dislikes - 1 : this.state.dislikes + 1,
             dislikedByUser: !this.state.dislikedByUser
-        })
-        this.props.axios
-            .put(`/api/tracks/${this.props.id}?action=dislike`)
-            .then(res => {
-                console.log(res);
-                this.setState({
-                    dislikes: res.data.dislikedBy.length,
-                    dislikedByUser: res.data.dislikedBy.includes(localStorage.getItem('id'))
-                });
-            })
-            .catch(err => {
-                if (err.message.includes('401')) {
-                    this.props.logout();
-                    this.props.setRedirect('/')
-                }
-                console.error(err);
+        });
+        try {
+            const res = await this.props.axios
+                .put(`/api/tracks/${this.props.id}?action=dislike`);
+            this.setState({
+                dislikes: res.data.dislikedBy.length,
+                dislikedByUser: res.data.dislikedBy.includes(localStorage.getItem('id'))
             });
+        } catch (err) {
+            if (err.message.includes('401')) {
+                this.props.logout();
+                this.props.setRedirect('/')
+            }
+            console.error(err);
+        }
     }
 
     render() {

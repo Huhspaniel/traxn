@@ -3,7 +3,7 @@ import LoginMenu from './LoginMenu';
 
 class Login extends Component {
     state = {
-        showLogin: false,
+        showLogin: true,
         username: "",
         password: "",
         confirmPassword: "",

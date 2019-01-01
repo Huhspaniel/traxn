@@ -1,41 +1,45 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const cookieParser = require('cookie-parser');
+const { AES, enc } = require('crypto-js');
 
 function signJWT(res, { sub, name }) {
     const token = jwt.sign({
         sub, name,
         iss: 'Traxn ©'
-    }, process.env.JWT_KEY, { expiresIn: '2d' }).split('.');
-    for (let i = 0; i < token.length; i++) {
-        res.cookie(`jwt_${i}`, token[i], { signed: true })
-    }
+    }, process.env.JWT_KEY, { expiresIn: '2d' });
+    res.cookie(
+        'jwt',
+        AES.encrypt(token, process.env.SECRET_KEY).toString(),
+        { signed: true }
+    );
     return res;
 }
 
-function loginUser(req, res, next) {
+async function loginUser(req, res, next) {
     const { user, password } = req.body;
     if (!user) {
         next(new Error(`Invalid Login`))
     } else {
-        bcrypt.compare(password, user.password)
-            .then(function createJWT(valid) {
-                if (valid) {
-                    res = signJWT(res, {
-                        sub: user._id,
-                        name: user.username
-                    });
-                    user.password = undefined;
-                    res.json({
-                        success: true,
-                        user: user
-                    });
-                } else {
-                    res.status(401);
-                    next(new Error(`Invalid Login`))
-                }
-            })
-            .catch(next);
+        try {
+            const isValid = await bcrypt.compare(password, user.password);
+
+            if (isValid) {
+                res = signJWT(res, {
+                    sub: user._id,
+                    name: user.username
+                });
+                user.password = undefined;
+                res.json({
+                    success: true,
+                    user: user
+                });
+            } else {
+                res.status(401);
+                next(new Error(`Invalid Login`))
+            }
+        } catch (err) {
+            next(err);
+        }
     }
 }
 // Middleware function to verify the user using JWT authentification
@@ -44,10 +48,10 @@ function loginUser(req, res, next) {
 // The decoded user_id is also passed to next in the request body
 
 function authJWT(req, res, next) {
-    const { jwt_0, jwt_1, jwt_2 } = req.signedCookies;
-    const token = [jwt_0, jwt_1, jwt_2].map(cookie => {
-        return cookieParser.signedCookie(cookie, process.env.COOKIE_KEY)
-    }).join('.');
+    const token = AES.decrypt(
+        req.signedCookies.jwt,
+        process.env.SECRET_KEY
+    ).toString(enc.Utf8);
     jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
         if (err || decoded.iss !== 'Traxn ©') {
             req.body.user_id = null;

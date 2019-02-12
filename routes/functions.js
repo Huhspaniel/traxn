@@ -48,6 +48,7 @@ async function loginUser(req, res, next) {
 // The decoded user_id is also passed to next in the request body
 
 function authJWT(req, res, next) {
+    if (!req.signedCookies.jwt) return next(new Error('Invalid token'));
     const token = AES.decrypt(
         req.signedCookies.jwt,
         process.env.SECRET_KEY
